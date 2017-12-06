@@ -17,8 +17,8 @@
       <file leaf-file-name="try.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/try.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="6" lean-forward="false" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+            <state relative-caret-position="240">
+              <caret line="16" column="100" lean-forward="false" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
               <folding />
             </state>
           </provider>
@@ -27,9 +27,29 @@
       <file leaf-file-name="musicB.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/musicB.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="375">
+              <caret line="25" column="9" lean-forward="false" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
+              <folding>
+                <marker date="1512555059435" expanded="true" signature="18:44" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="87:376" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="173:286" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="423:1571" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="427:500" ph="//..." />
+                <marker date="1512555059435" expanded="true" signature="740:1566" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="943:1546" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="1133:1312" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="1393:1536" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="1615:3156" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="1619:1841" ph="//..." />
+                <marker date="1512555059435" expanded="true" signature="2291:3151" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="2408:3145" ph="/*...*/" />
+                <marker date="1512555059435" expanded="true" signature="3193:4579" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="3197:3270" ph="//..." />
+                <marker date="1512555059435" expanded="true" signature="3510:4574" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="3626:4567" ph="/*...*/" />
+                <marker date="1512555059435" expanded="true" signature="4650:5138" ph="{...}" />
+                <marker date="1512555059435" expanded="true" signature="5022:5134" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -44,20 +64,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="getData.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/getData.js">
+      <file leaf-file-name="youtube.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/youtube.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="-1090">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="youtube.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/youtube.js">
+      <file leaf-file-name="getData.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/getData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="-324">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -142,12 +162,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1512573771816</updated>
-      <workItem from="1512573773850" duration="62000" />
+      <workItem from="1512573773850" duration="585000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62000" />
+    <option name="totallyTimeSpent" value="585000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -185,9 +205,29 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/musicB.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="375">
+          <caret line="25" column="9" lean-forward="false" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
+          <folding>
+            <marker date="1512555059435" expanded="true" signature="18:44" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="87:376" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="173:286" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="423:1571" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="427:500" ph="//..." />
+            <marker date="1512555059435" expanded="true" signature="740:1566" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="943:1546" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="1133:1312" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="1393:1536" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="1615:3156" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="1619:1841" ph="//..." />
+            <marker date="1512555059435" expanded="true" signature="2291:3151" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="2408:3145" ph="/*...*/" />
+            <marker date="1512555059435" expanded="true" signature="3193:4579" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="3197:3270" ph="//..." />
+            <marker date="1512555059435" expanded="true" signature="3510:4574" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="3626:4567" ph="/*...*/" />
+            <marker date="1512555059435" expanded="true" signature="4650:5138" ph="{...}" />
+            <marker date="1512555059435" expanded="true" signature="5022:5134" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -199,17 +239,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/getData.js">
+    <entry file="file://$PROJECT_DIR$/youtube.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="-1090">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/youtube.js">
+    <entry file="file://$PROJECT_DIR$/getData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="-324">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -217,8 +257,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/try.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="6" lean-forward="false" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        <state relative-caret-position="240">
+          <caret line="16" column="100" lean-forward="false" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
           <folding />
         </state>
       </provider>
