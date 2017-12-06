@@ -2,7 +2,7 @@
 
 
 
-<img src="https://github.com/meitarsh/m.s-aluminium-manager-app/blob/master/pics/logo.jpg" height="300" width="400">
+<img src="https://github.com/avicohen89/Music-Similarity/blob/master/pic/music-colour-splash.jpg" height="300" width="400">
 
 
 ## Disclaimer
