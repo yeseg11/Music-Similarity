@@ -31,12 +31,12 @@ Avi Cohen
 | Version Control System| [![git](https://img.shields.io/badge/Version%20Control-Git-green.svg)](https://git-scm.com/) & [![github](https://img.shields.io/badge/Version%20Control-Github-green.svg)](https://github.com/) |
 | Recommended IDE | [![Android Studio](https://img.shields.io/badge/IDE-Android%20Studio-green.svg)](https://developer.android.com/studio/index.html) |
 | License | [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/) |
-| Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/meitarsh/m.s-aluminium-manager-app) |
+| Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/avicohen89/Music-Similarity) |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/meitarsh/m.s-aluminium-manager-app.svg?style=flat)](https://github.com/meitarsh/m.s-aluminium-manager-app/issues) |
-| Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/meitarsh/m.s-aluminium-manager-app/projects/1) |
-| Documnetation | [![Inline docs](http://inch-ci.org/github/meitarsh/m.s-aluminium-manager-app.svg?branch=master)](https://github.com/meitarsh/m.s-aluminium-manager-app/wiki/Documents) |
-| Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://calendar.google.com/calendar/embed?src=t1f2ojv5arrqonei6h09i5fld0%40group.calendar.google.com&ctz=Europe/Athens) |
-| Releases |  [![release](http://github-release-version.herokuapp.com/github/meitarsh/m.s-aluminium-manager-app/release.svg?style=flat)](https://github.com/meitarsh/m.s-aluminium-manager-app/releases/latest) |
+| Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects/1) |
+| Documnetation | [![Inline docs](http://inch-ci.org/github/meitarsh/m.s-aluminium-manager-app.svg?branch=master)](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
+| Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://trello.com/projectcalendar2) |
+| Releases |  [![release](http://github-release-version.herokuapp.com/github/avicohen89/Music-Similarity/release.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/releases/latest) |
 
 
 ## [Software Design](https://github.com/meitarsh/m.s-aluminium-manager-app/wiki/Software-Design)
