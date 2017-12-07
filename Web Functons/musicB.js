@@ -166,3 +166,54 @@ function tyct(date,country,tag){ 		//songsinyearandcountryandtag
        console.log("jas: ", jas);
     });
 };
+
+
+function getArtist(artistName,person){ 		// if person is 0 search for person else group
+                                                    //let person = person;
+    var textFile = "/Json/artist.txt";
+    var file = new File(textFile);
+    file.open("w"); // open file with write access
+    file.writeln("hello");
+    file.close();
+
+    console.log(artistName)
+    var str ='https://musicbrainz.org/ws/2/artist?query=';
+    //console.log(str);
+    str+= String(artistName);
+    str+= '&fmt=json';
+    console.log(str);
+    var item =httpGetAsync(String(str),function(data){
+        console.log("data: ", data)
+        let jas = JSON.parse(data);
+        console.log("jas: ", jas)
+        let i = 0 ;
+        let size = jas.artists.length
+        for (i = 0 ; i < size ; i++) {
+            //console.log("i: ", i)
+            console.log("type: ", String(jas.artists[i].type))
+            if ((person == 0) && (String(jas.artists[i].type) === "Person"))
+            {
+                file.open("w"); // open file with write access
+                file.writeln(String(jas.artists[i]));
+                file.close();
+
+
+                //console.log("try ")
+                //let stat=jas.artists[i].country;			//country
+                //console.log("stat: ", stat)
+
+                return
+            }
+            else if (person == 1 && jas.artists[i].type == 'Group')
+            {
+                //let stat=jas.artists[i].country;			//country
+                //console.log("stat: ", stat)
+                return
+            }
+        }
+        //}
+
+
+    });
+
+};
