@@ -193,9 +193,11 @@ function getArtist(artistName,person){ 		// if person is 0 search for person els
             console.log("type: ", String(jas.artists[i].type))
             if ((person == 0) && (String(jas.artists[i].type) === "Person"))
             {
-                file.open("w"); // open file with write access
-                file.writeln(String(jas.artists[i]));
-                file.close();
+
+
+               // file.open("w"); // open file with write access
+               // file.writeln(String(jas.artists[i]));
+               // file.close();
 
 
                 //console.log("try ")
