@@ -41,7 +41,7 @@ Avi Cohen
 
 ## [Software Design](https://github.com/meitarsh/m.s-aluminium-manager-app/wiki/Software-Design)
 
-## [Iterations](https://github.com/meitarsh/m.s-aluminium-manager-app/wiki/Iterations)
+## [Iterations]()
 
 * [Iteration 0 ZFR](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-0-ZFR)
 * [Iteration 1 MVP]()
