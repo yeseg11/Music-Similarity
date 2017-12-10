@@ -32,7 +32,7 @@ Avi Cohen
 | Recommended IDE | [![Android Studio](https://img.shields.io/badge/IDE-Android%20Studio-green.svg)](https://developer.android.com/studio/index.html) |
 | License | [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/) |
 | Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/avicohen89/Music-Similarity) |
-| Issues | [![GitHub issues](https://img.shields.io/github/issues/meitarsh/m.s-aluminium-manager-app.svg?style=flat)](https://github.com/meitarsh/m.s-aluminium-manager-app/issues) |
+| Issues | [![GitHub issues](https://img.shields.io/github/issues/avicohen89/Music-Similarity.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/issues) |
 | Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects/1) |
 | Documnetation | [![Inline docs](http://inch-ci.org/github/meitarsh/m.s-aluminium-manager-app.svg?branch=master)](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
 | Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://trello.com/projectcalendar2) |
