@@ -4,14 +4,13 @@ var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
 var conn;
-var count = 0;
+var count = 200;
 const JUMP = 100
-
 var app = express();
 
 
 
-var reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
+//var reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
 
 //https://musicbrainz.org/ws/2/artist?query=coldplay
 //var reqUrl = 'https://musicbrainz.org/ws/2/artist?query=:artist&fmt=json';
@@ -29,23 +28,24 @@ function conn(callback) {
 // Get data from our DB
 
 app.get('/:name', (req, res, next) => {
-    var query = {};
-if (req.query.name) query.name = new RegExp('^' + req.query.name, "i");
-//console.log(req.query.name);
-conn((err, client) => {
-    if (err) return next(err);
-const db = client.db(dbName);
-//console.log(db);
-db.collection('artist').find(query).toArray(function(err, items) {
-    if (err) return next(err);
-    res.json({
-        err: false,
-        message: `Return ${items.length} items!`,
-        items: items
-    });
-});
+    var query = {}
+    if (req.query.name) query.name = new RegExp('^' + req.query.name, "i");
+    //console.log(req.query.name);
+    conn((err, client) => {
+    if (err)    return next(err);
 
-});
+    const db = client.db(dbName);
+    //console.log(db);
+    db.collection('artist').find(query).toArray(function(err, items) {
+        if (err) return next(err);
+        res.json({
+            err: false,
+            message: `Return ${items.length} items!`,
+            items: items
+            });
+        });
+
+    });
 
 });
 //***************************************************************
@@ -53,14 +53,22 @@ db.collection('artist').find(query).toArray(function(err, items) {
 
 // Get data from musicbrainz and insert & update on mongodb
 app.get('/mb/:type/:name', function(req, res, next) {
-    //var index=0;
+    var index=0;
     //console.log(type);
     //console.log(req.params.name);
     //reqUrl+='&offset=0'+index.toString();
-    //console.log(reqUrl);
+    console.log("here");
     //getCount(reqUrl,req,res,next);
-    getData(reqUrl,req,res,next);
-
+    //for (var i = 0 ; i < count ; i+=JUMP){
+    //    console.log(i);
+        var reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
+       reqUrl+='&offset='+index.toString();
+    //    console.log(reqUrl);
+        //sleep(1000);
+        getData(reqUrl,req,res,next);
+    //    console.log(reqUrl);
+        //getData(reqUrl,req,res,next);
+    //}
 });
 
 
@@ -113,10 +121,9 @@ function getData(reqUrl,req,res,next) {
 
         var prepareData = [];
         //data.type.forEach()
-        console.log("here");
+        //console.log("here");
         count = data.count;
         console.log("wait for count: "+count);
-
         data.recordings.forEach(function(a) {
             //a.area = a.area || {};
             if (a['artist-credit'][0].artist.name == req.params.name ){
@@ -125,7 +132,7 @@ function getData(reqUrl,req,res,next) {
                     track_name: a.title,
                     artist_name:a['artist-credit'][0].artist.name,
                     artist_id:a['artist-credit'][0].artist.id,
-                    area:a.releases[0].country
+                    // area:a.releases[0].country
                     // area: {
                     //     countryCode: a.country,
                     //     countryName: a.area.name
@@ -161,16 +168,6 @@ function getData(reqUrl,req,res,next) {
                 res.json(result);
             });
         });
-
-        for (var i = 0 ; i < count-100 ; i+=JUMP){
-            console.log(i);
-            var reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
-            reqUrl+='&offset='+i.toString();
-            getData(reqUrl,req,res,next);
-            console.log(reqUrl);
-            //getData(reqUrl,req,res,next);
-        }
-
     });
 
 
@@ -208,3 +205,11 @@ function getArtist(options, callback) {
     });
 }
 
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
