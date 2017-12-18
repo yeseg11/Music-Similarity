@@ -32,19 +32,19 @@ Avi Cohen
 | Recommended IDE | [![Android Studio](https://img.shields.io/badge/IDE-Android%20Studio-green.svg)](https://developer.android.com/studio/index.html) |
 | License | [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/) |
 | Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/avicohen89/Music-Similarity) |
-| Issues | [![GitHub issues](https://img.shields.io/github/issues/meitarsh/m.s-aluminium-manager-app.svg?style=flat)](https://github.com/meitarsh/m.s-aluminium-manager-app/issues) |
-| Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects/1) |
+| Issues | [![GitHub issues](https://img.shields.io/github/issues/avicohen89/Music-Similarity.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/issues) |
+| Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects) |
 | Documnetation | [![Inline docs](http://inch-ci.org/github/meitarsh/m.s-aluminium-manager-app.svg?branch=master)](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
 | Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://trello.com/projectcalendar2) |
 | Releases |  [![release](http://github-release-version.herokuapp.com/github/avicohen89/Music-Similarity/release.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/releases/latest) |
 
 
-## [Software Design](https://github.com/meitarsh/m.s-aluminium-manager-app/wiki/Software-Design)
+## [Software Design]()
 
-## [Iterations](https://github.com/meitarsh/m.s-aluminium-manager-app/wiki/Iterations)
+## [Iterations]()
 
 * [Iteration 0 ZFR](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-0-ZFR)
-* [Iteration 1 MVP]()
-* [Iteration 2 alpa]()
+* [Iteration 1 MVP](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-1-MVP)
+* [Iteration 2 alpa](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-2-alpha)
 * [Iteration 3 beta]()
 * [Iteration 4 final]()
