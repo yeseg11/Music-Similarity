@@ -168,14 +168,11 @@ function tyct(date,country,tag){ 		//songsinyearandcountryandtag
 };
 
 
+
+
+
 function getArtist(artistName,person){ 		// if person is 0 search for person else group
                                                     //let person = person;
-    var textFile = "/Json/artist.txt";
-    var file = new File(textFile);
-    file.open("w"); // open file with write access
-    file.writeln("hello");
-    file.close();
-
     console.log(artistName)
     var str ='https://musicbrainz.org/ws/2/artist?query=';
     //console.log(str);
@@ -194,16 +191,6 @@ function getArtist(artistName,person){ 		// if person is 0 search for person els
             if ((person == 0) && (String(jas.artists[i].type) === "Person"))
             {
 
-
-               // file.open("w"); // open file with write access
-               // file.writeln(String(jas.artists[i]));
-               // file.close();
-
-
-                //console.log("try ")
-                //let stat=jas.artists[i].country;			//country
-                //console.log("stat: ", stat)
-
                 return
             }
             else if (person == 1 && jas.artists[i].type == 'Group')
@@ -219,3 +206,5 @@ function getArtist(artistName,person){ 		// if person is 0 search for person els
     });
 
 };
+
+
