@@ -4,9 +4,18 @@ var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
 var conn;
-var count = 200;
-const JUMP = 100
+var count = 0;
+const JUMP = 100;
 var app = express();
+let get_Count;
+
+
+/*
+need to run with http://localhost:3000/mb/recording/Madonna
+then we need to get all the recording of madonna (7245 mbid's)
+
+ */
+
 
 
 
@@ -57,19 +66,27 @@ app.get('/mb/:type/:name', function(req, res, next) {
     //console.log(type);
     //console.log(req.params.name);
     //reqUrl+='&offset=0'+index.toString();
-    console.log("here");
+    //console.log("here");
     //getCount(reqUrl,req,res,next);
     //for (var i = 0 ; i < count ; i+=JUMP){
     //    console.log(i);
         var reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
-       reqUrl+='&offset='+index.toString();
+        reqUrl+='&offset='+index.toString();
     //    console.log(reqUrl);
         //sleep(1000);
-        getData(reqUrl,req,res,next);
-    //    console.log(reqUrl);
-        //getData(reqUrl,req,res,next);
+        getDataAndCount(reqUrl,req,res,next);
+        console.log("1");
+         //getData(reqUrl,req,res,next);
     //}
 });
+
+
+
+
+
+
+
+
 
 
 
@@ -105,25 +122,52 @@ if (!module.parent) {
 };
 
 
-function getData(reqUrl,req,res,next) {
+function getDataAndCount(reqUrl,req,res,next) {
     var types = ['recording','release'];
-
     if(types.indexOf(req.params.type) == -1) return next(new Error('Invalid type'));
     //console.log(req.params.type);
-    var type = req.params.type.toString();
-    getArtist({
+    //var type = req.params.type.toString();
+    getFromDB({
         url: reqUrl.replace(':type', req.params.type).replace(':name', req.params.name)
-
 
     },function(err, data) {
 
         if (err || !data || !Object.keys(data).length) return next(err || new Error('No data came back'));
 
         var prepareData = [];
-        //data.type.forEach()
         //console.log("here");
         count = data.count;
-        console.log("wait for count: "+count);
+         get_Count = new Promise(
+            (resolve, reject) => { // fat arrow
+                if (count > 0) {
+                    const work ="wait for count1: "+count;
+                    //console.log("wait for count1: "+count);
+                    resolve(work);
+                }
+                else {
+                    const reason = new Error('sagi is not happy');
+                    reject(reason);
+                }
+
+            }
+        );
+         // add runing on getData count times
+        get_Count.then(function() {
+            /* do something with the result */
+            console.log("2");
+            console.log("wait for count2: "+count);
+            for (let k =0 ; k < count ;k+=100){
+
+                reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
+                reqUrl+='&offset='+k.toString();
+                console.log(reqUrl);
+                getData (reqUrl,req,res,next);
+            }
+        }).catch(function() {
+            console.log("3");
+            /* error :( */
+        })
+        /*
         data.recordings.forEach(function(a) {
             //a.area = a.area || {};
             if (a['artist-credit'][0].artist.name == req.params.name ){
@@ -132,7 +176,7 @@ function getData(reqUrl,req,res,next) {
                     track_name: a.title,
                     artist_name:a['artist-credit'][0].artist.name,
                     artist_id:a['artist-credit'][0].artist.id,
-                    // area:a.releases[0].country
+                    area:a.releases[0].country
                     // area: {
                     //     countryCode: a.country,
                     //     countryName: a.area.name
@@ -144,6 +188,7 @@ function getData(reqUrl,req,res,next) {
             }
 
         });
+
         // Use connect method to connect to the server
         conn(function(err, client) {
             if (err) return next(err);
@@ -168,48 +213,111 @@ function getData(reqUrl,req,res,next) {
                 res.json(result);
             });
         });
-    });
-
-
-};
-
-
-
-
-function getArtist(options, callback) {
-    //console.log("url: "+options.url);
-    request({
-        'method': 'GET',
-        'uri': options.url,
-        'headers': {
-            'User-Agent': 'MY IPHINE 7s ' + (+new Date())
-        }
-
-    }, function(error, response, body) {
-        if (error) return callback(error);
-        if (!response || !response.statusCode || response.statusCode !== 200) {
-            options.retry++;
-            if (options.retry > 10) return callback(new Error('Check your ISP internet connection'));
-            return setTimeout(function() {
-                getArtist(options, callback)
-            }, 500 * options.retry);
-        }
-
-        try {
-            var data = JSON.parse(body);
-            //console.log("data: "+data);
-            return callback(null, data);
-        } catch (e) {
-            callback(e);
-        }
+        */
     });
 }
 
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-            break;
-        }
-    }
+
+
+
+function getFromDB(options, callback) {
+//console.log("url: "+options.url);
+request({
+'method': 'GET',
+'uri': options.url,
+'headers': {
+   'User-Agent': 'MY IPHINE 7s ' + (+new Date())
+}
+
+}, function(error, response, body) {
+if (error) return callback(error);
+if (!response || !response.statusCode || response.statusCode !== 200) {
+   options.retry++;
+   if (options.retry > 10) return callback(new Error('Check your ISP internet connection'));
+   return setTimeout(function() {
+       getFromDB(options, callback)
+   }, 500 * options.retry);
+}
+
+try {
+   var data = JSON.parse(body);
+   //console.log("data: "+data);
+   return callback(null, data);
+} catch (e) {
+   callback(e);
+}
+});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function getData (reqUrl,req,res,next){
+var types = ['recording','release'];
+if(types.indexOf(req.params.type) == -1) {
+    return next(new Error('Invalid type'));
+}
+//console.log(req.params.type);
+var type = req.params.type.toString();
+getFromDB({
+url: reqUrl.replace(':type', req.params.type).replace(':name', req.params.name)
+
+},function(err, data) {
+
+if (err || !data || !Object.keys(data).length) return next(err || new Error('No data came back'));
+
+var prepareData = [];
+data.recordings.forEach(function(a) {
+   //a.area = a.area || {};
+   if (a['artist-credit'][0].artist.name == req.params.name ){
+       var d = {
+           mbid: a.id,
+           track_name: a.title,
+           artist_name:a['artist-credit'][0].artist.name,
+           artist_id:a['artist-credit'][0].artist.id,
+           //area:a.releases[0].country
+           // area: {
+           //     countryCode: a.country,
+           //     countryName: a.area.name
+           // },
+           // tags: [].concat(a.tags).filter(x => (x && x.name)).map(x => x.name)
+       };
+       prepareData.push(d);
+       //console.log(prepareData);
+   }
+
+});
+// Use connect method to connect to the server
+conn(function(err, client) {
+   if (err) return next(err);
+
+   console.log("Connected successfully to server");
+   //console.log("dbname: "+dbName);
+   const db = client.db(dbName);
+   const collection = db.collection(type.toString());
+
+   var batch = collection.initializeOrderedBulkOp();
+
+   prepareData.forEach(d => {
+       batch.find({
+           mbid: d.mbid
+       }).upsert().update({
+           $set: d
+       })
+   });
+   batch.execute(function(err, result) {
+
+       if (err) return next(err);
+       res.json(result);
+   });
+});
+});
 }
