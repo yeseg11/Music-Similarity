@@ -220,8 +220,13 @@ function insertDataToDb(options) {
             if (a.releases[0].country.toString() == options.country_code) {
                 var d = {
                     mbid: a.id,
-                    //year: {
-                    //    countryCode: a.country,
+                    //area: {
+                //    countryCode: a.releases[0].country.toString()
+                 //               {
+                 //                   mbid: a.id
+                 //               }
+
+                //    }
                     //    countryName: a.area.name
                    // },
                    // track_name: a.title,
