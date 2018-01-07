@@ -7,18 +7,20 @@ var assert = require('assert');
 var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
+var router = express.Router();
+const models = require('./models/findByYaer')(router);
 
-//app.use(__dirname +"/js/areat.js",require("./js/areat.js"));
+//var url_parts = uri.parse(req.url, true);
+//console.log(url_parts);
+//app.use('/models',express("models");
+app.use('/routes',express.static("routes"));
 
-app.use('/js',express.static("js"));
 
 app.get('/', function (req, res) {
-    //req.url("body.js");
-    //req.url("getData.js");
     res.sendFile( __dirname + "/index.html" );
 })
 
-var server = app.listen(3000, function () {
+app.listen(3000, function () {
     console.log("Example app listening at localhost:3000");
 })
 
@@ -31,7 +33,9 @@ var server = app.listen(3000, function () {
 
 
 
-function conn(callback) {                                    //make connection to the mongo server
+//***************make connection to the mongo server************************************************
+
+function conn(callback) {
     if (conn && conn.close) return callback(null, conn);
     MongoClient.connect(url, function(err, client) {
         if (err) return callback(err);
@@ -39,21 +43,30 @@ function conn(callback) {                                    //make connection t
 
     });
 }
-
+//console.log(app);
+//***************************get from mongoDB the data************************************
 app.get('/mb/recording/:country_code', (req, res, next) => {
-    //console.log(req.params.country_code);
+
+    //var url_parts = uri.parse(req.url, true);
+    //console.log(url_parts);
+
     var country_code = req.params.country_code.toString();
     //console.log(country_code);
     //var query = {}
     //console.log(req.query.name);
     conn((err, client) => {
-        if (err) return next(err);
+        if (err)  {
+            console.log("ERROR");
+            return next(err);
+        }
         const db = client.db(dbName);
         db.collection(country_code).find().toArray(function(err, items) {
             if (items.length == 0 )
             {
-                console.log("start if 0");
-               // app.use(__dirname +"/js/areat.js",require("./js/areat.js")(app));
+                console.log("items length is 0");
+                app.use('/models',models);
+
+                //app.use()
 
             }
             if (err) {
@@ -68,4 +81,4 @@ app.get('/mb/recording/:country_code', (req, res, next) => {
         });
     });
 });
-
+//***************************************************************

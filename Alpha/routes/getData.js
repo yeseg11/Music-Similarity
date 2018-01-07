@@ -310,7 +310,7 @@ function setData() {
     };
     console.log(obj);
 
-    document.getElementById("btn_years").addEventListener("click",getYearList());
+    document.getElementById("btn_years").addEventListener("click",getYearList);
     //document.getElementById("years").addEventListener("click",getYearList());
     //document.getElementById("years").action =;
     //document.getElementById("years").addEventListener("click", function(){
@@ -337,25 +337,33 @@ function calculator(age) {
 function getYearList()
 {
     let str = "http://localhost:3000/mb/recording/"+obj.country;
-    console.log(str);
-    var xmlhttp = new XMLHttpRequest(); //create xmlHttpRequest like at ex1
-    xmlhttp.open("GET",str, true);
-    xmlhttp.onreadystatechange=function(){
-        if (xmlhttp.readyState==4 && xmlhttp.status==200){
-            var arr=xmlhttp.responseText.split('\n');
-            document.getElementById("list").innerHTML ='';
-            arr.forEach(function(item, index, nums) {
-                if(item!="")
-                    var mb = item.mbid;
-                    document.getElementById("list").innerHTML +=item+'<br/>';
-            });
+    var item =httpGetAsync(str,function(data) {
+        //console.log("data: ", data);
+        var arr=data.split('\n');
+        //console.log("arr: ", arr);
+        let jas = JSON.parse(arr);
+        //console.log("jas: ", jas.items);
+        document.getElementById("list").innerHTML ='';
+        if(jas.items.length == 0){
+            //console.log("hello");
+            document.getElementById("list").innerHTML +='Need to search this data';
         }
-    }
-    xmlhttp.send();
+        for(let i =0 ;i<jas.items.length;i++){
+            document.getElementById("list").innerHTML +='mbid:'+ jas.items[i].mbid + '<br/>';
+        }
+    });
 }
 
 
-
+function httpGetAsync(theUrl, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+};
 
 
 
