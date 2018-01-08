@@ -60,6 +60,7 @@ app.get('/:name', (req, res, next) => {
 module.exports = (router) =>{
 
     console.log("getMB");
+
     router.get('/:type/:country_code',function(req, res, next){
         console.log("getMB2");
 //http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100console.log("here");
@@ -69,7 +70,8 @@ module.exports = (router) =>{
             country_code: req.params.country_code,
             limit: JUMP,
             offset: 0
-        }
+        };
+        //console.log(options);
         getDataAndCount(options).then(() => {
              console.log(arguments);
              res.json(arguments);
@@ -174,7 +176,7 @@ function getDataAndCount(options) {
                 type: options.type
             }).then((response) => {
                 done++;
-                for (var i = 1; i <= 10/*pages*/; i++) {
+                for (var i = 1; i <= 1/*pages*/; i++) {
                     ((page) => {
 
                         getDataFromMB({
@@ -192,7 +194,7 @@ function getDataAndCount(options) {
                                 type: options.type
                             }).then((resDb) => {
                                 done++;
-                                if (done === 10/*pages*/ && !responseUser) return resolve()
+                                if (done === 1/*pages*/ && !responseUser) return resolve()
                             }).catch((err) => {
                                 return (!responseUser) ? reject(err) : undefined;
                             })

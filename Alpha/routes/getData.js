@@ -310,7 +310,7 @@ function setData() {
     };
     console.log(obj);
 
-    document.getElementById("btn_years").addEventListener("click",getYearList);
+    document.getElementById("btn_country").addEventListener("click",getAreaList);
     //document.getElementById("years").addEventListener("click",getYearList());
     //document.getElementById("years").action =;
     //document.getElementById("years").addEventListener("click", function(){
@@ -334,7 +334,7 @@ function calculator(age) {
 }
 
 
-function getYearList()
+function getAreaList()
 {
     let str = "http://localhost:3000/mb/recording/"+obj.country;
     var item =httpGetAsync(str,function(data) {
@@ -345,8 +345,7 @@ function getYearList()
         //console.log("jas: ", jas.items);
         document.getElementById("list").innerHTML ='';
         if(jas.items.length == 0){
-            //console.log("hello");
-            document.getElementById("list").innerHTML +='Need to search this data';
+            document.getElementById("list").innerHTML +='Need to search this data , click again on the byCountry button';
         }
         for(let i =0 ;i<jas.items.length;i++){
             document.getElementById("list").innerHTML +='mbid:'+ jas.items[i].mbid + '<br/>';
@@ -361,6 +360,7 @@ function httpGetAsync(theUrl, callback) {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             callback(xmlHttp.responseText);
     }
+    console.log("items length is 1: "+theUrl);
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.send(null);
 };

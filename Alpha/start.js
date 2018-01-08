@@ -3,12 +3,12 @@ var fs = require('fs');
 var uri = require('url');
 var express = require('express');
 var app = express();
-var assert = require('assert');
+//var assert = require('assert');
 var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
 var router = express.Router();
-const models = require('./models/findByYaer')(router);
+const models = require('./models/findByArea')(router);
 
 //var url_parts = uri.parse(req.url, true);
 //console.log(url_parts);
@@ -51,7 +51,7 @@ app.get('/mb/recording/:country_code', (req, res, next) => {
     //console.log(url_parts);
 
     var country_code = req.params.country_code.toString();
-    //console.log(country_code);
+   // console.log(country_code);
     //var query = {}
     //console.log(req.query.name);
     conn((err, client) => {
@@ -65,9 +65,12 @@ app.get('/mb/recording/:country_code', (req, res, next) => {
             {
                 console.log("items length is 0");
                 app.use('/models',models);
-
-                //app.use()
-
+                let str = "http://localhost:3000/models/recording/"+country_code;
+                //http://localhost:3000/models/recording/AX
+                var request = require('request');
+                request(str, function (error, response, body) {
+                    console.log('error:', error); // Print the error if one occurred
+                });
             }
             if (err) {
                 console.log("ERROR");
@@ -82,3 +85,15 @@ app.get('/mb/recording/:country_code', (req, res, next) => {
     });
 });
 //***************************************************************
+/*
+function httpGetAsync(theUrl, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    console.log("items length is 1: "+theUrl);
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+};
+*/
