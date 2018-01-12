@@ -1,16 +1,15 @@
 //http://musicbrainz.org/ws/2/recording/?query=date:1999%20AND%20country:il&limit=100
 
 var request = require('request');
-var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
+const collName ='Music';
 var conn;
 var count = 0;
-const JUMP = 1;
-var app = express();
-let get_Count;
-
+const JUMP = 100;
+//var app = express();
+//let get_Count;
 
 /*
 need to run with http://localhost:3000/mb/recording/Madonna
@@ -19,10 +18,10 @@ then we need to get all the recording of madonna (7245 mbid's)
 
 //var reqUrl = 'https://musicbrainz.org/ws/2/:type?query=artist::name&fmt=json&limit=100';
 
-http://musicbrainz.org/ws/2/recording/?query=date:1999&limit=100
+http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100
+*/
 
 
- */
 function conn(callback) {                                    //make connection to the mongo server
     if (conn && conn.close) return callback(null, conn);
     MongoClient.connect(url, function(err, client) {
@@ -34,7 +33,7 @@ function conn(callback) {                                    //make connection t
 //***************************************************************
 
 // Get data from our DB
-
+/*
 app.get('/:name', (req, res, next) => {
     //var query = {}
     if (req.query.name) query.name = new RegExp('^' + req.query.name, "i");
@@ -54,17 +53,57 @@ app.get('/:name', (req, res, next) => {
     });
 
 });
+*/
+//***************************************************************
+module.exports = (router) =>{
+
+    console.log("getMByear");
+
+    router.get('/year/:type/:date',function(req, res, next){
+        console.log("getMB2");
+//http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100console.log("here");
+        var options = {
+            url: 'https://musicbrainz.org/ws/2/:type?query=date::date&fmt=json&limit=:limit&offset=:offset',
+            type: req.params.type,
+            date: req.params.date,
+            limit: JUMP,
+            offset: 0
+        };
+        //console.log(options);
+        getDataAndCount(options).then(() => {
+            console.log(arguments);
+            res.json(arguments);
+        }).catch(next);
+    });
+    //console.log("getMB3: "+router);
+    return router;
+}
+
+
+
+//module.exports = models;
+
+
+
+function authorize(req, res, next) {
+    if (req.user === 'farmer') {
+        next()
+    } else {
+        res.status(403).send('Forbidden')
+    }
+}
+
 //***************************************************************
 
-
+/*
 // Get data from musicbrainz and insert & update on mongodb
-app.get('/mb/:type/:date', function(req, res, next) {
+app.get('/mb/:type/:country_code', function(req, res, next) {
 
     //http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100
     var options = {
-        url: 'https://musicbrainz.org/ws/2/:type?query=date::date&fmt=json&limit=:limit&offset=:offset',
+        url: 'https://musicbrainz.org/ws/2/:type?query=country::country_code&fmt=json&limit=:limit&offset=:offset',
         type: req.params.type,
-        country_code: req.params.date,
+        country_code: req.params.country_code,
         limit: JUMP,
         offset: 0
     }
@@ -72,12 +111,10 @@ app.get('/mb/:type/:date', function(req, res, next) {
         res.json(arguments);
     }).catch(next);
 
-    //getData(reqUrl,req,res,next);
-    //}
 });
-
+*/
 //***************************************************************
-
+/*
 
 
 app.get('/', function(req, res) {
@@ -99,14 +136,14 @@ app.use(function(err, req, res, next) {
         stack: err.stack
     });
 });
-
-
-/* istanbul ignore next */
+*/
+/*
+// istanbul ignore next
 if (!module.parent) {
     app.listen(3000);
     console.log('Express started on port 3000');
 };
-
+*/
 //***************************************************************
 function getDataAndCount(options) {
 
@@ -137,7 +174,7 @@ function getDataAndCount(options) {
                 type: options.type
             }).then((response) => {
                 done++;
-                for (var i = 1; i <= 2/*pages*/; i++) {
+                for (var i = 1; i <= 1/*pages*/; i++) {
                     ((page) => {
 
                         getDataFromMB({
@@ -152,10 +189,11 @@ function getDataAndCount(options) {
                             insertDataToDb({
                                 data: newData,
                                 date: options.date,
-                                type: options.type
+                                type: options.type,
+                                offset:options.offset
                             }).then((resDb) => {
                                 done++;
-                                if (done === 2/*pages*/ && !responseUser) return resolve()
+                                if (done === 1/*pages*/ && !responseUser) return resolve()
                             }).catch((err) => {
                                 return (!responseUser) ? reject(err) : undefined;
                             })
@@ -178,6 +216,7 @@ function getDataAndCount(options) {
 
 function getDataFromMB(options) {
     //console.log("url: "+options.url);
+    console.log()
     return new Promise((resolve, reject) => {
         request({
             'method': 'GET',
@@ -208,31 +247,31 @@ function getDataFromMB(options) {
 }
 //***************************************************************
 function insertDataToDb(options) {
-
     return new Promise((resolve, reject) => {
         var prepareData = [];
         ([].concat(options.data[options.type + 's'])).forEach(function(a) {
             //a.area = a.area || {};
-            if (!a || !a.releases[0] || !a.releases[0].date) return;
+            if (!a || !a.releases[0] || !a.releases[0].country) return;
 
             //console.log('here');
             //console.log(a.releases[0].country);
             if (a.releases[0].date.toString() == options.date) {
                 var d = {
-                    name:options.date,
-                    area: {
-                        countryCode: a.releases[0].country.toString(){
-                        mbid: a.id
-                        }
+                    mbid: a.id,
+                    //area: {
+                    //    countryCode: a.releases[0].country.toString()
+                    //               {
+                    //                   mbid: a.id
+                    //               }
 
-                    }
-                //    countryName: a.area.name
-                // },
-                // track_name: a.title,
-                // artist_name: a['artist-credit'][0].artist.name,
-                // artist_id: a['artist-credit'][0].artist.id,
-                // area_code:a.releases[0].country
-            };
+                    //    }
+                    //    countryName: a.area.name
+                    // },
+                    track_name: a.title,
+                    artist_name: a['artist-credit'][0].artist.name
+                    // artist_id: a['artist-credit'][0].artist.id,
+                    // area_code:a.releases[0].country
+                };
                 prepareData.push(d);
             }
 
@@ -245,7 +284,7 @@ function insertDataToDb(options) {
 
             console.log("Connected successfully to server");
             const db = client.db(dbName);
-            const collection = db.collection(options.country_code.toString());
+            const collection = db.collection(options.date.toString());
             var batch = collection.initializeOrderedBulkOp();
             prepareData.forEach(d => {
                 batch.find({

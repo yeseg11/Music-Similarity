@@ -6,6 +6,7 @@ $(document).ready(function() {
         "<from><b>country:</b> <select id=\"countySel\" size=\"1\" name='county'><option value=\"\"  selected=\"selected\">-- Select Country --</option> </select> </from>\n" +
         "<button id=\"send\">send</button>\n" +"<br/>"+
         "<button id=\"btn_years\" formaction=\"showByYear\">byYear</button>\n" +
+        "<button id=\"btn_tracks\" formaction=\"showByYear\">byTrack</button>\n" +
         "<button id=\"btn_country\">byCountry</button>\n" +
         "<p id=\"demo\">\n" +
         "<p id=\"search\">\n"+"<br/>"+

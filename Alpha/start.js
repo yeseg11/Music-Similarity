@@ -3,12 +3,15 @@ var fs = require('fs');
 var uri = require('url');
 var express = require('express');
 var app = express();
+var request = require('request');
 //var assert = require('assert');
 var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
 var router = express.Router();
 const models = require('./models/findByArea')(router);
+const year_model = require('./models/findByYear')(router);
+
 
 //var url_parts = uri.parse(req.url, true);
 //console.log(url_parts);
@@ -45,7 +48,7 @@ function conn(callback) {
 }
 //console.log(app);
 //***************************get from mongoDB the data************************************
-app.get('/mb/recording/:country_code', (req, res, next) => {
+app.get('/mb/area/recording/:country_code', (req, res, next) => {
 
     //var url_parts = uri.parse(req.url, true);
     //console.log(url_parts);
@@ -65,9 +68,8 @@ app.get('/mb/recording/:country_code', (req, res, next) => {
             {
                 console.log("items length is 0");
                 app.use('/models',models);
-                let str = "http://localhost:3000/models/recording/"+country_code;
+                let str = "http://localhost:3000/models/area/recording/"+country_code;
                 //http://localhost:3000/models/recording/AX
-                var request = require('request');
                 request(str, function (error, response, body) {
                     console.log('error:', error); // Print the error if one occurred
                 });
@@ -97,3 +99,98 @@ function httpGetAsync(theUrl, callback) {
     xmlHttp.send(null);
 };
 */
+app.get('/mb/year/recording/:date', (req, res, next) => {
+
+    //var url_parts = uri.parse(req.url, true);
+    //console.log(url_parts);
+
+    var date = req.params.date.toString();
+    // console.log(country_code);
+    //var query = {}
+    //console.log(req.query.name);
+    conn((err, client) => {
+        if (err)  {
+            console.log("ERROR");
+            return next(err);
+        }
+        const db = client.db(dbName);
+        db.collection(date).find().toArray(function(err, items) {
+            if (items.length == 0 )
+            {
+                console.log("items length is 0.1");
+                app.use('/models',year_model);
+                //console.log(date);
+                let str = "http://localhost:3000/models/year/recording/"+date;
+                //http://localhost:3000/models/recording/1999
+                request(str, function (error, response, body) {
+                    console.log('error:', error); // Print the error if one occurred
+                });
+            }
+            if (err) {
+                console.log("ERROR");
+                return next(err);
+            }
+            console.log("items length is 1.1");
+            app.use('/models',year_model);
+            //console.log(date);
+            let str = "http://localhost:3000/models/year/recording/"+date;
+            //http://localhost:3000/models/recording/1999
+            request(str, function (error, response, body) {
+                console.log('error:', error); // Print the error if one occurred
+            });
+            res.json({
+                err: false,
+                message: `Return ${items.length} items!`,
+                items: items
+            });
+        });
+    });
+});
+//***************************************************************
+app.get('/mb/track/recording/:date', (req, res, next) => {
+
+    //var url_parts = uri.parse(req.url, true);
+    //console.log(url_parts);
+
+    var date = req.params.date.toString();
+    // console.log(country_code);
+    //var query = {}
+    //console.log(req.query.name);
+    conn((err, client) => {
+        if (err)  {
+            console.log("ERROR");
+            return next(err);
+        }
+        const db = client.db(dbName);
+        db.collection(date).find().toArray(function(err, items) {
+            if (items.length == 0 )
+            {
+                console.log("items length is 0.1");
+                app.use('/models',year_model);
+                //console.log(date);
+                let str = "http://localhost:3000/models/year/recording/"+date;
+                //http://localhost:3000/models/recording/1999
+                request(str, function (error, response, body) {
+                    console.log('error:', error); // Print the error if one occurred
+                });
+            }
+            if (err) {
+                console.log("ERROR");
+                return next(err);
+            }
+            console.log("items length is 1.1");
+            app.use('/models',year_model);
+            //console.log(date);
+            let str = "http://localhost:3000/models/year/recording/"+date;
+            //http://localhost:3000/models/recording/1999
+            request(str, function (error, response, body) {
+                console.log('error:', error); // Print the error if one occurred
+            });
+            res.json({
+                err: false,
+                message: `Return ${items.length} items!`,
+                items: items
+            });
+        });
+    });
+});

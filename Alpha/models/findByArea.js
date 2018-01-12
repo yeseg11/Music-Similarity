@@ -1,11 +1,8 @@
 //http://musicbrainz.org/ws/2/recording/?query=date:1999%20AND%20country:il&limit=100
 
 var request = require('request');
-//var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
-//var router = express.Router();
-//const models = require('express').Router();
 const dbName = 'myproject';
 var conn;
 var count = 0;
@@ -59,9 +56,9 @@ app.get('/:name', (req, res, next) => {
 //***************************************************************
 module.exports = (router) =>{
 
-    console.log("getMB");
+    console.log("getMBarea");
 
-    router.get('/:type/:country_code',function(req, res, next){
+    router.get('/area/:type/:country_code',function(req, res, next){
         console.log("getMB2");
 //http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100console.log("here");
         var options = {

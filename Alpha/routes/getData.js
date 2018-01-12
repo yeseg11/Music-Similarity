@@ -311,7 +311,8 @@ function setData() {
     console.log(obj);
 
     document.getElementById("btn_country").addEventListener("click",getAreaList);
-    //document.getElementById("years").addEventListener("click",getYearList());
+    document.getElementById("btn_years").addEventListener("click",getYearList);
+    document.getElementById("btn_tracks").addEventListener("click",getTrackList);
     //document.getElementById("years").action =;
     //document.getElementById("years").addEventListener("click", function(){
         //document.getElementById("frame").push = "http://www.cnn.com";
@@ -336,7 +337,7 @@ function calculator(age) {
 
 function getAreaList()
 {
-    let str = "http://localhost:3000/mb/recording/"+obj.country;
+    let str = "http://localhost:3000/mb/area/recording/"+obj.country;
     var item =httpGetAsync(str,function(data) {
         //console.log("data: ", data);
         var arr=data.split('\n');
@@ -349,6 +350,25 @@ function getAreaList()
         }
         for(let i =0 ;i<jas.items.length;i++){
             document.getElementById("list").innerHTML +='mbid:'+ jas.items[i].mbid + '<br/>';
+        }
+    });
+}
+
+function getYearList()
+{
+    let str = "http://localhost:3000/mb/year/recording/"+obj.year;
+    var item =httpGetAsync(str,function(data) {
+        //console.log("data: ", data);
+        var arr=data.split('\n');
+        //console.log("arr: ", arr);
+        let jas = JSON.parse(arr);
+        console.log("jas: ", jas.items);
+        document.getElementById("list").innerHTML ='';
+        if(jas.items.length == 0){
+            document.getElementById("list").innerHTML +='Need to search this data , click again on the byYear button';
+        }
+        for(let i =0 ;i<jas.items.length;i++){
+            document.getElementById("list").innerHTML +='mbid: '+ jas.items[i].mbid +' artist_name: '+ jas.items[i].artist_name+' track_name: '+ jas.items[i].track_name + '<br/>';
         }
     });
 }
@@ -379,3 +399,21 @@ function getCountryName (countryCode) {
     }
 }*/
 
+function getTrackList()
+{
+    let str = "http://localhost:3000/mb/track/recording/"+obj.country;
+    var item =httpGetAsync(str,function(data) {
+        //console.log("data: ", data);
+        var arr=data.split('\n');
+        //console.log("arr: ", arr);
+        let jas = JSON.parse(arr);
+        console.log("jas: ", jas.items);
+        document.getElementById("list").innerHTML ='';
+        if(jas.items.length == 0){
+            document.getElementById("list").innerHTML +='Need to search this data , click again on the byYear button';
+        }
+        for(let i =0 ;i<jas.items.length;i++){
+            document.getElementById("list").innerHTML +='mbid: '+ jas.items[i].mbid +' artist_name: '+ jas.items[i].artist_name+' track_name: '+ jas.items[i].track_name + '<br/>';
+        }
+    });
+}
