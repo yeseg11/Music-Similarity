@@ -61,9 +61,9 @@ module.exports = (router) =>{
 
     router.get('/track/:type/:date',function(req, res, next){
         //console.log("getMB2");
-//http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100console.log("here");
+        // http://musicbrainz.org/ws/2/recording/?query=country:il&limit=100console.log("here");
         var options = {
-            url: 'https://musicbrainz.org/ws/2/:type?query=country::country_code&fmt=json&limit=:limit&offset=:offset',
+            url: 'https://musicbrainz.org/ws/2/:type?query=date::date&fmt=json&limit=:limit&offset=:offset',
             type: req.params.type,
             date: req.params.date,
             limit: JUMP,
@@ -251,10 +251,10 @@ function insertDataToDb(options) {
         var prepareData = [];
         ([].concat(options.data[options.type + 's'])).forEach(function(a) {
             //a.area = a.area || {};
-            if (!a || !a.releases[0] || !a.releases[0].country) return;
+            if (!a || !a.releases[0] || !a.releases[0].date) return;
 
             //console.log('here');
-            //console.log(a.releases[0].country);
+            //console.log(a.releases[0].date.toString());
             if (a.releases[0].date.toString() == options.date) {
                 var d = {
                     mbid: a.id,
@@ -268,9 +268,10 @@ function insertDataToDb(options) {
                     //    countryName: a.area.name
                     // },
                     track_name: a.title,
-                    artist_name: a['artist-credit'][0].artist.name
+                    artist_name: a['artist-credit'][0].artist.name,
+                    year:a.releases[0].date,
                     // artist_id: a['artist-credit'][0].artist.id,
-                    // area_code:a.releases[0].country
+                    area_code:a.releases[0].country
                 };
                 prepareData.push(d);
             }
@@ -285,6 +286,7 @@ function insertDataToDb(options) {
             console.log("Connected successfully to server");
             const db = client.db(dbName);
             const collection = db.collection(collName);
+            db.collection(collName).createIndex({"year":1,"area_code":1});
             var batch = collection.initializeOrderedBulkOp();
             prepareData.forEach(d => {
                 batch.find({

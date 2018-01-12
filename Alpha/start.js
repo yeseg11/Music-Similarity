@@ -8,9 +8,11 @@ var request = require('request');
 var MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
+const collName ='Music';
 var router = express.Router();
 const models = require('./models/findByArea')(router);
 const year_model = require('./models/findByYear')(router);
+const music_model = require('./models/music')(router);
 
 
 //var url_parts = uri.parse(req.url, true);
@@ -147,28 +149,29 @@ app.get('/mb/year/recording/:date', (req, res, next) => {
     });
 });
 //***************************************************************
-app.get('/mb/track/recording/:date', (req, res, next) => {
+app.get('/mb/track/recording/:date/:country_code', (req, res, next) => {
 
     //var url_parts = uri.parse(req.url, true);
     //console.log(url_parts);
 
     var date = req.params.date.toString();
-    // console.log(country_code);
+    var country_code = req.params.country_code.toString();
+    //console.log(country_code);
     //var query = {}
-    //console.log(req.query.name);
+    console.log("HERE");
     conn((err, client) => {
         if (err)  {
             console.log("ERROR");
             return next(err);
         }
         const db = client.db(dbName);
-        db.collection(date).find().toArray(function(err, items) {
+        db.collection(collName).find({"area_code":country_code , "year":date}).toArray(function(err, items) {
             if (items.length == 0 )
             {
                 console.log("items length is 0.1");
-                app.use('/models',year_model);
+                app.use('/models',music_model);
                 //console.log(date);
-                let str = "http://localhost:3000/models/year/recording/"+date;
+                let str = "http://localhost:3000/models/track/recording/"+date;
                 //http://localhost:3000/models/recording/1999
                 request(str, function (error, response, body) {
                     console.log('error:', error); // Print the error if one occurred
@@ -178,14 +181,16 @@ app.get('/mb/track/recording/:date', (req, res, next) => {
                 console.log("ERROR");
                 return next(err);
             }
+
             console.log("items length is 1.1");
-            app.use('/models',year_model);
+            app.use('/models',music_model);
             //console.log(date);
-            let str = "http://localhost:3000/models/year/recording/"+date;
+            let str = "http://localhost:3000/models/track/recording/"+date;
             //http://localhost:3000/models/recording/1999
             request(str, function (error, response, body) {
                 console.log('error:', error); // Print the error if one occurred
             });
+
             res.json({
                 err: false,
                 message: `Return ${items.length} items!`,
