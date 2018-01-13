@@ -40,6 +40,10 @@ Avi Cohen
 
 
 ## [Software Design]()
+[Architecture]()
+[Class diagram]()
+[State charts]() 
+[Sequence diagram]()
 
 ## [Iterations]()
 
