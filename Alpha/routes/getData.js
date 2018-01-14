@@ -414,37 +414,32 @@ function getTrackList()
             if(jas.items.length == 0){
                 document.getElementById("list").innerHTML +='Need to search this data , click again on the byTrack button';
             }
-            for(let i =0 ;i<2/*jas.items.length*/;i++){
-                document.getElementById("list").innerHTML +='artist: '+ jas.items[i].artist_name +', track: '+ jas.items[i].track_name +', area: '+ jas.items[i].area_code +', year: '+ jas.items[i].year + '<br/>';
-                arr1.push(jas.items[i].ur);
+            else {
+                for(let i =0 ;i<2/*jas.items.length*/;i++){
+                    document.getElementById("list").innerHTML +='artist: '+ jas.items[i].artist_name +', track: '+ jas.items[i].track_name +', area: '+ jas.items[i].area_code +', year: '+ jas.items[i].year + '<br/>';
+                    arr1.push(jas.items[i].ur);
+                }
+                resolve(arr1);
             }
-            resolve(arr1);
         });
     });
     promise1.then(function(arr1) {
         //console.log("after p: "+arr1);
         let link ="";
+        document.getElementById("demo").innerHTML ="";
         for (let i = 0 ; i < arr1.length;i++){
             var it = httpGetAsync(arr1[i],function(data) {
                 let j = JSON.parse(data);
                 let stat=j.items[0].id;         //
-                console.log("----- stat obj:    "+ stat);
+                //console.log("----- stat obj:    "+ stat);
                 let videoId=stat.videoId;
                 //	console.log("-----------------------------------------------------------------");
-                console.log("videoId: "+videoId);
+                //console.log("videoId: "+videoId);
                 //onsole.log("videoId: "+videoId);
                 link = '<iframe width="420" height="345" src="http://www.youtube.com/embed/';
                 link+=videoId.toString();
                 link+='">';
                 document.getElementById("demo").innerHTML +=link +'<br/>';
-                /*var $frame = $(link);
-                $('demo').html( $frame );
-                setTimeout( function() {
-                    var doc = $frame[0].contentWindow.document;
-                    var $demo = $('demo',doc);
-                    $demo.html('<h1>link</h1>');
-                }, 1 );
-                */
             });
         }
     });

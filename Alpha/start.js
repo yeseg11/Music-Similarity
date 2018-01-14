@@ -181,7 +181,7 @@ app.get('/mb/track/recording/:date/:country_code', (req, res, next) => {
                 console.log("ERROR");
                 return next(err);
             }
-
+            /*
             console.log("items length is 1.1");
             app.use('/models',music_model);
             //console.log(date);
@@ -190,7 +190,7 @@ app.get('/mb/track/recording/:date/:country_code', (req, res, next) => {
             request(str, function (error, response, body) {
                 console.log('error:', error); // Print the error if one occurred
             });
-
+            */
             res.json({
                 err: false,
                 message: `Return ${items.length} items!`,
