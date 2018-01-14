@@ -158,7 +158,7 @@ app.get('/mb/track/recording/:date/:country_code', (req, res, next) => {
     var country_code = req.params.country_code.toString();
     //console.log(country_code);
     //var query = {}
-    console.log("HERE");
+    //console.log("HERE");
     conn((err, client) => {
         if (err)  {
             console.log("ERROR");

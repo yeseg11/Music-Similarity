@@ -8,6 +8,7 @@ const collName ='Music';
 var conn;
 var count = 0;
 const JUMP = 100;
+var you = require('./youtube');
 //var app = express();
 //let get_Count;
 
@@ -77,7 +78,7 @@ module.exports = (router) =>{
     });
     //console.log("getMB3: "+router);
     return router;
-}
+};
 
 
 
@@ -216,7 +217,7 @@ function getDataAndCount(options) {
 
 function getDataFromMB(options) {
     //console.log("url: "+options.url);
-    console.log()
+    //console.log()
     return new Promise((resolve, reject) => {
         request({
             'method': 'GET',
@@ -271,8 +272,10 @@ function insertDataToDb(options) {
                     artist_name: a['artist-credit'][0].artist.name,
                     year:a.releases[0].date,
                     // artist_id: a['artist-credit'][0].artist.id,
-                    area_code:a.releases[0].country
+                    area_code:a.releases[0].country,
+                    ur:youLink(a.title,a['artist-credit'][0].artist.name)
                 };
+                //var link =
                 prepareData.push(d);
             }
 
@@ -282,7 +285,6 @@ function insertDataToDb(options) {
 // Use connect method to connect to the server
         conn(function(err, client) {
             if (err) return reject(err);
-
             console.log("Connected successfully to server");
             const db = client.db(dbName);
             const collection = db.collection(collName);
@@ -300,6 +302,20 @@ function insertDataToDb(options) {
                 if (err) return reject(err);
                 return resolve(result);
             });
+            client.close();
         });
     })
+}
+
+function youLink(title,artist){
+    var l = title;
+    var key=l.replace(" ","%20");
+    var ar = artist;
+    var key2=ar.replace(" ","%20");
+    var link = you.data.search(key+key2);
+    for(var j = 0 ;j<20;j++){
+        link = link.replace(" ","%20");
+    }
+    //console.log("you: "+link);
+    return link;
 }
