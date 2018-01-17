@@ -19,7 +19,11 @@ const music_model = require('./models/music')(router);
 //console.log(url_parts);
 //app.use('/models',express("models");
 app.use('/routes',express.static("routes"));
-
+app.use('/js',express.static("js"));
+app.use('/vendor',express.static("vendor"));
+app.use('/css',express.static("css"));
+app.use('/fonts',express.static("fonts"));
+app.use('/images',express.static("images"));
 
 app.get('/', function (req, res) {
     res.sendFile( __dirname + "/index.html" );

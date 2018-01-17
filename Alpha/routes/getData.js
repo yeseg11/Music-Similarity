@@ -310,8 +310,8 @@ function setData() {
     };
     console.log(obj);
 
-    document.getElementById("btn_country").addEventListener("click",getAreaList);
-    document.getElementById("btn_years").addEventListener("click",getYearList);
+   //document.getElementById("btn_country").addEventListener("click",getAreaList);
+   // document.getElementById("btn_years").addEventListener("click",getYearList);
     document.getElementById("btn_tracks").addEventListener("click",getTrackList);
     //document.getElementById("years").action =;
     //document.getElementById("years").addEventListener("click", function(){
@@ -330,7 +330,7 @@ function calculator(age) {
     var d = new Date();
     var todayYear = d.getFullYear();
     let serYear =todayYear - year ;
-    document.getElementById("search").innerHTML = "Search in Year : "+serYear;
+    document.getElementById("demo").innerHTML = "Search in Year : "+serYear;
     return serYear;
 }
 
@@ -433,10 +433,14 @@ function getTrackList()
                 let stat=j.items[0].id;         //
                 //console.log("----- stat obj:    "+ stat);
                 let videoId=stat.videoId;
+                if(!videoId)
+                {
+                    return;
+                }
                 //	console.log("-----------------------------------------------------------------");
                 //console.log("videoId: "+videoId);
                 //onsole.log("videoId: "+videoId);
-                link = '<iframe width="420" height="345" src="http://www.youtube.com/embed/';
+                link = '<iframe width="560" height="315" src="http://www.youtube.com/embed/ ';
                 link+=videoId.toString();
                 link+='">';
                 document.getElementById("demo").innerHTML +=link +'<br/>';
