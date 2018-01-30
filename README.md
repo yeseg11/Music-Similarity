@@ -50,5 +50,5 @@ Avi Cohen
 * [Iteration 0 ZFR](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-0-ZFR)
 * [Iteration 1 MVP](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-1-MVP)
 * [Iteration 2 alpa](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-2-alpha)
-* [Iteration 3 beta]()
-* [Iteration 4 final]()
+* [Iteration 3 beta](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-3-beta)
+* [Iteration 4 final](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-4-final)
