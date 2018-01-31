@@ -36,7 +36,7 @@ Avi Cohen
 | Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects) |
 | Documnetation | [![Inline docs](http://inch-ci.org/github/meitarsh/m.s-aluminium-manager-app.svg?branch=master)](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
 | Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://calendar.google.com/calendar/embed?src=pnu92pav3s91nku9u35gks3m0c%40group.calendar.google.com&ctz=Asia%2FJerusalem) |
-| Releases |  [![release](http://github-release-version.herokuapp.com/github/avicohen89/Music-Similarity/release.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/releases/latest) |
+| Releases |  [![release](http://github-release-version.herokuapp.com/github/avicohen89/Music-Similarity/release.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/releases) |
 
 
 ## [Software Design]()
