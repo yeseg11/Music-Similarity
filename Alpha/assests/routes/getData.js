@@ -30,9 +30,10 @@
                 return $('#error').text("insert age or select country");
             }
             //console.log(country.val());
-                if (!age.val() || age.val() == null || parseInt(age.val()) <20 || parseInt(age.val()) > 120 || country.val() === "Select Country"){
+                if (!age.val() || age.val() == null || parseInt(age.val()) <30 || parseInt(age.val()) > 120 || country.val() === "Select Country"){
                     console.log('Error');
-                    return $('#error').text("insert age or select country");
+
+                    return $('#error').text("insert age or age bigger then 30 or select country");
                 }
 
 
@@ -60,7 +61,7 @@
                     var title = (rec && rec.title)? rec.title: '';
                     var artist = (rec && rec.artist && rec.artist[0] && rec.artist[0].name)? rec.artist[0].name : '';
 
-                    html += template.replace('::videoId::', videoId).replace('::name::', title + '-' + artist +"-"+mbid).replace('::link::',videoId);
+                    html += template.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId);
                 }
 
                 $('#title').html("Your Music: "+yearTwenty + ',' + country.val());

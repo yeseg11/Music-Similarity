@@ -1,7 +1,9 @@
-var y = require('youtube-node');
+// this file send the request for data from youtube and return him.
+
+var y = require('youtube-node'); //use the youtube-node libery
 var youTube = new y();
 
-youTube.setKey('AIzaSyB1OOSpTREs85WUMvIgJvLTZKye4BVsoFU');
+youTube.setKey('AIzaSyB1OOSpTREs85WUMvIgJvLTZKye4BVsoFU'); //Required a google developer key to use youtube api
 
 exports.scrapt = function(options) {
     return new Promise(function(resolve, reject) {
@@ -10,13 +12,13 @@ exports.scrapt = function(options) {
 
             if(!result || !result.items || !result.items[0] || !result.items[0].id || !result.items[0].id.videoId) return resolve({})
             
-            var videoId = result.items[0].id.videoId;
+            var videoId = result.items[0].id.videoId;   //get the videoId
 
             youTube.getById(videoId, function(error, result) {
                 if (error || !result.items || !result.items[0]) return reject(error || new Error(result));
-                var viewCount = parseInt(result.items[0].statistics.viewCount);
-
-
+                var viewCount = parseInt(result.items[0].statistics.viewCount); //get the viewCount
+                if (!viewCount)
+                    viewCount = 1 ;
 
                 youTube.clearParams();
                 youTube.clearParts();
@@ -30,8 +32,8 @@ exports.scrapt = function(options) {
 
                 youTube.request(youTube.getUrl('videos'), function(error, result) {
                     if (error || !result.items || !result.items[0]) return reject(error || new Error(result));
-                    var tags = result.items[0].snippet.tags;
-                    return resolve({
+                    var tags = result.items[0].snippet.tags; //get the tags array
+                    return resolve({ //return all the data from youtube API
                         videoId: videoId,
                         views: viewCount,
                         tags: tags

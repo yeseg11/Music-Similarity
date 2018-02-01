@@ -1,3 +1,5 @@
+//the main app !!
+
 const express = require('express');
 const app = express();
 const debug = require('debug');
@@ -12,14 +14,14 @@ app.use("/lib/bootstrap", express.static(path.join(__dirname, "node_modules", "b
 app.use("/lib/font-awesome/css", express.static(path.join(__dirname, "node_modules", "font-awesome", "css")));
 app.use("/lib/font-awesome/fonts", express.static(path.join(__dirname, "node_modules", "font-awesome", "fonts")));
 
-app.get('/', function(req, res) {
+app.get('/', function(req, res) {       //call to index page and show him , its the lending page
     res.sendFile(path.join(__dirname, 'assests', 'index.html'));
 });
 
-app.get('/mb/track/recording/:year/:country', function(req, res, next) {
+app.get('/mb/track/recording/:year/:country', function(req, res, next) {    //call to getData.js , and request all the relevant  data from DB
     db().then(()=>{
-    	Records.find({year: parseInt(req.params.year), country: req.params.country}).sort({'youtube.views':-1}).limit(11).skip(0).exec(function(err, docs){
-    		if(err) return next(err);
+    	Records.find({year: parseInt(req.params.year), country: req.params.country}).sort({'youtube.views':-1}).exec(function(err, docs){
+    		if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
     		res.status(200).json({err: false, items: [].concat(docs)})
     	})
     }).catch(next)

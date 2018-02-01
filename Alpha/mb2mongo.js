@@ -1,3 +1,5 @@
+// mb2mongo - take the data from the mb-raw file's and add tham to mongoDB , using mongoose schema.
+
 var db = require('./db');
 var mongoose = require('mongoose');
 var Records = require('./models/records.js');
@@ -16,8 +18,8 @@ glob(path.join(__dirname, "/mb-raw/**/*.json"), {}, function(err, files) {
     var total = 0;
 
     db().then(function() {
-
-        async.mapLimit(files.slice(process.env.from, process.env.to), 5, function(file, cb){
+        //console.log(process.env.from,process.env.to);
+        async.mapLimit(files.slice(process.env.from, process.env.to), 5, function(file, cb){ //add by steps of 5
             try{
                 var data = require(file);
             }catch(e){
@@ -27,7 +29,7 @@ glob(path.join(__dirname, "/mb-raw/**/*.json"), {}, function(err, files) {
             if(!data.length) return cb();
             
 
-            var bulk = Records.collection.initializeOrderedBulkOp();
+            var bulk = Records.collection.initializeOrderedBulkOp();    //get the schema
 
 
             ([].concat(data)).forEach(function(el) {
@@ -41,7 +43,7 @@ glob(path.join(__dirname, "/mb-raw/**/*.json"), {}, function(err, files) {
                         p = i;
                     }
                 }
-                var prepare = {
+                var prepare = {         //add the details to evry document
                     mbId: el.id,
                     title: el.title,
                     //year: parseInt(el['releases'][0]['date']),
@@ -55,17 +57,21 @@ glob(path.join(__dirname, "/mb-raw/**/*.json"), {}, function(err, files) {
                     youtube: {}
                 }
                 bulk.find({
-                    mbId: el.id
+                    mbId: el.id                 //update the mbid , if have - update else its build new document
                 }).upsert().updateOne(prepare);
             });
             if(!bulk.length){
                 return cb();
             }
             total += bulk.length;
-            console.log(`Gooing to execute ${bulk.length}, so far ${total}`);
+            console.log(`Gooing to execute ${bulk.length}, so far ${total}`); //show has how many files moved
+            // if (bulk.length >= 254500)
+            // {
+            //     return cb();
+            // }
 
             bulk.execute(function(err, data){
-                console.log(data.toJSON());
+                //console.log(data.toJSON());
                 delete bulk;
                 return cb(err)
             });
