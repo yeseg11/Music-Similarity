@@ -39,13 +39,13 @@ Avi Cohen
 | Releases |  [![release](http://github-release-version.herokuapp.com/github/avicohen89/Music-Similarity/release.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/releases) |
 
 
-## [Software Design]()
+## Software Design
 * [Architecture](https://github.com/avicohen89/Music-Similarity/blob/master/docs/Architecture%20color.pdf)
 * [Class diagram]()
 * [State charts](https://github.com/avicohen89/Music-Similarity/blob/master/docs/state%20chart.pdf) 
 * [Sequence diagram](https://github.com/avicohen89/Music-Similarity/blob/master/docs/sequance%20diagram.png)
 
-## [Iterations]()
+## Iterations
 
 * [Iteration 0 ZFR](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-0-ZFR)
 * [Iteration 1 MVP](https://github.com/avicohen89/Music-Similarity/wiki/Iteration-1-MVP)
