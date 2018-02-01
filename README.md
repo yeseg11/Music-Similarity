@@ -34,7 +34,7 @@ Avi Cohen
 | Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/avicohen89/Music-Similarity) |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/avicohen89/Music-Similarity.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/issues) |
 | Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects) |
-| Documnetation | [![Inline docs]()](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
+| Documnetation | [![Inline docs](http://inch-ci.org/github/avicohen89/Music-Similarity.svg?branch=master)](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
 | Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://calendar.google.com/calendar/embed?src=pnu92pav3s91nku9u35gks3m0c%40group.calendar.google.com&ctz=Asia%2FJerusalem) |
 | Releases |  [![release](http://github-release-version.herokuapp.com/github/avicohen89/Music-Similarity/release.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/releases) |
 
