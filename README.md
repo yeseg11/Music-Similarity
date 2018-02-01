@@ -40,7 +40,7 @@ Avi Cohen
 
 
 ## Software Design
-* [Architecture](https://github.com/avicohen89/Music-Similarity/blob/master/docs/Architecture%20color.pdf)
+* [Architecture](https://github.com/avicohen89/Music-Similarity/blob/master/docs/Architecture%20new.pdf)
 * [State charts](https://github.com/avicohen89/Music-Similarity/blob/master/docs/state%20chart.pdf) 
 * [Sequence diagram](https://github.com/avicohen89/Music-Similarity/blob/master/docs/sequance%20diagram.png)
 
