@@ -32,7 +32,7 @@ Sagi Marciano
  |Category|Status|
 |---|---|
 | Version Control System| [![git](https://img.shields.io/badge/Version%20Control-Git-green.svg)](https://git-scm.com/) & [![github](https://img.shields.io/badge/Version%20Control-Github-green.svg)](https://github.com/) |
-| Recommended IDE | [![Android Studio](https://img.shields.io/badge/IDE-Android%20Studio-green.svg)](https://developer.android.com/studio/index.html) |
+| Recommended IDE | [![WebStorm](https://img.shields.io/badge/IDE-WebStorm-green.svg)](https://www.jetbrains.com/webstorm/) |
 | License | [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/) |
 | Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/avicohen89/Music-Similarity) |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/avicohen89/Music-Similarity.svg?style=flat)](https://github.com/avicohen89/Music-Similarity/issues) |
