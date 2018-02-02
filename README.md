@@ -18,9 +18,10 @@
 ## Staff
 * Main project developer repository masters
 Avi Cohen
-<img src="https://avatars0.githubusercontent.com/u/26030890?v=3&s=460" alt="Douglas Crockford" width="100" height="100">
-Sagi Marciano
-<img src="https://avatars3.githubusercontent.com/u/16443118?v=3&s=460" alt="Linus Torvalds" width="100" height="100">
+<img src="https://avatars2.githubusercontent.com/u/26030890?s=40&v=4" height="80" width="80">
+ Sagi Marciano
+ <img src="https://avatars3.githubusercontent.com/u/16443118?s=400&v=4" height="80" width="80">
+
 
 
 * Acedamic advisor
