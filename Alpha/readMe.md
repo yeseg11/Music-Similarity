@@ -1,7 +1,7 @@
 # Music Similarity
 
 ## install :
-  * 1. Click on the [link](https://postjceac-my.sharepoint.com/:u:/g/personal/sagima_post_jce_ac_il/ET0ePuk-ZdpIq27tgKelRiEB9korlzkHy0KRd-goN07dEw?e=PtgltK) and download the dump file, unzip it, add it to Alpha folder.
+  * 1. Click on the [link](https://postjceac-my.sharepoint.com/:u:/g/personal/sagima_post_jce_ac_il/EUhaK4AlHb5FtMHoBQiNqWIBSTbDCP89FEo2BPCyuYNlrQ?e=UMy09b) and download the dump file, unzip it, add it to Alpha folder.
   * 2. Open terminal and write "mongorestore dump".
   * 3. run npm i --force to install the node_modules.
   * 4. In a new terminal run "node app.js ".
