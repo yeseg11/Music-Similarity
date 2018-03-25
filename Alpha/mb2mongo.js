@@ -14,9 +14,7 @@ var async = require('async')
 
 glob(path.join(__dirname, "/mb-raw/**/*.json"), {}, function(err, files) {
     if (err) return console.log(err);
-
     var total = 0;
-
     db().then(function() {
         //console.log(process.env.from,process.env.to);
         async.mapLimit(files.slice(process.env.from, process.env.to), 5, function(file, cb){ //add by steps of 5
@@ -27,7 +25,7 @@ glob(path.join(__dirname, "/mb-raw/**/*.json"), {}, function(err, files) {
             }
 
             if(!data.length) return cb();
-            
+
 
             var bulk = Records.collection.initializeOrderedBulkOp();    //get the schema
 
