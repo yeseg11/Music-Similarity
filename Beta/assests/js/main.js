@@ -12,15 +12,18 @@
             else {
                 $(this).removeClass('has-val');
             }
-        })    
+        })
     })
-  
-  
+
+
     /*==================================================================
     [ Validate ]*/
     var name = $('.validate-input input[name="name"]');
-    var email = $('.validate-input input[name="email"]');
-    var message = $('.validate-input textarea[name="message"]');
+    var id = $('.validate-input input[name="id"]');
+    var age = $('.validate-input input[name="age"]');
+    var country = $('.validate-input input[name="country"]');
+    /*var email = $('.validate-input input[name="email"]');
+    var message = $('.validate-input textarea[name="message"]');*/
 
 
     $('.validate-form').on('submit',function(){
@@ -28,6 +31,18 @@
 
         if($(name).val().trim() == ''){
             showValidate(name);
+            check=false;
+        }
+        if($(id).val().trim() == ''){
+            showValidate(id);
+            check=false;
+        }
+        if($(age).val().trim() == ''){
+            showValidate(age);
+            check=false;
+        }
+        if($(country).val().trim() == ''){
+            showValidate(country);
             check=false;
         }
 
@@ -63,7 +78,7 @@
 
         $(thisAlert).removeClass('alert-validate');
     }
-    
-    
+
+
 
 })(jQuery);
