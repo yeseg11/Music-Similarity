@@ -15,7 +15,7 @@
         var template  = '<div class="wrap-input100 input100-select">';
             template += '<span id="::videoId:::" class="label-input100"></span>';
             template += '<div id="demo"></div>';
-            template += '<span class="focus-input100"></span>';
+            template += '<span class="focus-input100">::name::</span>';
             template += '<iframe width="560" height="315" src="http://www.youtube.com/embed/::link::"></iframe>';
             template += '</div>';
 
