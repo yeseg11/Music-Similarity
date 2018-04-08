@@ -51,6 +51,7 @@
 
             musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
             $.get('/mb/track/recording/' + yearTwenty + '/' + country.val(), function(data) {
+               //console.log(data);
                 if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
                 var html = '';
                 for (var i = 0; i < 10; i++) {
@@ -65,7 +66,7 @@
                 }
 
                 $('#title').html("Your Music: "+yearTwenty + ',' + country.val());
-                console.log(data);
+                //console.log(data);
                 musicWrapper.html(html);
             })
 

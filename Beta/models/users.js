@@ -10,7 +10,7 @@ var usersSchema = new Schema({
     id: Number,
     year: Number,
     country: String,
-    group: {},
+    group: String,
     likes: {}
 });
 
