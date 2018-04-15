@@ -8,7 +8,7 @@ const db = require('./db');
 const bodyParser = require('body-parser');
 var Records = require('./models/records.js');
 var Users = require('./models/users.js');
-
+var PlayList = require('./models/playlist.js');
 
 app.use("/", express.static(path.join(__dirname, "assests")));
 /* Virtual dir for js & css for third party libraries */
@@ -47,13 +47,29 @@ app.post('/users',function(req, res, next) {       //call to users page and show
             age: req.body.age,
             year: req.body.year,
             group:req.body.group,
-            likes:{}
+            likes:{},
+            unlike:{}
         };
         var bulk = Users.collection.initializeOrderedBulkOp();
         bulk.find({
             id: userData.id                 //update the id , if have - update else its build new document
         }).upsert().updateOne(userData);
         bulk.execute();
+
+        var playlistData = {
+            name:req.body.group,
+            year:req.body.year,
+            country:req.body.country,
+            records: JSON.parse(req.body.records)
+        };
+        //console.log(JSON.parse(req.body.records));
+        //console.log(playlistData);
+        var bulk2 = PlayList.collection.initializeOrderedBulkOp();
+        bulk2.find({
+            name: playlistData.name                 //update the playlist name , if have - update else its build new document
+        }).upsert().updateOne(playlistData);
+
+        bulk2.execute();
     }
 });
 

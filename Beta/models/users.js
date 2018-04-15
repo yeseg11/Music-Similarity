@@ -11,7 +11,8 @@ var usersSchema = new Schema({
     year: Number,
     country: String,
     group: String,
-    likes: {}
+    likes: {},
+    unlike:{}
 });
 
 // the schema is useless so far

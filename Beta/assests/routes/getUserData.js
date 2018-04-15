@@ -21,35 +21,59 @@
             //console.log(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
 
             var yearTwenty = (new Date()).getFullYear() - parseInt(age.val()) + 20;
-            console.log(yearTwenty);
+            //console.log(yearTwenty);
             if (!yearTwenty){
                 console.log("error");
                 $('#error').text("the year not calculate ");
                 return ;
             }
-            //alert(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
-            var obj = {
-                id:id.val(),
-                age: age.val(),
-                country: country.val(),
-                name: name.val(),
-                year: yearTwenty,
-                group:country.val()+yearTwenty.toString()
-            };
-            console.log(obj);
-
-            var $form = $( this );
-            var url = $form.attr( "action" );
-            var posting = $.post(url ,obj);
-            posting.done(function( data ) {
-                console.log(data);
+            var recList = {};
+            var prom = new Promise(function(resolve, reject) {
+                // do a thing, possibly async, then…
+                //alert(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
+                var i = 0 ;
+                $.get('/mb/track/recording/' + yearTwenty + '/' + country.val(), function(data) {
+                    if(!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
+                    for (i = 0; i < 10; i++) {
+                        recList[i]= {
+                            mbid: data.items[i].mbId,
+                            title:data.items[i].title,
+                            year:data.items[i].year,
+                            artist:data.items[i].artist,
+                            country:data.items[i].country,
+                            videoId:data.items[i].youtube,
+                        };
+                        // var rec = data.items[i];
+                        // console.log("rec"+i+": "+rec);
+                    }
+                }).then(function(response) {
+                    //console.log("Success!", response);
+                    //console.log("recList!", recList);
+                    var obj = {
+                        id:id.val(),
+                        age: age.val(),
+                        country: country.val(),
+                        name: name.val(),
+                        year: yearTwenty,
+                        group:country.val()+yearTwenty.toString(),
+                        records:JSON.stringify(recList)
+                    };
+                    //console.log("obj:",obj);
+                    //console.log("Success2!", response);
+                    var $form = $( this );
+                    var url = $form.attr( "action" );
+                    var posting = $.post(url ,obj);
+                    posting.done(function( data ) {
+                        console.log("data:"+data);
+                   });
+                    //return(obj);
+                });
             });
-
-           // return obj;
-            // $.get('/users/'+obj ,function(data){
-            //     if(!data || !data.items || !data.items.length) return console.log("data ERROR");
-            //     console.log(data.items);
+            // prom.then(function(response) {
+            //     console.log("res!", response);
             // });
+
+
         })
     });
 })(jQuery);
@@ -57,16 +81,3 @@
 
 
 
-// $.get('/mb/track/recording/' + yearTwenty + '/' + country.val(), function(data) {
-//     if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
-//     var html = '';
-//     for (var i = 0; i < 10; i++) {
-//         var rec = data.items[i];
-//         var mbid = rec.mbid;
-//         var videoId = (rec && rec.youtube && rec.youtube.videoId) ? rec.youtube.videoId : '';
-//         console.log(videoId);
-//         var title = (rec && rec.title)? rec.title: '';
-//         var artist = (rec && rec.artist && rec.artist[0] && rec.artist[0].name)? rec.artist[0].name : '';
-//
-//         html += template.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId);
-//     }
