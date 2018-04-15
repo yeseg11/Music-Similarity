@@ -38,10 +38,10 @@
                         recList[i]= {
                             mbid: data.items[i].mbId,
                             title:data.items[i].title,
-                            year:data.items[i].year,
+                            year:parseInt(data.items[i].year),
                             artist:data.items[i].artist,
                             country:data.items[i].country,
-                            videoId:data.items[i].youtube,
+                            youtube:data.items[i].youtube,
                         };
                         // var rec = data.items[i];
                         // console.log("rec"+i+": "+rec);
@@ -50,11 +50,11 @@
                     //console.log("Success!", response);
                     //console.log("recList!", recList);
                     var obj = {
-                        id:id.val(),
-                        age: age.val(),
+                        id:id.val().toString(),
+                        age: parseInt(age.val()),
                         country: country.val(),
                         name: name.val(),
-                        year: yearTwenty,
+                        year: parseInt(yearTwenty),
                         group:country.val()+yearTwenty.toString(),
                         records:JSON.stringify(recList)
                     };
@@ -63,9 +63,12 @@
                     var $form = $( this );
                     var url = $form.attr( "action" );
                     var posting = $.post(url ,obj);
-                    posting.done(function( data ) {
+
+                    posting.done(function(data) {
                         console.log("data:"+data);
+
                    });
+                    alert("user add");
                     //return(obj);
                 });
             });

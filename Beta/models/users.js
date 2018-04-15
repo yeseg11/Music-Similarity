@@ -7,8 +7,9 @@ var Schema = mongoose.Schema;
 // create a schema
 var usersSchema = new Schema({
     name: String,
-    id: Number,
+    id: String,
     year: Number,
+    age: Number,
     country: String,
     group: String,
     likes: {},

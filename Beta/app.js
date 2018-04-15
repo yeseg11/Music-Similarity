@@ -41,11 +41,11 @@ app.post('/users',function(req, res, next) {       //call to users page and show
     if (!req.body) return res.sendStatus(400);
     if (req.body.id && req.body.age && req.body.country && req.body.name) {
         var userData = {
-            id: req.body.id,
+            id: req.body.id.toString(),
             name: req.body.name,
             country: req.body.country,
-            age: req.body.age,
-            year: req.body.year,
+            age: parseInt(req.body.age),
+            year: parseInt(req.body.year),
             group:req.body.group,
             likes:{},
             unlike:{}
@@ -58,22 +58,28 @@ app.post('/users',function(req, res, next) {       //call to users page and show
 
         var playlistData = {
             name:req.body.group,
-            year:req.body.year,
+            year:parseInt(req.body.year),
             country:req.body.country,
             records: JSON.parse(req.body.records)
         };
         //console.log(JSON.parse(req.body.records));
-        //console.log(playlistData);
+        console.log(playlistData);
         var bulk2 = PlayList.collection.initializeOrderedBulkOp();
         bulk2.find({
             name: playlistData.name                 //update the playlist name , if have - update else its build new document
         }).upsert().updateOne(playlistData);
 
         bulk2.execute();
+
     }
 });
 
-
+app.get('/in', function(req, res) {       //call to users page and show him
+    //console.log(res);
+    res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'));
+    //console.log("finish ",res);
+    // res.then("finish ");
+});
 
 app.get('/mb/track/recording/:year/:country', function(req, res, next) {    //call to getData.js , and request all the relevant  data from DB
     db().then(()=>{
@@ -83,6 +89,25 @@ app.get('/mb/track/recording/:year/:country', function(req, res, next) {    //ca
     })
 }).catch(next);
 });
+
+app.get('/playList/:name', function(req, res, next) {    //call to getDataId.js , and request all the relevant  data from DB
+    //console.log(req.params.id);
+    PlayList.find({name:req.params.name}).exec(function(err, docs){
+        if(err) return next(err);
+        //console.log(docs);
+        res.status(200).json({err: false, items: [].concat(docs)});
+    })
+});
+
+app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant  data from DB
+    console.log(req.params.id);
+    Users.find({id:req.params.id}).exec(function(err, docs){
+        if(err) return next(err);
+        //console.log(docs);
+        res.status(200).json({err: false, items: [].concat(docs)});
+    })
+});
+
 
 // 404 not found
 app.use(function(req, res, next) {
