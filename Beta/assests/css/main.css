@@ -7,22 +7,22 @@
 
 @font-face {
   font-family: Poppins-Regular;
-  src: url('../fonts/poppins/Poppins-Regular.ttf'); 
+  src: url('../fonts/poppins/Poppins-Regular.ttf');
 }
 
 @font-face {
   font-family: Poppins-Medium;
-  src: url('../fonts/poppins/Poppins-Medium.ttf'); 
+  src: url('../fonts/poppins/Poppins-Medium.ttf');
 }
 
 @font-face {
   font-family: Poppins-Bold;
-  src: url('../fonts/poppins/Poppins-Bold.ttf'); 
+  src: url('../fonts/poppins/Poppins-Bold.ttf');
 }
 
 @font-face {
   font-family: Poppins-SemiBold;
-  src: url('../fonts/poppins/Poppins-SemiBold.ttf'); 
+  src: url('../fonts/poppins/Poppins-SemiBold.ttf');
 }
 
 
@@ -32,8 +32,8 @@
 [ RESTYLE TAG ]*/
 
 * {
-	margin: 0px; 
-	padding: 0px; 
+	margin: 0px;
+	padding: 0px;
 	box-sizing: border-box;
 }
 
@@ -146,7 +146,7 @@ iframe {
 [ Contact ]*/
 
 .container-contact100 {
-  width: 100%;  
+  width: 100%;
   min-height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
@@ -162,7 +162,7 @@ iframe {
   background: -o-linear-gradient(45deg, #00dbde, #fc00ff);
   background: -moz-linear-gradient(45deg, #00dbde, #fc00ff);
   background: linear-gradient(45deg, #00dbde, #fc00ff);
-  
+
 }
 
 .wrap-contact100 {
@@ -496,7 +496,7 @@ textarea.input100 {
 .select2-selection__arrow::before {
   content: '';
   display: block;
-  
+
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
   border-bottom: 5px solid #999999;
@@ -506,7 +506,7 @@ textarea.input100 {
 .select2-selection__arrow::after {
   content: '';
   display: block;
-  
+
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
   border-top: 5px solid #999999;
@@ -569,7 +569,8 @@ textarea.input100 {
   line-height: 1.2;
 }
 
-
-
+.buttonDes{
+  margin: 10px;
+}
 
 

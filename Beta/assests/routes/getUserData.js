@@ -61,11 +61,12 @@
                     //console.log("obj:",obj);
                     //console.log("Success2!", response);
                     var $form = $( this );
+                    //console.log($form);
                     var url = $form.attr( "action" );
+                   //console.log(url);
                     var posting = $.post(url ,obj);
-
                     posting.done(function(data) {
-                        console.log("data:"+data);
+                        //console.log("data:"+data);
 
                    });
                     alert("user add");

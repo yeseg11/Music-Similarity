@@ -47,8 +47,8 @@ app.post('/users',function(req, res, next) {       //call to users page and show
             age: parseInt(req.body.age),
             year: parseInt(req.body.year),
             group:req.body.group,
-            likes:{},
-            unlike:{}
+            likes:[],
+            unlike:[]
         };
         var bulk = Users.collection.initializeOrderedBulkOp();
         bulk.find({
@@ -63,7 +63,7 @@ app.post('/users',function(req, res, next) {       //call to users page and show
             records: JSON.parse(req.body.records)
         };
         //console.log(JSON.parse(req.body.records));
-        console.log(playlistData);
+        //console.log(playlistData);
         var bulk2 = PlayList.collection.initializeOrderedBulkOp();
         bulk2.find({
             name: playlistData.name                 //update the playlist name , if have - update else its build new document
@@ -99,8 +99,8 @@ app.get('/playList/:name', function(req, res, next) {    //call to getDataId.js 
     })
 });
 
-app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant  data from DB
-    console.log(req.params.id);
+app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+   // console.log(req.params.id);
     Users.find({id:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
         //console.log(docs);
@@ -108,6 +108,39 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
     })
 });
 
+app.post('/like/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+    if (!req.body) return res.sendStatus(400);
+    //console.log("here");
+    Users.find({id:req.params.id}).exec(function(err, docs){
+        if(err) return next(err);
+        var userData =docs[0];
+        userData.likes=JSON.parse(req.body.likes);
+        console.log("userData new : "+JSON.stringify(userData));
+         var bulk = Users.collection.initializeOrderedBulkOp();
+        bulk.find({
+            id: userData.id                 //update the id , if have - update else its build new document
+        }).upsert().updateOne(userData);
+        bulk.execute();
+    //    res.status(200).json({err: false, items: [].concat(docs)});
+    });
+});
+
+app.post('/unlike/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+    if (!req.body) return res.sendStatus(400);
+    //console.log("here");
+    Users.find({id:req.params.id}).exec(function(err, docs){
+        if(err) return next(err);
+        var userData =docs[0];
+        userData.unlike=JSON.parse(req.body.unlike);
+        //console.log("userData new : "+JSON.stringify(userData));
+        var bulk = Users.collection.initializeOrderedBulkOp();
+        bulk.find({
+            id: userData.id                 //update the id , if have - update else its build new document
+        }).upsert().updateOne(userData);
+        bulk.execute();
+        //    res.status(200).json({err: false, items: [].concat(docs)});
+    });
+});
 
 // 404 not found
 app.use(function(req, res, next) {
