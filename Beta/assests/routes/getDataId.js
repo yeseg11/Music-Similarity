@@ -29,6 +29,7 @@
         //     alert("unlike");
         // });
 
+
         $('#send').on("click", function(e) {
             if( $('#id').length)         // use this if you are using id to check
             {
@@ -63,10 +64,13 @@
                         html = html.replace('::userid::',id.val().toString()).replace('::data::',mbid);
                     }
                     $('#title').html("Your Music: "+year + ',' + country);
+                    window.scrollBy(0, 500);
                     musicWrapper.html(html);
                 });
             });
         });
+
+
     });
 })(jQuery);
 

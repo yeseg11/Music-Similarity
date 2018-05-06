@@ -1,6 +1,7 @@
 (function($) {
     $(document).ready(function() {
         //console.log("here");
+
         $('#send').on("click", function(e) {
             if( $('#age').length && $('#countySel').length && $('#name').length && $('#id').length)         // use this if you are using id to check
             {
@@ -81,7 +82,3 @@
         })
     });
 })(jQuery);
-
-
-
-
