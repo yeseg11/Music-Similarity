@@ -35,7 +35,11 @@
                 var i = 0 ;
                 $.get('/mb/track/recording/' + yearTwenty + '/' + country.val(), function(data) {
                     if(!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
-                    for (i = 0; i < 10; i++) {
+                    var size = 20 ;
+                    if (data.items.length < size ){
+                        size = data.items.length;
+                    }
+                    for (i = 0; i < size; i++) {
                         recList[i]= {
                             mbid: data.items[i].mbId,
                             title:data.items[i].title,

@@ -44,16 +44,40 @@
                 //console.log(data);
                 var year = data.items[0].year;
                 var country = data.items[0].country;
-                 musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
+                musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
                 //console.log(data.items[0].group);
                 $.get('/playList/' + data.items[0].group.toString(), function(data) {
                     //console.log(data);
                     if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
                     var rec = data.items[0].records;
                     var html = '';
-                    for (var i = 0; i < Object.keys(rec).length; i++) {
-                        //console.log(rec[i]);
-                        var item = rec[i];
+                    var playarr =[];
+                    var i,j = 0;
+                    var flag1,flag2 = true;
+                    var s =  Object.keys(rec).length/2;
+                    for (i=0 ;i < s ; i++ ){
+                        flag2 = true;
+                        while (flag2){
+                            flag1 = true;
+                            var k = Math.floor((Math.random() * 20));
+                            //console.log(k);
+                            for (j = 0 ; j < i;j++)
+                                    {
+                                        if(playarr[j] == k){
+                                            flag1 = false;
+                                        }
+                                    }
+                            if(flag1)
+                            {
+                                playarr[i]=k;
+                                flag2 = false;
+                            }
+                        }
+                    }
+                    //console.log(playarr);
+                    for (i = 0; i < playarr.length; i++) {
+                        var place = playarr[i];
+                        var item = rec[place];
                         //console.log(item);
                         var mbid = (item && item.mbid) ? item.mbid : '';
                         var videoId = (item && item.youtube && item.youtube.videoId) ? item.youtube.videoId : '';
@@ -75,77 +99,62 @@
 })(jQuery);
 
 function f2(id,mbid,n) {
-    alert("mbid: "+mbid +" UserId: "+id +", like = 0 unlike=1: "+n);
     $.get('/user/' + id.toString(), function(data) {
         //console.log(data.items);
         //console.log(data.items[0].likes);
         if (!data.items ){
             return Error;
         }
-        if(n == 0){                //like
-            var likes =[];
-            if (data.items[0].likes.length == 0){
-                likes =  [{mbid:mbid}];
+        var songs = [];
+        var selection = 1;
+        var c = 0;
+        var f = false;
+        if(n == 1){
+            selection = -1; //unlike
+        }
+            if (data.items[0].songs.length == 0){
+                songs =  [{
+                    mbid:mbid,
+                    counter:selection
+                }];
             }
             else {
-                likes=data.items[0].likes;
-                for(var i =0 ;i<likes.length;i++)
+                songs=data.items[0].songs;
+                for(var i =0 ;i<songs.length;i++)
                 {
-                    if(likes[i].mbid == mbid){
-                        console.log('find');
-                        alert('you like it before');
-                        return;
+                    if(songs[i].mbid == mbid){
+                        f= true;
+                        songs[i].counter += selection;
+                        alert("mbid: "+mbid +" likes counter: "+songs[i].counter);
+                        //console.log('find',songs[i].counter);
+                        //return;
                     }
                 }
-                likes.push({mbid:mbid});
+                if(!f){
+                    songs.push({
+                        mbid:mbid,
+                        counter: selection
+                    });
+                }
+                //console.log('here');
             }
-            //console.log(likes);
+
             var obj =  {
                 id: id.toString(),
-                likes: JSON.stringify(likes)
+                songs: JSON.stringify(songs)
             };
             var $form = $( this );
             //console.log($form);
             var url = $form.attr("action");
-            url= "like/"+id.toString();
+            url= "selection/"+id.toString();
             var posting = $.post(url,obj);
             //console.log("url: "+url);
+            alert("vote add");
             posting.done(function(data) {
                 //console.log("data:"+data);
+
             });
-        }
-        else {      //unlike
-            var unlike =[];
-            if (data.items[0].unlike.length == 0){
-                unlike = [{mbid:mbid}];
-            }
-            else {
-                unlike=data.items[0].unlike;
-                for(var i =0 ;i<unlike.length;i++)
-                {
-                    if(unlike[i].mbid == mbid){
-                        console.log('find');
-                        alert('you like it before');
-                        return;
-                    }
-                }
-                unlike.push({mbid:mbid});
-            }
-            //console.log(likes);
-            var obj =  {
-                id: id.toString(),
-                unlike: JSON.stringify(unlike)
-            };
-            var $form = $( this );
-            //console.log($form);
-            var url = $form.attr("action");
-            url= "unlike/"+id.toString();
-            var posting = $.post(url,obj);
-            //console.log("url: "+url);
-            posting.done(function(data) {
-                //console.log("data:"+data);
-            });
-        }
+     //   }
 
     });
 }
