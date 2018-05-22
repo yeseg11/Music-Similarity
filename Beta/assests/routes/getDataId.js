@@ -9,25 +9,15 @@
         template += '<span class="focus-input100">::name::</span>';
         template += '<iframe width="560" height="315" src="http://www.youtube.com/embed/::link::"></iframe>';
         template += '<div id = "buttons">';
-        template += '<button class="buttonDes" type="button"  onclick="f2(\'::userid::\',\'::data::\',0)" name="like" id ="like"><img src="../images/btn/check-mark.png" name="like"/></button>';
-        template += '<button class="buttonDes" type="button" onclick="f2(\'::userid::\',\'::data::\',1)" name="unlike"><img src="../images/btn/cancel-music.png" name="unlike"/></button>';
+        template += '<button class="buttonDes" type="button" onclick="f2(\'::userid::\',\'::data::\',1)" name="like" id ="like"><img src="../images/btn/1.png" name="like"/></button>';
+        template += '<button class="buttonDes" type="button" onclick="f2(\'::userid::\',\'::data::\',2)" name="like" id ="like"><img src="../images/btn/2.png" name="like"/></button>';
+        template += '<button class="buttonDes" type="button" onclick="f2(\'::userid::\',\'::data::\',3)" name="like" id ="like"><img src="../images/btn/3.png" name="like"/></button>';
+        template += '<button class="buttonDes" type="button" onclick="f2(\'::userid::\',\'::data::\',4)" name="like" id ="like"><img src="../images/btn/4.png" name="like"/></button>';
+        template += '<button class="buttonDes" type="button" onclick="f2(\'::userid::\',\'::data::\',5)" name="like" id ="like"><img src="../images/btn/5.png" name="like"/></button>';
+        template += '';
         template += '</div>';
         template += '</div>';
-        //template += '<div id="load">';
-        //template += '<button class="buttonDes" type="load" name="load">load more</button>';
-        //template += '</div>';
-        // $('#like').on("click", function(e) {
-        //      e.preventDefault();
-        //      alert("like");
-        //  });
 
-        // $("#like").click(function(e) {
-        //     e.preventDefault();
-        //     console.log("Showing");
-        // });
-        // $('#unlike').on("click", function(e) {
-        //     alert("unlike");
-        // });
 
 
         $('#send').on("click", function(e) {
@@ -45,8 +35,8 @@
                 var year = data.items[0].year;
                 var country = data.items[0].country;
                 musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
-                //console.log(data.items[0].group);
-                $.get('/playList/' + data.items[0].group.toString(), function(data) {
+                var playListName = data.items[0].group.toString();
+                $.get('/playList/' + playListName, function(data) {
                     //console.log(data);
                     if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
                     var rec = data.items[0].records;
@@ -85,7 +75,7 @@
                         var title = (item && item.title)? item.title: '';
                         var artist = (item && item.artist && item.artist[0] && item.artist[0].name)? item.artist[0].name : '';
                         html += template.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId).replace('::userid::',id.val().toString()).replace('::data::',mbid);
-                        html = html.replace('::userid::',id.val().toString()).replace('::data::',mbid);
+                        html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
                     }
                     $('#title').html("Your Music: "+year + ',' + country);
                     window.scrollBy(0, 500);
@@ -106,55 +96,51 @@ function f2(id,mbid,n) {
             return Error;
         }
         var songs = [];
-        var selection = 1;
-        var c = 0;
+        var selection = n;
         var f = false;
-        if(n == 1){
-            selection = -1; //unlike
+        if (data.items[0].songs.length == 0){
+            songs =  [{
+                mbid:mbid,
+                counter:selection
+            }];
         }
-            if (data.items[0].songs.length == 0){
-                songs =  [{
-                    mbid:mbid,
-                    counter:selection
-                }];
-            }
-            else {
-                songs=data.items[0].songs;
-                for(var i =0 ;i<songs.length;i++)
-                {
-                    if(songs[i].mbid == mbid){
-                        f= true;
-                        songs[i].counter += selection;
-                        alert("mbid: "+mbid +" likes counter: "+songs[i].counter);
-                        //console.log('find',songs[i].counter);
-                        //return;
+        else {
+            songs=data.items[0].songs;
+            for(var i =0 ;i<songs.length;i++)
+            {
+                if(songs[i].mbid == mbid){
+                    f= true;
+                    songs[i].counter = selection;
+                    alert("mbid: "+mbid +" likes counter: "+songs[i].counter);
                     }
-                }
-                if(!f){
-                    songs.push({
-                        mbid:mbid,
-                        counter: selection
-                    });
-                }
-                //console.log('here');
             }
+            if(!f){
+                songs.push({
+                    mbid:mbid,
+                    counter: selection
+                });
+            }
+        }
+        var obj =  {
+            id: id.toString(),
+            songs: JSON.stringify(songs)
+        };
+        var $form = $( this );
+        //console.log($form);
+        var url = $form.attr("action");
+        url= "selection/"+id.toString();
+        var posting = $.post(url,obj);
+        //console.log("url: "+url);
+        alert("vote add");
+        posting.done(function(data) {
+            //console.log("data:"+data);
+        });
+    });
+}
 
-            var obj =  {
-                id: id.toString(),
-                songs: JSON.stringify(songs)
-            };
-            var $form = $( this );
-            //console.log($form);
-            var url = $form.attr("action");
-            url= "selection/"+id.toString();
-            var posting = $.post(url,obj);
-            //console.log("url: "+url);
-            alert("vote add");
-            posting.done(function(data) {
-                //console.log("data:"+data);
-
-            });
-     //   }
-
+function getBest(id,playlist) {
+    console.log(id +" "+playlist);
+    $.get('/selection/' + id+'/'+playlist, function(data) {
+        //console.log("DATA",data);
     });
 }

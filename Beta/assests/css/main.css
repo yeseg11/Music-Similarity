@@ -25,7 +25,11 @@
   src: url('../fonts/poppins/Poppins-SemiBold.ttf');
 }
 
-
+.char-overlay {
+  font-family: 'Helvetica'; /* Your font family */
+  font-size: x-large;
+  font-weight: bold;
+}
 
 
 /*//////////////////////////////////////////////////////////////////

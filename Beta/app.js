@@ -107,6 +107,17 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
     })
 });
 
+app.get('/selection/:id/:playlist', function(req, res, next) {
+    if (!req.body) return res.sendStatus(400);
+    console.log(req.params.id+" "+req.params.playlist);
+    Users.find({id:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
+        if(err) return next(err);
+        console.log("docs",docs,'length',docs.length);
+
+    });
+});
+
+
 app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req.body) return res.sendStatus(400);
     //console.log("here");
@@ -147,10 +158,10 @@ app.use(function(req, res, next) {
 });
 
 
-
-
-
-
 db().then(() => {
     const server = app.listen(process.env.port || 3000, () => debug('app:server')(`Server has started in port ${server.address().port}`))
 }).catch(() => debug('app:mongo')('Houston we got a problem.... mongo'));
+
+
+
+
