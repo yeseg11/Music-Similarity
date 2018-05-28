@@ -35,7 +35,7 @@
                 var i = 0 ;
                 $.get('/mb/track/recording/' + yearTwenty + '/' + country.val(), function(data) {
                     if(!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
-                    var size = 30 ;
+                    var size = 25 ;
                     if (data.items.length < size ){
                         size = data.items.length;
                     }

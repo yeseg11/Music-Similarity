@@ -54,7 +54,7 @@
             $.get('/user/' + id.val().toString(), function(data) {
                 if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
                 var enterens = data.items[0].enterens;
-                if (enterens == 0)
+                if (enterens === 0)
                 {
                     enterens++;
                     addEnterens(id.val().toString(),enterens);
@@ -90,7 +90,7 @@
                                 }
                             }
                         }
-                        //console.log("playarr "+playarr);
+                        console.log("playarr ",playarr);
                         for (i = 0; i < playarr.length; i++) {
                             var place = playarr[i];
                             var item = rec[place];
@@ -140,7 +140,7 @@
                             recSize = data.items[0].recSongs.length;
                         }
                         if (!data.items[0].notEar){
-                            notEar = 0;
+                            notEarSize = 0;
                             UserSize+=2;
                         }
                         else if (data.items[0].notEar.length < notEarSize )
@@ -262,7 +262,7 @@ function f2(id,mbid,n) {
     $.get('/user/' + id.toString(), function(data) {
         if (n <=0 || !n || n>5)
             n = 0;
-        console.log(data.items[0].group);
+        //console.log(data.items[0].group);
         if (!data.items ){
             return Error;
         }
