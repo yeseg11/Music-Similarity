@@ -28,7 +28,7 @@
                 $('#error').text("the year not calculate ");
                 return ;
             }
-            var recList = {};
+            var recList = [];
             var prom = new Promise(function(resolve, reject) {
                 // do a thing, possibly async, then…
                 //alert(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
@@ -40,17 +40,18 @@
                         size = data.items.length;
                     }
                     for (i = 0; i < size; i++) {
-                        recList[i]= {
+                        recList.push({
                             mbid: data.items[i].mbId,
                             title:data.items[i].title,
                             year:parseInt(data.items[i].year),
                             artist:data.items[i].artist,
                             country:data.items[i].country,
                             youtube:data.items[i].youtube,
-                        };
+                        });
                         // var rec = data.items[i];
-                        // console.log("rec"+i+": "+rec);
+
                     }
+                  //  console.log(recList);
                 }).then(function(response) {
                     //console.log("Success!", response);
                     //console.log("recList!", recList);
@@ -58,11 +59,13 @@
                         id:id.val().toString(),
                         age: parseInt(age.val()),
                         country: country.val(),
+                        enterens: 0,
                         name: name.val(),
                         year: parseInt(yearTwenty),
                         group:country.val()+yearTwenty.toString(),
                         records:JSON.stringify(recList)
                     };
+
                     //console.log("obj:",obj);
                     //console.log("Success2!", response);
                     var $form = $( this );
