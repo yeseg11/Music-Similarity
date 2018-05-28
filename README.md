@@ -39,7 +39,7 @@ Sagi Marciano
 | Project Management Board| [![here](https://img.shields.io/badge/Project%20Management%20Board-On%20demand-lightgrey.svg)](https://github.com/avicohen89/Music-Similarity/projects) |
 | Documnetation | [![Inline docs](http://inch-ci.org/github/avicohen89/Music-Similarity.svg?branch=master)](https://github.com/avicohen89/Music-Similarity/wiki/Documents) |
 | Diary |  [![link](https://img.shields.io/badge/Diary-On%20demand-blue.svg)](https://calendar.google.com/calendar/embed?src=pnu92pav3s91nku9u35gks3m0c%40group.calendar.google.com&ctz=Asia%2FJerusalem) |
-| Releases | [![release](https://img.shields.io/vaadin-directory/v/vaadinvaadin-grid.svg)](https://github.com/avicohen89/Music-Similarity/releases)|
+| Releases | [![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/avicohen89/Music-Similarity/releases)|
 
 
 ## Software Design
