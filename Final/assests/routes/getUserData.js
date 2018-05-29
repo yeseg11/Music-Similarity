@@ -14,17 +14,31 @@
             else{
                 return $('#error').text("insert all the details");
             }
-            if (!age.val() || age.val() == null || parseInt(age.val()) <30 || parseInt(age.val()) > 120 || country.val() === "Select Country" || !name.val() || !id.val()) {
-                console.log('Error');
-                alert("insert age or age bigger then 30 or insert all the details");
-                return $('#error').text("insert age or age bigger then 30 or insert all the details");
+            if (!age.val() || age.val() == null || parseInt(age.val()) <30 || parseInt(age.val()) > 120) {
+                //console.log('Error');
+                alert("insert age or age between 30 to 120");
+                return $('#error').text("insert age or age between 30 to 120");
             }
-            //console.log(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
+            if (country.val() === "Select Country"){
+                //console.log('Error');
+                alert("please select a country");
+                return $('#error').text("please select a country");
+            }
+            if (!name.val()){
+                //console.log('Error');
+                alert("please insert name");
+                return $('#error').text("please insert name");
+            }
+            if (!id.val() || ValidateID(id.val()) != 1){
+                console.log('Error');
+                alert("please insert ID");
+                return $('#error').text("please insert ID");
+            }
 
             var yearTwenty = (new Date()).getFullYear() - parseInt(age.val()) + 20;
             //console.log(yearTwenty);
             if (!yearTwenty){
-                console.log("error");
+                //console.log("error");
                 $('#error').text("the year not calculate ");
                 return ;
             }
@@ -89,3 +103,47 @@
         })
     });
 })(jQuery);
+
+
+// DEFINE RETURN VALUES
+
+
+function ValidateID(str)
+{
+    //INPUT VALIDATION
+    var R_ELEGAL_INPUT = -1;
+    var R_NOT_VALID = -2;
+    var R_VALID = 1;
+    // Just in case -> convert to string
+    var IDnum = String(str);
+
+    // Validate correct input
+    if ((IDnum.length > 9) || (IDnum.length < 5))
+        return R_ELEGAL_INPUT;
+    if (isNaN(IDnum))
+        return R_ELEGAL_INPUT;
+
+    // The number is too short - add leading 0000
+    if (IDnum.length < 9)
+    {
+        while(IDnum.length < 9)
+        {
+            IDnum = '0' + IDnum;
+        }
+    }
+
+    // CHECK THE ID NUMBER
+    var mone = 0, incNum;
+    for (var i=0; i < 9; i++)
+    {
+        incNum = Number(IDnum.charAt(i));
+        incNum *= (i%2)+1;
+        if (incNum > 9)
+            incNum -= 9;
+        mone += incNum;
+    }
+    if (mone%10 == 0)
+        return R_VALID;
+    else
+        return R_NOT_VALID;
+}
