@@ -9,12 +9,14 @@ const bodyParser = require('body-parser');
 var Records = require('./models/records.js');
 var Users = require('./models/users.js');
 var PlayList = require('./models/playlist.js');
-
-
 var similarity = require( 'compute-cosine-similarity' );
 
 app.use("/", express.static(path.join(__dirname, "assests")));
-/* Virtual dir for js & css for third party libraries */
+
+/**
+ * Virtual dir for js & css for third party libraries
+ */
+
 app.use("/lib/jquery", express.static(path.join(__dirname, "node_modules", "jquery", "dist")));
 app.use("/lib/bootstrap", express.static(path.join(__dirname, "node_modules", "bootstrap", "dist")));
 app.use("/lib/font-awesome/css", express.static(path.join(__dirname, "node_modules", "font-awesome", "css")));
@@ -27,22 +29,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-
-app.get('/', function(req, res) {       //call to index page and show him , its the lending page
-    res.sendFile(path.join(__dirname, 'assests', 'index.html'));
-});
-
-app.get('/users', function(req, res) {       //call to users page and show him
-    //console.log(res);
-    var r = res.sendFile(path.join(__dirname, 'assests', 'insertUsers.html'));
-    //console.log("finish ",res);
-   // res.then("finish ");
-});
+/**
+ * Statics pages
+ */
+app.get('/', (req, res) =>  res.sendFile(path.join(__dirname, 'assests', 'index.html'), {}, ()=>res.end())); // Static front page
+app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'insertUsers.html'), {}, ()=>res.end())); // a new user form
+app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'), {}, ()=>res.end())); // login form
 
 
-app.post('/users',function(req, res, next) {       //call to users page and show him
-    if (!req.body) return res.sendStatus(400);
-    console.log(req.body.enterens);
+/** ----------------------------------------------------------------------------------
+* Return the given users playlist , and add user to Data base
+*
+* @PARAM {String*} id: Given user id
+* @PARAM {String} name: Given user name
+* @PARAM {String} country: Given user name
+* @PARAM {Number} age: The user age
+* @PARAM {Number} enterens:The user enterens
+*
+* @RESPONSE {json}
+* @RESPONSE-SAMPLE {playList , userData}
+----------------------------------------------------------------------------------*/
+
+app.post('/users',function(req, res, next) {
+    if (!req.body) return res.sendStatus(400,"Error to add user");
+    //console.log(req.body.enterens);
     if (req.body.id && req.body.age && req.body.country && req.body.name) {
         var userData = {
             id: req.body.id.toString(),
@@ -66,18 +76,6 @@ app.post('/users',function(req, res, next) {       //call to users page and show
             country:req.body.country,
             records: JSON.parse(req.body.records)
         };
-        //console.log(JSON.parse(req.body.records));
-        //console.log(playlistData);
-        // var bulk2 = PlayList.collection.initializeOrderedBulkOp();
-        // bulk2.find({
-        //     name: playlistData.name                 //update the playlist name , if have - update else its build new document
-        // }).update(playlistData);
-        // bulk2.execute();
-
-        // PlayList.findOneAndUpdate({ name: playlistData.name }, function (err, data) {
-        //     if (err) return handleError(err);
-        //     console.log(data);
-        // }).update(playlistData);
 
         var query = {name: playlistData.name},
             update = playlistData,
@@ -89,14 +87,12 @@ app.post('/users',function(req, res, next) {       //call to users page and show
         if (error) return;
         //console.log("r1",result);
         if (!result || result == null)
-            exiset = false
+            exiset = false;
         // do something with the document
         //console.log(exiset);
         if (!exiset){
             PlayList.findOneAndUpdate(query, update, options, function(error, result) {
                 if (error) return;
-               //console.log("r2",result);
-                // do something with the document
             });
         }
     });
@@ -104,14 +100,23 @@ app.post('/users',function(req, res, next) {       //call to users page and show
     }
 });
 
-app.post('/users/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+/** ----------------------------------------------------------------------------------
+* Return and update the enterens time of the user  to Data base
+*
+* @PARAM {String*} id: Given user id
+* @PARAM {Number} enterens: The user enterens
+*
+* @RESPONSE {json}
+* @RESPONSE-SAMPLE {user data: []}
+----------------------------------------------------------------------------------*/
+
+
+app.post('/users/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
 
     Users.find({id:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
-        //console.log("docs new : "+docs);
-        //console.log("enterens new : "+req.body.enterens);
-        //var userData = docs[0];
+
         try{
             docs[0].enterens = req.body.enterens;
         }catch(e){
@@ -121,10 +126,7 @@ app.post('/users/:id', function(req, res, next) {    //call to getDataId.js , an
             if (err) return handleError(err);
             res.send(updatedUser);
         });
-        // var bulk = Users.collection.initializeOrderedBulkOp();
-        // bulk.find({
-        //     id: userData.id                 //update the id , if have - update else its build new document
-        // }).update({enterens:userData.enterens});
+
 
     });
 });
@@ -132,20 +134,16 @@ app.post('/users/:id', function(req, res, next) {    //call to getDataId.js , an
 
 
 
-
-
-
-
-
-
-app.get('/in', function(req, res) {       //call to users page and show him
-    //console.log(res);
-    res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'));
-    //console.log("finish ",res);
-    // res.then("finish ");
-});
-
-app.get('/mb/track/recording/:year/:country', function(req, res, next) {    //call to getData.js , and request all the relevant  data from DB
+/** ----------------------------------------------------------------------------------
+* Return the top records of the given year between 2 year before and 2 years after
+*
+* @PARAM {String} year: The user 20's year
+* @PARAM {String} country: The user country
+*
+* @RESPONSE {json}
+* @RESPONSE-SAMPLE {docs: []}
+----------------------------------------------------------------------------------*/
+app.get('/mb/track/recording/:year/:country', function(req, res, next) {
     db().then(()=>{
         Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).exec(function(err, docs){
         if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
@@ -154,7 +152,16 @@ app.get('/mb/track/recording/:year/:country', function(req, res, next) {    //ca
 }).catch(next);
 });
 
-app.get('/playList/:name', function(req, res, next) {    //call to getDataId.js , and request all the relevant  data from DB
+
+/** ----------------------------------------------------------------------------------
+* Return playlist by the playlist name.
+*
+* @PARAM {String*} name: the playlist name
+*
+* @RESPONSE {json}
+* @RESPONSE-SAMPLE {docs: []}
+----------------------------------------------------------------------------------*/
+app.get('/playList/:name', function(req, res, next) {
     //console.log(req.params.id);
     PlayList.find({name:req.params.name}).exec(function(err, docs){
         if(err) return next(err);
@@ -163,6 +170,14 @@ app.get('/playList/:name', function(req, res, next) {    //call to getDataId.js 
     })
 });
 
+/** ----------------------------------------------------------------------------------
+* Return the user Data from DB
+*
+* @PARAM {String*} id: Given user id
+*
+* @RESPONSE {json}
+* @RESPONSE-SAMPLE {docs: []}
+----------------------------------------------------------------------------------*/
 app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
     Users.find({id:req.params.id}).exec(function(err, docs){
@@ -172,32 +187,47 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
     })
 });
 
+
+/** ----------------------------------------------------------------------------------
+* Return the user with the playlist name from the DB
+*
+* @PARAM {String*} id: Given user id
+* @PARAM {Array} playlist: The playlist name
+*
+* @RESPONSE {json}
+* @RESPONSE-SAMPLE {user data: []}
+----------------------------------------------------------------------------------*/
 app.get('/selection/:id/:playlist', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
     //console.log(req.params.id+" "+req.params.playlist);
     Users.find({id:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
         if(err) return next(err);
-        console.log("docs",docs,'length',docs.length);
     });
 });
 
-
+/** ----------------------------------------------------------------------------------
+ * Post and update the the playlist with the vote of the user , add it and calculate the cosine function with similarity function
+ *
+ * @CALC cosine function
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} mbid: The song mbid
+ * @PARAM {String} name: the playlist name
+ *
+ *
+ * @RESPONSE-SAMPLE {{}}
+----------------------------------------------------------------------------------*/
 app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req.body) return res.sendStatus(400);
 
     Users.find({id:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
-        //console.log("docs new : "+docs);
         var userData =docs[0];
         try{
             userData.songs=JSON.parse(req.body.songs);
         }catch(e){
             return next(e);
         }
-
-        //console.log("userData new : "+JSON.stringify(userData));
-        // heavy lift close user connection
-        //
 
         var bulk = Users.collection.initializeOrderedBulkOp();
         bulk.find({
@@ -237,9 +267,6 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
                     q.records.forEach(rec=>{
                         votesByUser.push(rec.votes.filter(x=>x.userId == u).map(x=>x.vote)[0] || 0)
                     });
-                    //console.log(`user: ${user}`);
-                    //console.log(`votesByUser: ${votesByUser}`);
-                    //console.log(similarity(user, votesByUser));
                     q.similarity = q.similarity || [];
                    var pos =  q.similarity.findIndex(x=>x.user1 == u && x.user2 == data.id || x.user2 == u && x.user1 == data.id);
                    //console.log(pos);
@@ -248,7 +275,6 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
                    }else{
                     q.similarity.push({user1: u, user2: data.id, similarity: similarity(user, votesByUser)})
                    }
-                   //console.log(q);
                 });
                 q.markModified('similarity');
                 q.save(function(err){
@@ -257,16 +283,29 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
 
                 })
             });
-             // PlayList.update(lookup, update, opt, function(err, resualt){
-             //     res.status(200).json({err: false, message: 'updated'});
-             // });
-
-
         });
-       // res.status(200).json({err: false, items: [].concat(docs)});
     });
 });
 
+
+/** ----------------------------------------------------------------------------------
+ * Return and update the user best song, the recommended user best songs and the unseen user song.
+ *
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} mbid: The track mbid
+ * @PARAM {String} playlist: the playlist name
+ * @PARAM {Number} vote: the vote for the track
+ * @PARAM {String} artist: the artist name
+ * @PARAM {String} title: the track name
+ * @PARAM {String} videoId: the video Id number in youtube.
+ *
+ * @RESPONSE topUser - top user songs
+ * @RESPONSE recSongs - top recommended user song
+ * @RESPONSE notEar - not ear song of the user.
+ *
+ * @RESPONSE-SAMPLE {{obj}}
+----------------------------------------------------------------------------------*/
 app.get('/playlist/:playlist/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
     //console.log(req.params.id+" "+req.params.playlist);
@@ -274,10 +313,6 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
     //console.log(id);
     PlayList.find({"records.votes.userId":{$in:[id]}}).exec(function(err, docs){
         if(err) return next(err);
-        // for(var i = 0 ; i<docs[0].records.length;i++){
-        //     console.log("docs",docs[0].records[i].votes.length);
-        //     //console.log("docs",docs[0].records[i].length);
-        // }
         //console.log(docs);
         if (!docs[0] || !docs )
         {
@@ -376,16 +411,21 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
         var obj =[{topUser,recSongs,notEar}];
         res.status(200).json({err: false, items: [].concat(obj)});
     });
-    //res.status(200).json({err: false, items: [].concat(top)});
 });
 
+/** ----------------------------------------------------------------------------------
+ * Return error page if have a problem
+ * Statics page
+----------------------------------------------------------------------------------*/
 
 // 404 not found
 app.use(function(req, res, next) {
     res.sendFile(path.join(__dirname, 'assests', '404.html'));
 });
 
-
+/** ----------------------------------------------------------------------------------
+* open the connction with the DB.
+----------------------------------------------------------------------------------*/
 db().then(() => {
     const server = app.listen(process.env.port || 3000, () => debug('app:server')(`Server has started in port ${server.address().port}`))
 }).catch(() => debug('app:mongo')('Houston we got a problem.... mongo'));

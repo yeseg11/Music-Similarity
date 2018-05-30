@@ -2,7 +2,11 @@
     $(document).ready(function() {
 
         var musicWrapper = $('#musicWrapper');
-
+        /**
+         *  @NAME template,experienceShow: add the video and the vote buttons to screen (HTML)
+         *
+         *
+         */
         var template  = '<div class="wrap-input100 input100-select">';
         template += '<span id="::videoId:::" class="label-input100"></span>';
         template += '<div id="demo"></div>';
@@ -54,7 +58,7 @@
             $.get('/user/' + id.val().toString(), function(data) {
                 if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
                 var enterens = data.items[0].enterens;
-                if (enterens === 0)
+                if (enterens === 0) //first time
                 {
                     enterens++;
                     addEnterens(id.val().toString(),enterens);
@@ -65,7 +69,7 @@
                     $.get('/playList/' + playListName, function(data) {
                         //console.log(data);
                         if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
-                        var rec = data.items[0].records;
+                        var rec = data.items[0].records; // build the playlist and check don't have double songs.
                         var html = '';
                         var playarr =[];
                         var i,j = 0;
@@ -90,8 +94,8 @@
                                 }
                             }
                         }
-                        console.log("playarr ",playarr);
-                        for (i = 0; i < playarr.length; i++) {
+                        //console.log("playarr ",playarr);
+                        for (i = 0; i < playarr.length; i++) {  //show the playlist songs .
                             var place = playarr[i];
                             var item = rec[place];
                             //console.log(item);
@@ -124,6 +128,7 @@
                         var UserSize = 4;
                         var recSize = 4;
                         var notEarSize = 2;
+                        console.log(data.items[0].notEar.length);
                         if (data.items[0].topUser.length < UserSize )
                         {
                             notEarSize += UserSize - data.items[0].topUser.length;
@@ -139,21 +144,20 @@
                             //console.log(data.items[0].recSongs);
                             recSize = data.items[0].recSongs.length;
                         }
-                        if (!data.items[0].notEar){
+                        if (!data.items[0].notEar ){
                             notEarSize = 0;
                             UserSize+=2;
                         }
                         else if (data.items[0].notEar.length < notEarSize )
                         {
-                            notEar = data.items[0].notEar.length;
+                            notEarSize = data.items[0].notEar.length;
+                            UserSize += 10 -(UserSize + recSize + notEarSize);
                         }
-                        //console.log("a: ",UserSize,recSize,notEarSize);
-
-
+                        console.log("a: ",UserSize,recSize,notEarSize);
 
 
                         var topUser = [];
-                        for(var i = 0 ; i < UserSize ; i++)
+                        for(var i = 0 ; i < UserSize ; i++) //get the top of the user songs
                         {
                             topUser.push(data.items[0].topUser[i]);
                             // var item = data.items[0].topUser[i];
@@ -166,11 +170,8 @@
                             // html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
                             // $('#title').html("Your Music: "+year + ',' + country);
                         }
-                        //need to check don't have a double songs.
 
-                        //console.log(data.items[0].recSongs.length);
-
-                        for(var i = 0 ; i < recSize ; i++)
+                        for(var i = 0 ; i < recSize ; i++)      //find the best songs from the recommended user and check double songs
                         {
                             var item = data.items[0].recSongs[i];
                             //console.log(item.index);
@@ -179,7 +180,7 @@
                             for (var j = 0 ; j < topUser.length ; j++)
                             {
                                 if (topUser[j].index == ind){
-                                    var item = data.items[0].recSongs[i];
+                                    //var item = data.items[0].recSongs[i];
                                     //console.log(item);
                                     //console.log("index: "+ topUser[j].index + " ind: "+ind);
                                     flag = true;
@@ -188,7 +189,7 @@
                             }
                             if (!flag){
                                 var item = data.items[0].recSongs[i];
-                                // topUser.push(item);
+                                topUser.push(item);
                                 // var mbid = (item && item.mbid) ? item.mbid : '';
                                 // var videoId = (item && item.videoId) ? item.videoId : '';
                                 // //console.log(videoId);
@@ -199,18 +200,19 @@
                             }
                         }
 
-                        //console.log(topUser);
+                        //console.log(notEarSize);
 
 
-                        for(var i = 0 ; i < notEarSize ; i++)
+                        for(var i = 0 ; i < notEarSize ; i++) //add the Not Ear songs in playlist of the user .
                         {
                             var item = data.items[0].notEar[i];
+                            //console.log(item);
                             var ind = item.index;
                             var flag = false;
                             for (var j = 0 ; j < topUser.length ; j++)
                             {
                                 if (topUser[j].index == ind){
-                                    var item = data.items[0].recSongs[i];
+                                    //var item = data.items[0].recSongs[i];
                                     //console.log(item);
                                     //console.log("index: "+ topUser[j].index + " ind: "+ind);
                                     flag = true;
@@ -258,6 +260,19 @@
     });
 })(jQuery);
 
+/** ----------------------------------------------------------------------------------
+ * Update or Add the vote number.
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} mbid: Given song mbid
+ * @PARAM {Number} n: vote number
+
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {playList , userData}
+ ---------------------------------------------------------------------------------- */
+
+
 function f2(id,mbid,n) {
     $.get('/user/' + id.toString(), function(data) {
         if (n <=0 || !n || n>5)
@@ -288,7 +303,15 @@ function f2(id,mbid,n) {
         });
     });
 }
-
+/** ----------------------------------------------------------------------------------
+ * Update the enterens times .
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} enterens: enterens number.
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {playList , userData}
+ ---------------------------------------------------------------------------------- */
 function addEnterens(id,enterens) {
     //console.log(id +" "+enterens);
     $.get('/user/' + id.toString(), function(data) {
