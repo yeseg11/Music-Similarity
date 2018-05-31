@@ -83,6 +83,7 @@ app.post('/users',function(req, res, next) {
 
 // Find the document
     var exiset = true;
+    PlayList.createIndex({name:1});
     PlayList.findOne({name: playlistData.name}, function(error, result) {
         if (error) return;
         //console.log("r1",result);
@@ -145,7 +146,7 @@ app.post('/users/:id', function(req, res, next) {
 ----------------------------------------------------------------------------------*/
 app.get('/mb/track/recording/:year/:country', function(req, res, next) {
     db().then(()=>{
-        Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).exec(function(err, docs){
+        Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(25).exec(function(err, docs){
         if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
         res.status(200).json({err: false, items: [].concat(docs)});
     })
