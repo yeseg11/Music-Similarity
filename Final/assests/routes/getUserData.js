@@ -29,7 +29,7 @@
                 alert("please insert name");
                 return $('#error').text("please insert name");
             }
-            if (!id.val() || ValidateID(id.val()) != 1){
+            if (!id.val() /*|| ValidateID(id.val()) != 1*/){
                 console.log('Error');
                 alert("please insert ID");
                 return $('#error').text("please insert ID");
