@@ -67,8 +67,9 @@
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
                     var playListName = data.items[0].group.toString();
                     $.get('/playList/' + playListName, function(data) {
-                        //console.log(data);
-                        if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
+                        console.log(data.items[0].records.length);
+                        //return;
+                        if(!data || !data.items || !data.items.length || !data.items[0] || data.items[0].records.length < 1 ) return musicWrapper.html('<h3>Please rephrase search</h3>');
                         var rec = data.items[0].records; // build the playlist and check don't have double songs.
                         var html = '';
                         var playarr =[];
