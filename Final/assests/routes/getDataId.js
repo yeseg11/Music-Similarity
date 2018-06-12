@@ -61,13 +61,14 @@
                 if (enterens === 0) //first time
                 {
                     enterens++;
+                    //console.log(enterens);
                     addEnterens(id.val().toString(),enterens);
                     var year = data.items[0].year;
                     var country = data.items[0].country;
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
                     var playListName = data.items[0].group.toString();
                     $.get('/playList/' + playListName, function(data) {
-                        console.log(data.items[0].records.length);
+                        //console.log(data.items[0].records.length);
                         //return;
                         if(!data || !data.items || !data.items.length || !data.items[0] || data.items[0].records.length < 1 ) return musicWrapper.html('<h3>Please rephrase search</h3>');
                         var rec = data.items[0].records; // build the playlist and check don't have double songs.
@@ -111,6 +112,7 @@
                         $('#title').html("Your Music: "+year + ',' + country);
                         window.scrollBy(0, 500);
                         musicWrapper.html(html);
+                        addEnterens(id.val().toString(),1);
                     });
                 }
                 else {
@@ -123,13 +125,14 @@
                     var playListName = data.items[0].group.toString();
                     //var topUser= [];
                     $.get('/playList/' + playListName+"/"+id.val().toString(), function(data) {
+
                         //console.log("top :"+data.items[0].index+" "+data.items[0].vote+" "+data.items[0].mbid);
                         //console.log(data.items[0]);
                         var html = '';
                         var UserSize = 4;
                         var recSize = 4;
                         var notEarSize = 2;
-                        console.log(data.items[0].notEar.length);
+                        //console.log(data.items[0].notEar.length);
                         if (data.items[0].topUser.length < UserSize )
                         {
                             notEarSize += UserSize - data.items[0].topUser.length;
@@ -154,7 +157,7 @@
                             notEarSize = data.items[0].notEar.length;
                             UserSize += 10 -(UserSize + recSize + notEarSize);
                         }
-                        console.log("a: ",UserSize,recSize,notEarSize);
+                       // console.log("a: ",UserSize,recSize,notEarSize);
 
 
                         var topUser = [];
@@ -232,7 +235,7 @@
                                 // html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
                             }
                         }
-                        //console.log(topUser);
+                        //console.log(enterens);
                         for (var i = 0 ; i < topUser.length ; i ++)
                         {
                             var item = topUser[i];
@@ -243,8 +246,9 @@
                             var title = (item && item.title)? item.title: '';
                             var artist = (item && item.artist && item.artist)? item.artist : '';
                             html += experienceShow.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId).replace('::userid::',id.val().toString()).replace('::data::',mbid);
-                            html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
+                            html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid).replace('::ent::',enterens.toString());
                             $('#title').html("Your Music: "+year + ',' + country);
+
                         }
 
                         window.scrollBy(0, 500);
@@ -276,6 +280,7 @@
 
 function f2(id,mbid,n) {
     $.get('/user/' + id.toString(), function(data) {
+
         if (n <=0 || !n || n>5)
             n = 0;
         //console.log(data.items[0].group);
@@ -303,6 +308,14 @@ function f2(id,mbid,n) {
             //console.log("data:"+data);
         });
     });
+    $.get('/user/' + id.toString(), function(data) {
+        // console.log(data.items[0].enterens);
+        if (data.items[0].enterens == 0){
+            addEnterens(data.items[0].id,1);
+        }
+
+    });
+
 }
 /** ----------------------------------------------------------------------------------
  * Update the enterens times .
@@ -314,13 +327,12 @@ function f2(id,mbid,n) {
  * @RESPONSE-SAMPLE {playList , userData}
  ---------------------------------------------------------------------------------- */
 function addEnterens(id,enterens) {
-    //console.log(id +" "+enterens);
     $.get('/user/' + id.toString(), function(data) {
         //console.log(data.items);
         var enter = enterens;
         //console.log(data.items[0].enterens);
         //console.log(data.items[0].songs.length);
-        if (data.items[0].songs.length == 0)
+        if (data.items[0].songs.length === 0 )
         {
             enter = 0;
         }
