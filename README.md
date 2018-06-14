@@ -46,6 +46,7 @@ Sagi Marciano
 * [Architecture](https://github.com/avicohen89/Music-Similarity/blob/master/docs/Architecture.PNG)
 * [State charts](https://github.com/avicohen89/Music-Similarity/blob/master/docs/state%20chart.png) 
 * [Sequence diagram](https://github.com/avicohen89/Music-Similarity/blob/master/docs/sequance%20diagram.png)
+* [Use cases](https://github.com/avicohen89/Music-Similarity/blob/master/docs/use%20cases.png)
 
 ## Iterations
 
