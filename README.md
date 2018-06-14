@@ -43,7 +43,7 @@ Sagi Marciano
 
 
 ## Software Design
-* [Architecture](https://github.com/avicohen89/Music-Similarity/blob/master/docs/Architecture.PNG)
+* [Architecture](https://github.com/avicohen89/Music-Similarity/blob/master/docs/Architectur.png)
 * [State charts](https://github.com/avicohen89/Music-Similarity/blob/master/docs/state%20chart.png) 
 * [Sequence diagram](https://github.com/avicohen89/Music-Similarity/blob/master/docs/sequance%20diagram.png)
 * [Use cases](https://github.com/avicohen89/Music-Similarity/blob/master/docs/use%20cases.png)
