@@ -1,6 +1,7 @@
 
 
 
+
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
@@ -35,60 +36,60 @@
 [ RESTYLE TAG ]*/
 
 * {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
 }
 
 body, html {
-  height: 100%;
-  font-family: Poppins-Regular, sans-serif;
+	height: 100%;
+	font-family: Poppins-Regular, sans-serif;
 }
 
 /*---------------------------------------------*/
 a {
-  font-family: Poppins-Regular;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #666666;
-  margin: 0px;
-  transition: all 0.4s;
-  -webkit-transition: all 0.4s;
+	font-family: Poppins-Regular;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
 }
 
 a:focus {
-  outline: none !important;
+	outline: none !important;
 }
 
 a:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 /*---------------------------------------------*/
 h1,h2,h3,h4,h5,h6 {
-  margin: 0px;
+	margin: 0px;
 }
 
 p {
-  font-family: Poppins-Regular;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #666666;
-  margin: 0px;
+	font-family: Poppins-Regular;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
 }
 
 ul, li {
-  margin: 0px;
-  list-style-type: none;
+	margin: 0px;
+	list-style-type: none;
 }
 
 
 /*---------------------------------------------*/
 input {
-  outline: none;
-  border: none;
+	outline: none;
+	border: none;
 }
 
 textarea {
@@ -122,23 +123,23 @@ textarea:-ms-input-placeholder { color: #adadad;}
 
 /*---------------------------------------------*/
 button {
-  outline: none !important;
-  border: none;
-  background: transparent;
+	outline: none !important;
+	border: none;
+	background: transparent;
 }
 
 button:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 iframe {
-  border: none !important;
+	border: none !important;
 }
 
 
 /*---------------------------------------------*/
 .container {
-  max-width: 1200px;
+	max-width: 1200px;
 }
 
 
@@ -160,7 +161,7 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  /*background-image: url("../images/background/radio.jpeg"); !* The image used *!*/
+  background-image: url("../images/background/radio.jpeg"); /* The image used */
   background-color: #878183; /* Used if the image is unavailable */
   height: 500px; /* You must set a specified height */
   background-position: center; /* Center the image */
