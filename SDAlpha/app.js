@@ -472,7 +472,7 @@ app.use(function(req, res, next) {
 * open the connction with the DB.
 ----------------------------------------------------------------------------------*/
 db().then(() => {
-    const server1 = app.listen(process.env.port || 3000, () => debug('app:server')(`Server has started in port ${server1.address().port}`))
+    const server1 = app.listen(process.env.port || 3200, () => debug('app:server')(`Server has started in port ${server1.address().port}`))
     // const server2 = app.listen(process.env.port || 3200, () => debug('app:server')(`Server has started in port ${server2.address().port}`))
 
 }).catch(() => debug('app:mongo')('Houston we got a problem.... mongo'));
