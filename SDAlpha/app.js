@@ -449,13 +449,25 @@ app.post('/insertResearcher',function(req, res, next) {
 });
 
 
+/** ----------------------------------------------------------------------------------
+ *  Get and add a new researcher to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {researcherData}
+ ----------------------------------------------------------------------------------*/
 
-
-
-
-
-
-
+app.get('/insertResearcher/:id', function(req, res, next) {
+    if (!req.body) return res.sendStatus(400);
+    console.log(req.params.id);
+    Researchers.find({id:req.params.id}).exec(function(err, docs){
+        if(err) return next(err);
+        console.log(docs[0].name);
+        res.status(200).json({err: false, items: [].concat(docs)});
+    });
+});
 
 
 /** ----------------------------------------------------------------------------------
@@ -472,7 +484,7 @@ app.use(function(req, res, next) {
 * open the connction with the DB.
 ----------------------------------------------------------------------------------*/
 db().then(() => {
-    const server1 = app.listen(process.env.port || 3200, () => debug('app:server')(`Server has started in port ${server1.address().port}`))
+    const server1 = app.listen(process.env.port || 3000, () => debug('app:server')(`Server has started in port ${server1.address().port}`))
     // const server2 = app.listen(process.env.port || 3200, () => debug('app:server')(`Server has started in port ${server2.address().port}`))
 
 }).catch(() => debug('app:mongo')('Houston we got a problem.... mongo'));
