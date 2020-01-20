@@ -21,13 +21,13 @@ for (var year = o.date; year <= toYear; year++) {
     (function(y, oo) {
         oo.date = y;            // y = year
         setTimeout(function() {         //time for addind , if the add is to fast its can miss data .
-            var dir = path.join(__dirname, 'mb-raw', y.toString());
+            var dir = path.join(__dirname, 'new-mb-raw', y.toString());
             fs.ensureDir(dir).then(() => {
                 oo.date = y;
                 mb.query(oo).then(function(data) {
                     console.log(data)
                     debug('app:musicbrainzScrpat')(`total of ${data.items.releases.length}/${parseInt(data.items.count)}`);
-                    fs.writeFile(`./mb-raw/${y}/mb-0.json`, JSON.stringify(data.items.releases), function(err) { //write to file all the data from musicBrinz
+                    fs.writeFile(`./new-mb-raw/${y}/mb-0.json`, JSON.stringify(data.items.releases), function(err) { //write to file all the data from musicBrinz
                         if (err) {
                             console.error('Crap happens', err);
                             return process.exit(0);
@@ -45,10 +45,10 @@ for (var year = o.date; year <= toYear; year++) {
                                         opt.offset += data.items.releases.length * i;
                                         console.log("opt.offset: ",opt.offset);
                                         promesies.push(mb.query(opt).then(data => {
+                                            console.log("Data: ",data.items);
                                             fs.writeFile(
 
                                                 `./new-mb-raw/${y}/mb-${i}.json`,   //add to folder mb-raw/"year"/mb-"page number" if nut exists
-
                                                 JSON.stringify(data.items.releases),
                                                 function(err) {
                                                     debug('app:write')(`wrote item to temp file ${y}, ${i}`);

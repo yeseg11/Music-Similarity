@@ -1,6 +1,6 @@
 // mb2mongo - take the data from the mb-raw file's and add tham to mongoDB , using mongoose schema.
 
-var db = require('./db');
+var db = require('../db');
 var mongoose = require('mongoose');
 var Records = require('../models/records.js');
 var glob = require("glob");
@@ -31,29 +31,16 @@ glob(path.join(__dirname, "/new-mb-raw/**/*.json"), {}, function(err, files) {
 
             var bulk = Records.collection.initializeOrderedBulkOp();    //get the schema
 
-
             ([].concat(data)).forEach(function(el) {
-                var year =parseInt(el['releases'][0]['date']);
-                var p = 0; //the place in the arr with the loast year
-                for(var i = 0; i < el['releases'].length;i++)   //  search the smallest year and add it to mongo year.
-                {
-                    var a = parseInt(el['releases'][i]['date']);
-                    if (year>a) {
-                        year = a;
-                        p = i;
-                    }
-                }
-                var prepare = {         //add the details to evry document
+                // console.log(el['text-representation'].language);
+                // var year =parseInt(el['releases'][0]['date'])
+                var prepare = {         //add the details to every document
                     mbId: el.id,
                     title: el.title,
-                    //year: parseInt(el['releases'][0]['date']),
-                    year: year,
-                    artist: [{
-                        name: el['artist-credit'][0].artist.name,
-                        language: 'EN-US'
-                    }],
-                    country: el['releases'][p]['country'],
-                    language: String,
+                    year: el.date,
+                    artist: el['artist-credit'][0].name,
+                    country: el.country,
+                    language: el['text-representation'].language,
                     mbRaw: el,
                     youtube: {}
                 }
