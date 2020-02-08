@@ -49,7 +49,7 @@ Object.keys(actions).forEach(function (actionName) {
     if (pkg.knownInstallable) {
       actionP = runAction(action, staging, pkg, log)
     } else {
-      actionP = isInstallable(pkg.package).then(() => {
+      actionP = isInstallable(null, pkg.package).then(() => {
         pkg.knownInstallable = true
         return runAction(action, staging, pkg, log)
       })
@@ -118,7 +118,7 @@ function doParallel (type, staging, actionsToRun, log, next) {
     }
     return acc
   }, [])
-  log.silly('doParallel', type + ' ' + actionsToRun.length)
+  log.silly('doParallel', type + ' ' + acts.length)
   time(log)
   if (!acts.length) { return next() }
   return withInit(actions[type], () => {
