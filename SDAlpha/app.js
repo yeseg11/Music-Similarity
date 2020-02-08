@@ -33,21 +33,27 @@ app.use(bodyParser.json());
 /**
  * Statics pages
  */
+
+/**
+ * Main Page
+ */
 app.get('/', (req, res) =>  res.sendFile(path.join(__dirname, 'assests', 'mainPage.html'), {}, ()=>res.end())); // Static front page
-
+/**
+ * Users pages
+ */
 app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userMain.html'), {}, ()=>res.end())); // a new user form
-app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/researcherMain.html'), {}, ()=>res.end())); // login form
-
 app.get('/users/insertUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertUsers.html'), {}, ()=>res.end())); // a new user form
 app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userIndex.html'), {}, ()=>res.end())); // login form
-
-app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/‏‏‏‏newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/‏‏newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests', '‏‏newSong.html/'), {}, ()=>res.end())); // login form
-app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
-
 app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'), {}, ()=>res.end())); // login form
 
+/**
+ * researchers pages
+ */
+app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/researcherMain.html'), {}, ()=>res.end())); // login form
+app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, ()=>res.end())); // login form
+app.get('/researchers/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, ()=>res.end())); // login form
+app.get('/researchers/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests','/newSong.html'), {}, ()=>res.end())); // login form
+app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
 app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
 app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researcherLoginPage.html'), {}, ()=>res.end())); // login form
 
