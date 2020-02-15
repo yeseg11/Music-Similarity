@@ -15,6 +15,7 @@ var recordsSchema = new Schema({
     language: String,
     country: String,
     releaseId:String,
+    // genre:String,
     mbRaw: {},
     youtube: {}
 });
