@@ -52,12 +52,12 @@
             }
             $.get('/user/' + id.val().toString(), function(data) {
                 if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
-                var enterens = data.items[0].enterens;
-                if (enterens === 0) //first time
+                var entrance = data.items[0].entrance;
+                if (entrance === 0) //first time
                 {
-                    enterens++;
-                    //console.log(enterens);
-                    addEnterens(id.val().toString(),enterens);
+                    entrance++;
+                    //console.log(entrance);
+                    addentrance(id.val().toString(),entrance);
                     var year = data.items[0].year;
                     var country = data.items[0].country;
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
@@ -107,15 +107,15 @@
                         $('#title').html("Your Music: "+year + ',' + country);
                         window.scrollBy(0, 500);
                         musicWrapper.html(html);
-                        addEnterens(id.val().toString(),1);
+                        addentrance(id.val().toString(),1);
                     });
                 }
                 else {
-                    enterens++;
-                    addEnterens(id.val().toString(),enterens);
+                    entrance++;
+                    addentrance(id.val().toString(),entrance);
                     var year = data.items[0].year;
                     var country = data.items[0].country;
-                    //console.log(enterens);
+                    //console.log(entrance);
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Loading</h3>');
                     var playListName = data.items[0].group.toString();
                     //var topUser= [];
@@ -230,7 +230,7 @@
                                 // html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
                             }
                         }
-                        //console.log(enterens);
+                        //console.log(entrance);
                         for (var i = 0 ; i < topUser.length ; i ++)
                         {
                             var item = topUser[i];
@@ -241,7 +241,7 @@
                             var title = (item && item.title)? item.title: '';
                             var artist = (item && item.artist && item.artist)? item.artist : '';
                             html += experienceShow.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId).replace('::userid::',id.val().toString()).replace('::data::',mbid);
-                            html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid).replace('::ent::',enterens.toString());
+                            html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid).replace('::ent::',entrance.toString());
                             $('#title').html("Your Music: "+year + ',' + country);
 
                         }
@@ -304,28 +304,28 @@ function f2(id,mbid,n) {
         });
     });
     $.get('/user/' + id.toString(), function(data) {
-        // console.log(data.items[0].enterens);
-        if (data.items[0].enterens == 0){
-            addEnterens(data.items[0].id,1);
+        // console.log(data.items[0].entrance);
+        if (data.items[0].entrance == 0){
+            addentrance(data.items[0].id,1);
         }
 
     });
 
 }
 /** ----------------------------------------------------------------------------------
- * Update the enterens times .
+ * Update the entrance times .
  *
  * @PARAM {String*} id: Given user id
- * @PARAM {String} enterens: enterens number.
+ * @PARAM {String} entrance: entrance number.
  *
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {playList , userData}
  ---------------------------------------------------------------------------------- */
-function addEnterens(id,enterens) {
+function addentrance(id,entrance) {
     $.get('/user/' + id.toString(), function(data) {
         //console.log(data.items);
-        var enter = enterens;
-        //console.log(data.items[0].enterens);
+        var enter = entrance;
+        //console.log(data.items[0].entrance);
         //console.log(data.items[0].songs.length);
         if (data.items[0].songs.length === 0 )
         {
@@ -336,7 +336,7 @@ function addEnterens(id,enterens) {
         }
         var obj =  {
             id: id.toString(),
-            enterens: enter
+            entrance: enter
         };
         //console.log(obj);
         var $form = $( this );

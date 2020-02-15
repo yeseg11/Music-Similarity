@@ -83,7 +83,7 @@
 //                         id:id.val().toString(),
 //                         age: parseInt(age.val()),
 //                         country: country.val(),
-//                         enterens: 0,
+//                         entrance: 0,
 //                         name: name.val(),
 //                         language1:language1.val(),
 //                         language2:language2.val(),

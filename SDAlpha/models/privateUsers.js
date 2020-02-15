@@ -13,7 +13,7 @@ var privateUsersSchema = new Schema({
     country: String,
     youthLanguage: String,
     originLanguage: String,
-    enterens:Number,
+    entrance:Number,
     favoriteGrnre1:String,
     favoriteGenre2:String,
     group: String,

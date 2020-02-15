@@ -107,28 +107,28 @@ function f2(id,mbid,n) {
         });
     });
     $.get('/user/' + id.toString(), function(data) {
-        // console.log(data.items[0].enterens);
-        if (data.items[0].enterens == 0){
-            addEnterens(data.items[0].id,1);
+        // console.log(data.items[0].entrance);
+        if (data.items[0].entrance == 0){
+            addentrance(data.items[0].id,1);
         }
 
     });
 
 }
 /** ----------------------------------------------------------------------------------
- * Update the enterens times .
+ * Update the entrance times .
  *
  * @PARAM {String*} id: Given user id
- * @PARAM {String} enterens: enterens number.
+ * @PARAM {String} entrance: entrance number.
  *
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {playList , userData}
  ---------------------------------------------------------------------------------- */
-function addEnterens(id,enterens) {
+function addentrance(id,entrance) {
     $.get('/insertResearcher/' + id.toString(), function(data) {
         //console.log(data.items);
-        var enter = enterens;
-        //console.log(data.items[0].enterens);
+        var enter = entrance;
+        //console.log(data.items[0].entrance);
         //console.log(data.items[0].songs.length);
         if (data.items[0].songs.length === 0 )
         {
@@ -139,14 +139,14 @@ function addEnterens(id,enterens) {
         }
         var obj =  {
             id: id.toString(),
-            enterens: enter
+            entrance: enter
         };
         //console.log(obj);
         var $form = $( this );
-        // //console.log($form);
+        // console.log($form);
         var url = $form.attr("action");
-        url= "users/"+id.toString();
-        var posting = $.post(url,obj);
+       ///// // url= "users/"+id.toString();
+       ///// // var posting = $.post(url,obj);
         //console.log("url: "+url);
         // alert("vote add");
          posting.done(function(data) {

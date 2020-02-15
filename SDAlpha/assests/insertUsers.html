@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Functions</title>
@@ -23,7 +24,8 @@
     <link rel="stylesheet" type="text/css" href="./css/util.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
-    <script src="routes/getUserData.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/routes/getUserData.js"></script>
 </head>
 <body>
 <div class="container-contact100">
@@ -32,120 +34,121 @@
 				<span class="contact100-form-title">
 					Add User
 				</span>
-        <div class="wrap-input100 validate-input" data-validate="Name is required">
-            <span class="label-input100">Name</span>
-            <input id ='name' class="input100" type="text" name='name' placeholder="Enter Name">
-            <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input" data-validate="ID is required">
-            <span class="label-input100">ID</span>
-            <input id ='id' class="input100" type="text" name="id" placeholder="Enter ID">
-            <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input" data-validate="Department is required">
-            <span class="label-input100">Department</span>
-            <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">
-            <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input" data-validate="Medical profile is required">
-            <span class="label-input100">Medical profile</span>
-            <input id ='Medical profile' class="input100" type="text" name='Medical profile' placeholder="Enter Medical profile">
-            <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input" data-validate="Name is required">
-            <span class="label-input100">Age</span>
-            <input id ='age' class="input100" type="number" name="age" placeholder="Enter Age">
-            <span class="focus-input100"></span>
-        </div>
+            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <span class="label-input100">Name</span>
+                <input id='name' class="input100" type="text" name='name' placeholder="Enter Name">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="ID is required">
+                <span class="label-input100">ID</span>
+                <input id='id' class="input100" type="text" name="id" placeholder="Enter ID">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Department is required">
+                <span class="label-input100">Department</span>
+                <input id='department' class="input100" type="text" name='department' placeholder="Enter Department">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Medical profile is required">
+                <span class="label-input100">Medical profile</span>
+                <input id='Medical profile' class="input100" type="text" name='Medical profile'
+                       placeholder="Enter Medical profile">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <span class="label-input100">Age</span>
+                <input id='age' class="input100" type="number" name="age" placeholder="Enter Age">
+                <span class="focus-input100"></span>
+            </div>
 
             <div class="wrap-input100 input100-select">
                 <span class="label-input100">State of ages 10-25</span>
                 <div>
 
-<select id="countrySel1" class="selection-2" name="country1">
-      <option>Select Country</option>
-      <option value="AQ">Antarctica</option>
-      <option value="AR">Argentina</option>
-      <option value="AU">Australia</option>
-      <option value="AT">Austria</option>
-      <option value="BB">Barbados</option>
-      <option value="BE">Belgium</option>
-      <option value="BA">Bosnia And Herzegovina</option>
-      <option value="BR">Brazil</option>
-      <option value="BG">Bulgaria</option>
-      <option value="CM">Cameroon</option>
-      <option value="CL">Chile</option>
-      <option value="CN">China</option>
-      <option value="CO">Colombia</option>
-      <option value="CG">Congo</option>
-      <option value="CD">Congo, Democratic Republic</option>
-      <option value="HR">Croatia</option>
-      <option value="CU">Cuba</option>
-      <option value="CZ">Czech Republic</option>
-      <option value="DK">Denmark</option>
-      <option value="DO">Dominican Republic</option>
-      <option value="EG">Egypt</option>
-      <option value="EE">Estonia</option>
-      <option value="FI">Finland</option>
-      <option value="FR">France</option>
-      <option value="GA">Gabon</option>
-      <option value="DE">Germany</option>
-      <option value="GR">Greece</option>
-      <option value="GL">Greenland</option>
-      <option value="GP">Guadeloupe</option>
-      <option value="GT">Guatemala</option>
-      <option value="GN">Guinea</option>
-      <option value="HK">Hong Kong</option>
-      <option value="HU">Hungary</option>
-      <option value="IS">Iceland</option>
-      <option value="IN">India</option>
-      <option value="ID">Indonesia</option>
-      <option value="IR">Iran, Islamic Republic Of</option>
-      <option value="IE">Ireland</option>
-      <option value="IL">Israel</option>
-      <option value="IT">Italy</option>
-      <option value="JM">Jamaica</option>
-      <option value="JP">Japan</option>
-      <option value="KE">Kenya</option>
-      <option value="KR">Korea</option>
-      <option value="LV">Latvia</option>
-      <option value="LB">Lebanon</option>
-      <option value="LU">Luxembourg</option>
-      <option value="MK">Macedonia</option>
-      <option value="MY">Malaysia</option>
-      <option value="MX">Mexico</option>
-      <option value="MA">Morocco</option>
-      <option value="NL">Netherlands</option>
-      <option value="NZ">New Zealand</option>
-      <option value="NG">Nigeria</option>
-      <option value="NO">Norway</option>
-      <option value="PE">Peru</option>
-      <option value="PH">Philippines</option>
-      <option value="PL">Poland</option>
-      <option value="PT">Portugal</option>
-      <option value="PR">Puerto Rico</option>
-      <option value="RO">Romania</option>
-      <option value="RU">Russian Federation</option>
-      <option value="SN">Senegal</option>
-      <option value="SC">Seychelles</option>
-      <option value="SG">Singapore</option>
-      <option value="SK">Slovakia</option>
-      <option value="SI">Slovenia</option>
-      <option value="SU">Soviet Union</option>
-      <option value="ZA">South Africa</option>
-      <option value="ES">Spain</option>
-      <option value="SZ">Swaziland</option>
-      <option value="SE">Sweden</option>
-      <option value="CH">Switzerland</option>
-      <option value="TW">Taiwan</option>
-      <option value="TR">Turkey</option>
-      <option value="GB">United Kingdom</option>
-      <option value="US" selected="selected">United States</option>
-      <option value="UM">United States Outlying Islands</option>
-      <option value="UY">Uruguay</option>
-      <option value="VE">Venezuela</option>
-      <option value="ZW">Zimbabwe</option>
-      </select>
+                    <select id="countrySel1" class="selection-2" name="country1">
+                        <option>Select Country</option>
+                        <option value="AQ">Antarctica</option>
+                        <option value="AR">Argentina</option>
+                        <option value="AU">Australia</option>
+                        <option value="AT">Austria</option>
+                        <option value="BB">Barbados</option>
+                        <option value="BE">Belgium</option>
+                        <option value="BA">Bosnia And Herzegovina</option>
+                        <option value="BR">Brazil</option>
+                        <option value="BG">Bulgaria</option>
+                        <option value="CM">Cameroon</option>
+                        <option value="CL">Chile</option>
+                        <option value="CN">China</option>
+                        <option value="CO">Colombia</option>
+                        <option value="CG">Congo</option>
+                        <option value="CD">Congo, Democratic Republic</option>
+                        <option value="HR">Croatia</option>
+                        <option value="CU">Cuba</option>
+                        <option value="CZ">Czech Republic</option>
+                        <option value="DK">Denmark</option>
+                        <option value="DO">Dominican Republic</option>
+                        <option value="EG">Egypt</option>
+                        <option value="EE">Estonia</option>
+                        <option value="FI">Finland</option>
+                        <option value="FR">France</option>
+                        <option value="GA">Gabon</option>
+                        <option value="DE">Germany</option>
+                        <option value="GR">Greece</option>
+                        <option value="GL">Greenland</option>
+                        <option value="GP">Guadeloupe</option>
+                        <option value="GT">Guatemala</option>
+                        <option value="GN">Guinea</option>
+                        <option value="HK">Hong Kong</option>
+                        <option value="HU">Hungary</option>
+                        <option value="IS">Iceland</option>
+                        <option value="IN">India</option>
+                        <option value="ID">Indonesia</option>
+                        <option value="IR">Iran, Islamic Republic Of</option>
+                        <option value="IE">Ireland</option>
+                        <option value="IL">Israel</option>
+                        <option value="IT">Italy</option>
+                        <option value="JM">Jamaica</option>
+                        <option value="JP">Japan</option>
+                        <option value="KE">Kenya</option>
+                        <option value="KR">Korea</option>
+                        <option value="LV">Latvia</option>
+                        <option value="LB">Lebanon</option>
+                        <option value="LU">Luxembourg</option>
+                        <option value="MK">Macedonia</option>
+                        <option value="MY">Malaysia</option>
+                        <option value="MX">Mexico</option>
+                        <option value="MA">Morocco</option>
+                        <option value="NL">Netherlands</option>
+                        <option value="NZ">New Zealand</option>
+                        <option value="NG">Nigeria</option>
+                        <option value="NO">Norway</option>
+                        <option value="PE">Peru</option>
+                        <option value="PH">Philippines</option>
+                        <option value="PL">Poland</option>
+                        <option value="PT">Portugal</option>
+                        <option value="PR">Puerto Rico</option>
+                        <option value="RO">Romania</option>
+                        <option value="RU">Russian Federation</option>
+                        <option value="SN">Senegal</option>
+                        <option value="SC">Seychelles</option>
+                        <option value="SG">Singapore</option>
+                        <option value="SK">Slovakia</option>
+                        <option value="SI">Slovenia</option>
+                        <option value="SU">Soviet Union</option>
+                        <option value="ZA">South Africa</option>
+                        <option value="ES">Spain</option>
+                        <option value="SZ">Swaziland</option>
+                        <option value="SE">Sweden</option>
+                        <option value="CH">Switzerland</option>
+                        <option value="TW">Taiwan</option>
+                        <option value="TR">Turkey</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="US" selected="selected">United States</option>
+                        <option value="UM">United States Outlying Islands</option>
+                        <option value="UY">Uruguay</option>
+                        <option value="VE">Venezuela</option>
+                        <option value="ZW">Zimbabwe</option>
+                    </select>
                 </div>
                 <span class="focus-input100"></span>
             </div>
@@ -382,8 +385,6 @@
             </div>
 
 
-
-
             <div class="wrap-input100 input100-select">
                 <span class="label-input100">Genre 1</span>
                 <div>
@@ -418,20 +419,21 @@
 
             <div class="wrap-input100 validate-input" data-validate="Nursing Home is required">
                 <span class="label-input100">Nursing Home</span>
-                <input id ='nursingHome' class="input100" type="text" name='nursingHome' placeholder="Enter Nursing Home">
+                <input id='nursingHome' class="input100" type="text" name='nursingHome'
+                       placeholder="Enter Nursing Home">
                 <span class="focus-input100"></span>
             </div><!--==============change to drop down===========================-->
-<!--            <div class="wrap-input100 validate-input" data-validate="Department is required">-->
-<!--                <span class="label-input100">Department</span>-->
-<!--                <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">-->
-<!--                <span class="focus-input100"></span>-->
-<!--            </div>&lt;!&ndash;==============change to drop down===========================&ndash;&gt;-->
+            <!--            <div class="wrap-input100 validate-input" data-validate="Department is required">-->
+            <!--                <span class="label-input100">Department</span>-->
+            <!--                <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">-->
+            <!--                <span class="focus-input100"></span>-->
+            <!--            </div>&lt;!&ndash;==============change to drop down===========================&ndash;&gt;-->
 
 
             <div class="container-contact100-form-btn">
                 <div class="wrap-contact100-form-btn">
                     <div class="contact100-form-bgbtn"></div>
-                    <button type="button" id ='send' class="contact100-form-btn" >
+                    <button type="button" id='send' class="contact100-form-btn">
 							<span>
 								send
 								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
@@ -443,7 +445,7 @@
             <div class="container-contact100-form-btn">
                 <div class="wrap-contact100-form-btn">
                     <div class="contact100-form-bgbtn"></div>
-                    <button type="button" id ='return' class="contact100-form-btn" onclick="location.href='/'">
+                    <button type="button" id='return' class="contact100-form-btn" onclick="location.href='/'">
               <span>
                 return to Music Similarity
                 <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
@@ -452,19 +454,19 @@
 
                 </div>
             </div>
-<!--
-            <div class="container-contact100-form-btn">
-                <div class="wrap-contact100-form-btn">
-                    <div class="contact100-form-bgbtn"></div>
-                    <button id='btn_tracks' type='button' class="contact100-form-btn">
-							<span>
-								By Track
-								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-							</span>
-                    </button>
-                </div>
-            </div>
--->
+            <!--
+                        <div class="container-contact100-form-btn">
+                            <div class="wrap-contact100-form-btn">
+                                <div class="contact100-form-bgbtn"></div>
+                                <button id='btn_tracks' type='button' class="contact100-form-btn">
+                                        <span>
+                                            By Track
+                                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                                        </span>
+                                </button>
+                            </div>
+                        </div>
+            -->
         </form>
     </div>
 </div>
@@ -497,13 +499,13 @@
 <script src="vendor/bootstrap/js/popper.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
-<script>
-    $(".selection-2").select2({
-        minimumResultsForSearch: 20,
-        dropdownParent: $('#dropDownSelect1')
-    });
-</script>
+<!--<script src="vendor/select2/select2.min.js"></script>-->
+<!--<script>-->
+<!--    $(".selection-2").select2({-->
+<!--        minimumResultsForSearch: 20,-->
+<!--        dropdownParent: $('#dropDownSelect1')-->
+<!--    });-->
+<!--</script>-->
 <!--===============================================================================================-->
 <script src="vendor/daterangepicker/moment.min.js"></script>
 <script src="vendor/daterangepicker/daterangepicker.js"></script>
@@ -511,15 +513,5 @@
 <script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-23581568-13');
-</script>
 </body>
 </html>

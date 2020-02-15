@@ -65,16 +65,17 @@ app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 
 * @PARAM {String} name: Given user name
 * @PARAM {String} country: Given user name
 * @PARAM {Number} age: The user age
-* @PARAM {Number} enterens:The user enterens
+* @PARAM {Number} entrance:The user entrance
 *
 * @RESPONSE {json}
 * @RESPONSE-SAMPLE {playList , userData}
 ----------------------------------------------------------------------------------*/
 
-app.post('/users',function(req, res, next) {
+app.post('/users/insertUsers',function(req, res, next) {
     if (!req.body) return res.sendStatus(400,"Error to add user");
-    console.log(req.body.enterens);
-    console.log("here");
+    console.log("here44");
+    console.log(req.body.entrance);
+
     if (req.body.id && req.body.age && req.body.country && req.body.name) {
         var userData = {
             id: req.body.id.toString(),
@@ -83,7 +84,7 @@ app.post('/users',function(req, res, next) {
             age: parseInt(req.body.age),
             language1:req.body.language1,
             language2:req.body.language2,
-            enterens: req.body.enterens,
+            entrance: req.body.entrance,
             year: parseInt(req.body.year),
             group:req.body.group,
             songs:[]
@@ -126,15 +127,14 @@ app.post('/users',function(req, res, next) {
 });
 
 /** ----------------------------------------------------------------------------------
-* Return and update the enterens time of the user  to Data base
+* Return and update the entrance time of the user  to Data base
 *
 * @PARAM {String*} id: Given user id
-* @PARAM {Number} enterens: The user enterens
+* @PARAM {Number} entrance: The user entrance
 *
 * @RESPONSE {json}
 * @RESPONSE-SAMPLE {user data: []}
 ----------------------------------------------------------------------------------*/
-
 
 app.post('/users/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
@@ -450,8 +450,8 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
 
 app.post('/insertResearcher',function(req, res, next) {
     if (!req.body) return res.sendStatus(400,"Error to add user");
-    console.log(req.body.enterens);
     console.log("Try to post the researcher");
+    console.log(req.body.entrance);
     if (req.body.id && req.body.name) {
         var userData = {
             id: req.body.id.toString(),

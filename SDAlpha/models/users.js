@@ -13,7 +13,7 @@ var usersSchema = new Schema({
     country: String,
     language1: String,
     language2: String,
-    enterens:Number,
+    entrance: Number,
     group: String,
     songs: []
 });
