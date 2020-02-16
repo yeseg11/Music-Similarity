@@ -325,8 +325,8 @@ function addentrance(id,entrance) {
     $.get('/user/' + id.toString(), function(data) {
         //console.log(data.items);
         var enter = entrance;
-        //console.log(data.items[0].entrance);
-        //console.log(data.items[0].songs.length);
+        // console.log('entrance: ',data.items[0].entrance);
+        // console.log('length: ',data.items[0].songs.length);
         if (data.items[0].songs.length === 0 )
         {
             enter = 0;
@@ -338,7 +338,6 @@ function addentrance(id,entrance) {
             id: id.toString(),
             entrance: enter
         };
-        //console.log(obj);
         var $form = $( this );
         // //console.log($form);
         var url = $form.attr("action");

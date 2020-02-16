@@ -6,6 +6,8 @@ const debug = require('debug');
 const path = require('path');
 const db = require('./db');
 const bodyParser = require('body-parser');
+const PLAYLISTSIZE = 50;
+
 let Records = require('./models/records.js');
 let Users = require('./models/users.js');
 let Researchers = require('./models/researchers.js');
@@ -43,7 +45,7 @@ app.get('/', (req, res) =>  res.sendFile(path.join(__dirname, 'assests', 'mainPa
  */
 app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userMain.html'), {}, ()=>res.end())); // a new user form
 app.get('/users/insertUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertUsers.html'), {}, ()=>res.end())); // a new user form
-app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userIndex.html'), {}, ()=>res.end())); // login form
+// app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userIndex.html'), {}, ()=>res.end())); // login form
 app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'), {}, ()=>res.end())); // login form
 
 /**
@@ -138,12 +140,12 @@ app.post('/users/insertUsers',function(req, res, next) {
 
 app.post('/users/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
-
+    // console.log(req.body.entrance);
+    // console.log(req.params.entrance);
     Users.find({id:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
-
         try{
-            docs[0].enterens = req.body.enterens;
+            docs[0].entrance = req.body.entrance;
         }catch(e){
             return next(e);
         }
@@ -151,8 +153,6 @@ app.post('/users/:id', function(req, res, next) {
             if (err) return handleError(err);
             res.send(updatedUser);
         });
-
-
     });
 });
 
@@ -170,9 +170,10 @@ app.post('/users/:id', function(req, res, next) {
 ----------------------------------------------------------------------------------*/
 app.get('/mb/track/recording/:year/:country', function(req, res, next) {
     db().then(()=>{
-        Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(30).exec(function(err, docs){
+        Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(PLAYLISTSIZE).exec(function(err, docs){
         if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
-        res.status(200).json({err: false, items: [].concat(docs)});
+            console.log(docs);
+            res.status(200).json({err: false, items: [].concat(docs)});
     })
 }).catch(next);
 });
@@ -337,7 +338,7 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
     //console.log(id);
     PlayList.find({"records.votes.userId":{$in:[id]}}).exec(function(err, docs){
         if(err) return next(err);
-        // console.log(docs);
+        // console.log('docs: ',docs);
         if (!docs[0] || !docs )
         {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
@@ -348,7 +349,7 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
             var index = index ;
             var o =currentValue.votes.filter(x=>x.userId == id);
             var ex = currentValue.votes.findIndex(x=>x.userId == id);
-            //console.log(rec);
+            // console.log('rec: ',rec);
             if (ex != -1 )
             {
                 //console.log(rec[index]);
@@ -364,6 +365,7 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
                 });
             }
             else{
+                // console.log(rec[index]);
                 notEar.push({index:index ,
                     vote:0,
                     mbid:rec[index].mbid ,

@@ -1,13 +1,13 @@
 (function ($) {
     $(document).ready(function () {
-        console.log("here");
+        // console.log("here");
         $('#send').on("click", function (e) {
 
             let inputsArr = ['#age', '#name', '#id', '#department', '#countrySel1','#countrySel2', '#language1Select', '#language2Select'];
             for (const element of inputsArr) {
                 console.log(element,element.length);
                 if (!$(element).length) {
-                    console.log("here3");
+                    // console.log("here3");
                     return $('#error').text("insert all the details");
                 }
             }
@@ -66,10 +66,11 @@
                 var i = 0;
                 $.get('/mb/track/recording/' + yearTwenty + '/' + countrySel1.val(), function (data) {
                     if (!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
-                    var size = 25;
+                    var size = 50;
                     if (data.items.length < size) {
                         size = data.items.length;
                     }
+                    // console.log('data: ',data);
                     for (i = 0; i < size; i++) {
                         recList.push({
                             mbid: data.items[i].mbId,
@@ -79,9 +80,9 @@
                             country: data.items[i].countrySel1,
                             youtube: data.items[i].youtube,
                         });
-                        // var rec = data.items[i];
+
                     }
-                    //  console.log(recList);
+                     // console.log(recList.length);
                 }).then(function (response) {
                     // console.log("Success!", response);
                     //console.log("recList!", recList);

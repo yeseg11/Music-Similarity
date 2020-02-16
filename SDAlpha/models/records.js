@@ -11,7 +11,7 @@ var recordsSchema = new Schema({
   mbId: String,
     title: String,
     year: Number,
-    artist: String,
+    artist: [{name: String, language: String}], // NEED TO BE JUST THE ARTIST NAME !!
     language: String,
     country: String,
     releaseId:String,
