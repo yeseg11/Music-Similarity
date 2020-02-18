@@ -6,12 +6,15 @@ const debug = require('debug');
 const path = require('path');
 const db = require('./db');
 const bodyParser = require('body-parser');
-const PLAYLISTSIZE = 50;
+const PLAYLISTSIZE = 30;
 
 let Records = require('./models/records.js');
 let Users = require('./models/users.js');
 let Researchers = require('./models/researchers.js');
 let PlayList = require('./models/playlist.js');
+let PublicUsers = require('./models/publicUsers.js');
+let PrivateUsers = require('./models/privateUsers.js');
+
 let similarity = require( 'compute-cosine-similarity' );
 
 app.use("/", express.static(path.join(__dirname, "assests")));
@@ -61,22 +64,22 @@ app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 
 
 
 /** ----------------------------------------------------------------------------------
-* Return the given users playlist , and add user to Data base
-*
-* @PARAM {String*} id: Given user id
-* @PARAM {String} name: Given user name
-* @PARAM {String} country: Given user name
-* @PARAM {Number} age: The user age
-* @PARAM {Number} entrance:The user entrance
-*
-* @RESPONSE {json}
-* @RESPONSE-SAMPLE {playList , userData}
-----------------------------------------------------------------------------------*/
+ * Return the given users playlist , and add user to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ * @PARAM {String} country: Given user name
+ * @PARAM {Number} age: The user age
+ * @PARAM {Number} entrance:The user entrance
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {playList , userData}
+ ----------------------------------------------------------------------------------*/
 
 app.post('/users/insertUsers',function(req, res, next) {
     if (!req.body) return res.sendStatus(400,"Error to add user");
-    console.log("here44");
-    console.log(req.body.entrance);
+    // console.log("here44");
+    // console.log(req.body.entrance);
 
     if (req.body.id && req.body.age && req.body.country && req.body.name) {
         var userData = {
@@ -91,6 +94,21 @@ app.post('/users/insertUsers',function(req, res, next) {
             group:req.body.group,
             songs:[]
         };
+        // var userData = {
+        //     name: req.body.name,
+        //     publicId:req.body.publicId.toString(),
+        //     department: req.body.department,
+        //     medicalProfile : req.body.medicalProfile,
+        //     age : parseInt(req.body.age),
+        //     year: parseInt(req.body.year),
+        //     language1Select : req.body.language1Select,
+        //     language2Select : req.body.language2Select,
+        //     yearOfImmigration : req.body.yearOfImmigration,
+        //     Genre1Select : req.body.Genre1Select,
+        //     Genre2Select : req.body.Genre2Select,
+        //     nursingHome : req.body.nursingHome
+        // };
+
         var bulk = Users.collection.initializeOrderedBulkOp();
         bulk.find({
             id: userData.id                 //update the id , if have - update else its build new document
@@ -109,21 +127,97 @@ app.post('/users/insertUsers',function(req, res, next) {
             options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
 // Find the document
-    var exiset = true;
-    //PlayList.createIndex({name:1});
-    PlayList.findOne({name: playlistData.name}, function(error, result) {
-        if (error) return;
-        //console.log("r1",result);
-        if (!result || result == null)
-            exiset = false;
-        // do something with the document
-        //console.log(exiset);
-        if (!exiset){
-            PlayList.findOneAndUpdate(query, update, options, function(error, result) {
-                if (error) return;
-            });
-        }
-    });
+        var exiset = true;
+        //PlayList.createIndex({name:1});
+        PlayList.findOne({name: playlistData.name}, function(error, result) {
+            if (error) return;
+            //console.log("r1",result);
+            if (!result || result == null)
+                exiset = false;
+            // do something with the document
+            //console.log(exiset);
+            if (!exiset){
+                PlayList.findOneAndUpdate(query, update, options, function(error, result) {
+                    if (error) return;
+                });
+            }
+        });
+
+    }
+});
+
+
+
+/** ----------------------------------------------------------------------------------
+ * Return the given users playlist , and add user to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ * @PARAM {String} country: Given user name
+ * @PARAM {Number} age: The user age
+ * @PARAM {Number} entrance:The user entrance
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {playList , userData}
+ ----------------------------------------------------------------------------------*/
+
+app.post('/insertPublicUsers',function(req, res, next) {
+    if (!req.body) return res.sendStatus(400,"Error to add user");
+     // console.log("here44");
+     // console.log(req.body);
+
+    if (req.body.tamaringaId && req.body.age && req.body.countrySel1 && req.body.name) {
+        console.log("here44");
+        var userData = {
+            name: req.body.name,
+            tamaringaId:req.body.tamaringaId.toString(),
+            department: req.body.department,
+            medicalProfile : req.body.medicalProfile,
+            age : parseInt(req.body.age),
+            year: parseInt(req.body.year),
+            countrySel1: req.body.countrySel1,
+            countrySel2: req.body.countrySel2,
+            language1Select : req.body.language1Select,
+            language2Select : req.body.language2Select,
+            yearOfImmigration : req.body.yearOfImmigration,
+            Genre1Select : req.body.Genre1Select,
+            Genre2Select : req.body.Genre2Select,
+            nursingHome : req.body.nursingHome
+        };
+        console.log("here12");
+        var bulk = PublicUsers.collection.initializeOrderedBulkOp();
+        bulk.find({
+            tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
+        }).upsert().updateOne(userData);
+        bulk.execute();
+
+        var playlistData = {
+            name:req.body.group,
+            year:parseInt(req.body.year),
+            country:req.body.countrySel1,
+            records: JSON.parse(req.body.records)
+        };
+
+        var query = {name: playlistData.name},
+            update = playlistData,
+            options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+// Find the document
+        var exiset = true;
+        //PlayList.createIndex({name:1});
+        PlayList.findOne({name: playlistData.name}, function(error, result) {
+            if (error) return;
+            //console.log("r1",result);
+            if (!result || result == null)
+                exiset = false;
+            // do something with the document
+            //console.log(exiset);
+            if (!exiset){
+                PlayList.findOneAndUpdate(query, update, options, function(error, result) {
+                    if (error) return;
+                });
+            }
+        });
 
     }
 });
@@ -172,7 +266,7 @@ app.get('/mb/track/recording/:year/:country', function(req, res, next) {
     db().then(()=>{
         Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(PLAYLISTSIZE).exec(function(err, docs){
         if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
-            console.log(docs);
+            // console.log(docs);
             res.status(200).json({err: false, items: [].concat(docs)});
     })
 }).catch(next);
@@ -452,8 +546,8 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
 
 app.post('/insertResearcher',function(req, res, next) {
     if (!req.body) return res.sendStatus(400,"Error to add user");
-    console.log("Try to post the researcher");
-    console.log(req.body.entrance);
+    // console.log("Try to post the researcher");
+    // console.log(req.body.entrance);
     if (req.body.id && req.body.name) {
         var userData = {
             id: req.body.id.toString(),
@@ -487,6 +581,27 @@ app.get('/insertResearcher/:id', function(req, res, next) {
         res.status(200).json({err: false, items: [].concat(docs)});
     });
 });
+
+
+
+/** ----------------------------------------------------------------------------------
+ *  Get the size of all the users and response as a public Id
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {researcherData}
+ ----------------------------------------------------------------------------------*/
+
+app.get('/publicId', function(req, res, next) {
+    if (!req) return res.sendStatus(400);
+    Users.find({}).count().exec(function(err, docs){
+        if(err) return next(err);
+        res.status(200).json({err: false, items: [].concat(docs)});
+    })
+});
+
 
 
 /** ----------------------------------------------------------------------------------

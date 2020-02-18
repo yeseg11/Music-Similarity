@@ -7,17 +7,9 @@ var Schema = mongoose.Schema;
 // create a schema
 var privateUsersSchema = new Schema({
     name: String,
-    privateId: String,
-    year: Number,
-    age: Number,
-    country: String,
-    youthLanguage: String,
-    originLanguage: String,
-    entrance:Number,
-    favoriteGrnre1:String,
-    favoriteGenre2:String,
-    group: String,
-    songs: []
+    publicId: String,
+    privateId:String,
+    organization:String,
 });
 
 

@@ -2,23 +2,40 @@
     $(document).ready(function () {
         // console.log("here");
         $('#send').on("click", function (e) {
-
+            let newData = ['#name','#id','#department','#medicalProfile','#countrySel1','#countrySel2', '#age','#language1Select','#language2Select','#yearOfImmigration','#Genre1Select','#Genre2Select','#nursingHome'];
             let inputsArr = ['#age', '#name', '#id', '#department', '#countrySel1','#countrySel2', '#language1Select', '#language2Select'];
             for (const element of inputsArr) {
-                console.log(element,element.length);
+                // console.log(element,element.length);
                 if (!$(element).length) {
                     // console.log("here3");
                     return $('#error').text("insert all the details");
                 }
             }
 
-            var age = $('#age'),
+            //the new user data
+            var name = $('#name'),
+                id = $('#id'),
+                department = $('#department'),
+                medicalProfile = $('#medicalProfile'),
+                age = $('#age'),
                 countrySel1 = $('#countrySel1'),
                 countrySel2 = $('#countrySel2'),
-                name = $('#name'),
-                id = $('#id'),
                 language1 = $('#language1Select'),
-                language2 = $('#language2Select');
+                language2 = $('#language2Select'),
+                yearOfImmigration = $('#yearOfImmigration'),
+                Genre1Select = $('#Genre1Select'),
+                Genre2Select = $('#Genre2Select'),
+                nursingHome = $('#nursingHome');
+
+
+            //old user data
+            // var age = $('#age'),
+            //     countrySel1 = $('#countrySel1'),
+            //     countrySel2 = $('#countrySel2'),
+            //     name = $('#name'),
+            //     id = $('#id'),
+            //     language1 = $('#language1Select'),
+            //     language2 = $('#language2Select');
 
 
             if (!age.val() || age.val() == null || parseInt(age.val()) < 30 || parseInt(age.val()) > 120) {
@@ -86,6 +103,13 @@
                 }).then(function (response) {
                     // console.log("Success!", response);
                     //console.log("recList!", recList);
+                    let publicId = 0;
+                    // console.log("publicId: ", publicId);
+                    $.get('/publicId', function (data) {
+                        // console.log("data: ",data.items[0]);
+                        publicId = data.items[0] + 1;
+                    }).then(function (response) {
+                    });
                     var obj = {
                         id: id.val().toString(),
                         age: parseInt(age.val()),
@@ -98,21 +122,44 @@
                         group: countrySel1.val() + yearTwenty.toString(),
                         records: JSON.stringify(recList)
                     };
-                    var publicUser= {
+                    var privateUser= {
                         name: name.val(),
-                        publicId: String,
+                        tamaringaId: publicId,
                         privateId: id.val().toString(),
                         organization: id.val().toString(),
                     };
 
-                    console.log("obj: ",obj);
-                    //console.log("Success2!", response);
-                    var $form = $(this);
-                    console.log($form);
-                    var url = $form.attr("action");
-                    console.log("Url: ", url);
-                    var posting = $.post(url, obj);
-                    posting.done(function (data) {
+                    var publicUser = {
+                        name: name.val(),
+                        tamaringaId:publicId.toString(),
+                        department: department.val(),
+                        medicalProfile : medicalProfile.val(),
+                        age : parseInt(age.val()),
+                        year: parseInt(yearTwenty),
+                        language1Select : language1.val(),
+                        language2Select : language2.val(),
+                        countrySel1: countrySel1.val(),
+                        countrySel2: countrySel2.val(),
+                        yearOfImmigration : parseInt(yearOfImmigration.val()),
+                        Genre1Select : Genre1Select.val(),
+                        Genre2Select : Genre2Select.val(),
+                        nursingHome : nursingHome.val(),
+                        group: countrySel1.val() + yearTwenty.toString(),
+                        records: JSON.stringify(recList)
+                    };
+
+
+                    //regular users
+                    // var $form = $(this);
+                    // var url = $form.attr("action");
+                    // var posting = $.post(url, obj);
+                    // posting.done(function (data) {
+                    // });
+                    //public users
+
+                    var url2 = '/insertPublicUsers';
+                    var posting2 = $.post(url2, publicUser);
+                    posting2.done(function (data) {
                         console.log("data:" + data);
                     });
                     alert("user add");
