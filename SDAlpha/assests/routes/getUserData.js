@@ -126,7 +126,7 @@
                         name: name.val(),
                         tamaringaId: publicId,
                         privateId: id.val().toString(),
-                        organization: id.val().toString(),
+                        nursingHome: nursingHome.val(),
                     };
 
                     var publicUser = {
@@ -145,6 +145,7 @@
                         Genre2Select : Genre2Select.val(),
                         nursingHome : nursingHome.val(),
                         group: countrySel1.val() + yearTwenty.toString(),
+                        entrance: 0,
                         records: JSON.stringify(recList)
                     };
 
@@ -155,12 +156,20 @@
                     // var posting = $.post(url, obj);
                     // posting.done(function (data) {
                     // });
-                    //public users
 
-                    var url2 = '/insertPublicUsers';
-                    var posting2 = $.post(url2, publicUser);
-                    posting2.done(function (data) {
-                        console.log("data:" + data);
+                    //need to check how to update user when you 
+
+                    //private users
+                    var privateUrl = '/insertPrivateUsers';
+                    var postingPrivate = $.post(privateUrl, privateUser);
+                    postingPrivate.done(function (data) {
+                        // console.log("data:" + data);
+                    });
+                    //public users
+                    var publicUrl = '/insertPublicUsers';
+                    var postingPublic = $.post(publicUrl, publicUser);
+                    postingPublic.done(function (data) {
+                        // console.log("data:" + data);
                     });
                     alert("user add");
                 });

@@ -167,7 +167,6 @@ app.post('/insertPublicUsers',function(req, res, next) {
      // console.log(req.body);
 
     if (req.body.tamaringaId && req.body.age && req.body.countrySel1 && req.body.name) {
-        console.log("here44");
         var userData = {
             name: req.body.name,
             tamaringaId:req.body.tamaringaId.toString(),
@@ -182,9 +181,10 @@ app.post('/insertPublicUsers',function(req, res, next) {
             yearOfImmigration : req.body.yearOfImmigration,
             Genre1Select : req.body.Genre1Select,
             Genre2Select : req.body.Genre2Select,
-            nursingHome : req.body.nursingHome
+            entrance: req.body.entrance,
+            nursingHome : req.body.nursingHome,
+            songs:[]
         };
-        console.log("here12");
         var bulk = PublicUsers.collection.initializeOrderedBulkOp();
         bulk.find({
             tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
@@ -221,6 +221,38 @@ app.post('/insertPublicUsers',function(req, res, next) {
 
     }
 });
+
+
+/** ----------------------------------------------------------------------------------
+ * Return the given users playlist , and add user to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ * @PARAM {String} country: Given user name
+ * @PARAM {Number} age: The user age
+ * @PARAM {Number} entrance:The user entrance
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {playList , userData}
+ ----------------------------------------------------------------------------------*/
+
+app.post('/insertPrivateUsers',function(req, res, next) {
+    if (!req.body) return res.sendStatus(400,"Error to add user");
+    if (req.body.tamaringaId && req.body.name && req.body.privateId && req.body.nursingHome) {
+        var userData = {
+            name: req.body.name,
+            tamaringaId: req.body.tamaringaId.toString(),
+            privateId:req.body.privateId,
+            nursingHome:req.body.nursingHome
+        };
+        var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
+        bulk.find({
+            tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
+        }).upsert().updateOne(userData);
+        bulk.execute();
+    }
+});
+
 
 /** ----------------------------------------------------------------------------------
 * Return and update the entrance time of the user  to Data base
@@ -427,18 +459,20 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
 ----------------------------------------------------------------------------------*/
 app.get('/playlist/:playlist/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
-    //console.log(req.params.id+" "+req.params.playlist);
+
+    console.log(req.params.id+" "+req.params.playlist);
     var id = req.params.id.toString();
     //console.log(id);
     PlayList.find({"records.votes.userId":{$in:[id]}}).exec(function(err, docs){
         if(err) return next(err);
-        // console.log('docs: ',docs);
+        console.log('docs: ',docs);
         if (!docs[0] || !docs )
         {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
         }
         var topUser = [];
         var notEar = [];
+        // console.log("docs[0]: ",docs[0]);
         docs[0].records.forEach(function callback(currentValue, index, rec) {
             var index = index ;
             var o =currentValue.votes.filter(x=>x.userId == id);

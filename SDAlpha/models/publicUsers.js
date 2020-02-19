@@ -21,6 +21,7 @@ var publicUsersSchema = new Schema({
     Genre2Select : String,
     nursingHome : String,
     group: String,
+    entrance: Number,
     songs: []
 });
 
