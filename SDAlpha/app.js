@@ -247,7 +247,7 @@ app.post('/insertPrivateUsers',function(req, res, next) {
         };
         var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
         bulk.find({
-            tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
+            privateId: userData.privateId                 //update the id , if have - update else its build new document
         }).upsert().updateOne(userData);
         bulk.execute();
     }
@@ -630,10 +630,23 @@ app.get('/insertResearcher/:id', function(req, res, next) {
 
 app.get('/publicId', function(req, res, next) {
     if (!req) return res.sendStatus(400);
-    Users.find({}).count().exec(function(err, docs){
-        if(err) return next(err);
-        res.status(200).json({err: false, items: [].concat(docs)});
-    })
+    // var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
+    // bulk.find({
+    //     privateId: req.body.privateId                 //update the id , if have - update else its build new document
+    // }).upsert().updateOne(userData);
+    var ex = PrivateUsers.find({privateId: req.body.privateId}).count();
+    if (ex == 0) {
+        PrivateUsers.find({}).count().exec(function(err, docs){
+            if(err) return next(err);
+            res.status(200).json({err: false, items: [].concat(docs)});
+        })
+    }
+    else {
+        PrivateUsers.find({privateId: req.body.privateId}).exec(function(err, docs){
+            if(err) return next(err);
+            res.status(200).json({err: false, items: [].concat(docs.tamaringaId)});
+        })
+    }
 });
 
 

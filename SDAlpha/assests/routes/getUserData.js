@@ -106,71 +106,66 @@
                     let publicId = 0;
                     // console.log("publicId: ", publicId);
                     $.get('/publicId', function (data) {
-                        // console.log("data: ",data.items[0]);
-                        publicId = data.items[0] + 1;
+                        // publicId = data.items[0] + 1;
                     }).then(function (response) {
+                        console.log("response: ",response.items[0]);
+                        publicId = response.items[0] + 1;
+
+                        var privateUser= {
+                            name: name.val(),
+                            tamaringaId: publicId,
+                            privateId: id.val().toString(),
+                            nursingHome: nursingHome.val(),
+                        };
+
+                        var publicUser = {
+                            name: name.val(),
+                            tamaringaId:publicId.toString(),
+                            department: department.val(),
+                            medicalProfile : medicalProfile.val(),
+                            age : parseInt(age.val()),
+                            year: parseInt(yearTwenty),
+                            language1Select : language1.val(),
+                            language2Select : language2.val(),
+                            countrySel1: countrySel1.val(),
+                            countrySel2: countrySel2.val(),
+                            yearOfImmigration : parseInt(yearOfImmigration.val()),
+                            Genre1Select : Genre1Select.val(),
+                            Genre2Select : Genre2Select.val(),
+                            nursingHome : nursingHome.val(),
+                            group: countrySel1.val() + yearTwenty.toString(),
+                            entrance: 0,
+                            records: JSON.stringify(recList)
+                        };
+
+                        //need to check how to update user when you
+
+                        //private users
+                        var privateUrl = '/insertPrivateUsers';
+                        var postingPrivate = $.post(privateUrl, privateUser);
+                        postingPrivate.done(function (data) {
+                            // console.log("data:" + data);
+                        });
+                        //public users
+                        var publicUrl = '/insertPublicUsers';
+                        var postingPublic = $.post(publicUrl, publicUser);
+                        postingPublic.done(function (data) {
+                            // console.log("data:" + data);
+                        });
                     });
-                    var obj = {
-                        id: id.val().toString(),
-                        age: parseInt(age.val()),
-                        country: countrySel1.val(),
-                        entrance: 0,
-                        name: name.val(),
-                        language1: language1.val(),
-                        language2: language2.val(),
-                        year: parseInt(yearTwenty),
-                        group: countrySel1.val() + yearTwenty.toString(),
-                        records: JSON.stringify(recList)
-                    };
-                    var privateUser= {
-                        name: name.val(),
-                        tamaringaId: publicId,
-                        privateId: id.val().toString(),
-                        nursingHome: nursingHome.val(),
-                    };
-
-                    var publicUser = {
-                        name: name.val(),
-                        tamaringaId:publicId.toString(),
-                        department: department.val(),
-                        medicalProfile : medicalProfile.val(),
-                        age : parseInt(age.val()),
-                        year: parseInt(yearTwenty),
-                        language1Select : language1.val(),
-                        language2Select : language2.val(),
-                        countrySel1: countrySel1.val(),
-                        countrySel2: countrySel2.val(),
-                        yearOfImmigration : parseInt(yearOfImmigration.val()),
-                        Genre1Select : Genre1Select.val(),
-                        Genre2Select : Genre2Select.val(),
-                        nursingHome : nursingHome.val(),
-                        group: countrySel1.val() + yearTwenty.toString(),
-                        entrance: 0,
-                        records: JSON.stringify(recList)
-                    };
-
-
-                    //regular users
-                    // var $form = $(this);
-                    // var url = $form.attr("action");
-                    // var posting = $.post(url, obj);
-                    // posting.done(function (data) {
-                    // });
-
-                    //need to check how to update user when you 
-
-                    //private users
-                    var privateUrl = '/insertPrivateUsers';
-                    var postingPrivate = $.post(privateUrl, privateUser);
-                    postingPrivate.done(function (data) {
-                        // console.log("data:" + data);
-                    });
-                    //public users
-                    var publicUrl = '/insertPublicUsers';
-                    var postingPublic = $.post(publicUrl, publicUser);
-                    postingPublic.done(function (data) {
-                        // console.log("data:" + data);
-                    });
+                    // var obj = {
+                    //     id: id.val().toString(),
+                    //     age: parseInt(age.val()),
+                    //     country: countrySel1.val(),
+                    //     entrance: 0,
+                    //     name: name.val(),
+                    //     language1: language1.val(),
+                    //     language2: language2.val(),
+                    //     year: parseInt(yearTwenty),
+                    //     group: countrySel1.val() + yearTwenty.toString(),
+                    //     records: JSON.stringify(recList)
+                    // };
+                    // console.log(publicId);
                     alert("user add");
                 });
             });
