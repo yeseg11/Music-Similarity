@@ -353,7 +353,7 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
 app.get('/selection/:id/:playlist', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
     //console.log(req.params.id+" "+req.params.playlist);
-    PublicUsers.find({id:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
+    PublicUsers.find({tamaringaId:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
         if(err) return next(err);
     });
 });
@@ -372,17 +372,16 @@ app.get('/selection/:id/:playlist', function(req, res, next) {
 ----------------------------------------------------------------------------------*/
 app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req.body) return res.sendStatus(400);
+
     PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
         var userData =docs[0];
-        console.log("userData: ", userData);
-        console.log("songs req: ", req.body.songs);
         try{
-            userData.songs.push(JSON.parse(req.body.songs));
+            userData.songs=JSON.parse(req.body.songs);
         }catch(e){
             return next(e);
         }
-        console.log("userData: ", userData);
+
         var bulk = PublicUsers.collection.initializeOrderedBulkOp();
         bulk.find({
             tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
@@ -397,27 +396,22 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
             PlayList.findOne(lookup).exec(function(err, q){
 
                 var pos = q.records.findIndex(e=>e.mbid == data.mbid);
-
                 q.records[pos].votes = q.records[pos].votes || [];
-                var posUser = q.records[pos].votes.findIndex(e=>e.userId == data.tamaringaId);
-                console.log("posUser: ", posUser);
+                var posUser = q.records[pos].votes.findIndex(e=>e.userId == data.id);
 
                 if(posUser >= 0){
                     q.records[pos].votes[posUser].vote = data.vote
                 }else{
-                    console.log("here: ");
-                    q.records[pos].votes.push({userId: data.tamaringaId, vote: data.vote})
-                    console.log("q.records[pos].votes1: ", q.records[pos].votes);
+                    q.records[pos].votes.push({userId: data.id, vote: data.vote})
                 }
+
                 var user = [];
                 var users = [];
-                console.log("q.records[pos].votes: ", q.records[pos].votes);
-
                 q.records.forEach(rec=>{
 
-                    user.push(rec.votes.filter(x=>x.userId == data.tamaringaId).map(x=>x.vote)[0] || 0);
+                    user.push(rec.votes.filter(x=>x.userId == data.id).map(x=>x.vote)[0] || 0);
                     rec.votes.map(function(x){
-                        if(users.indexOf(x.userId) == -1 && x.userId != data.tamaringaId) users.push(x.userId)
+                        if(users.indexOf(x.userId) == -1 && x.userId != data.id) users.push(x.userId)
                     });
                 });
 
@@ -427,13 +421,13 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
                         votesByUser.push(rec.votes.filter(x=>x.userId == u).map(x=>x.vote)[0] || 0)
                     });
                     q.similarity = q.similarity || [];
-                   var pos =  q.similarity.findIndex(x=>x.user1 == u && x.user2 == data.tamaringaId || x.user2 == u && x.user1 == data.tamaringaId);
-                   //console.log(pos);
-                   if(pos >= 0){
-                    q.similarity[pos].similarity = similarity(user, votesByUser);
-                   }else{
-                    q.similarity.push({user1: u, user2: data.tamaringaId, similarity: similarity(user, votesByUser)})
-                   }
+                    var pos =  q.similarity.findIndex(x=>x.user1 == u && x.user2 == data.id || x.user2 == u && x.user1 == data.id);
+                    //console.log(pos);
+                    if(pos >= 0){
+                        q.similarity[pos].similarity = similarity(user, votesByUser);
+                    }else{
+                        q.similarity.push({user1: u, user2: data.id, similarity: similarity(user, votesByUser)})
+                    }
                 });
                 q.markModified('similarity');
                 q.save(function(err){
@@ -445,7 +439,6 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
         });
     });
 });
-
 
 /** ----------------------------------------------------------------------------------
  * Return and update the user best song, the recommended user best songs and the unseen user song.
