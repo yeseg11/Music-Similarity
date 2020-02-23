@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const PLAYLISTSIZE = 30;
 
 let Records = require('./models/records.js');
-let Users = require('./models/users.js');
+// let Users = require('./models/users.js');
 let Researchers = require('./models/researchers.js');
 let PlayList = require('./models/playlist.js');
 let PublicUsers = require('./models/publicUsers.js');
@@ -183,6 +183,7 @@ app.post('/insertPublicUsers',function(req, res, next) {
             Genre2Select : req.body.Genre2Select,
             entrance: req.body.entrance,
             nursingHome : req.body.nursingHome,
+            group: req.body.group,
             songs:[]
         };
         var bulk = PublicUsers.collection.initializeOrderedBulkOp();
@@ -268,7 +269,7 @@ app.post('/users/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
     // console.log(req.body.entrance);
     // console.log(req.params.entrance);
-    Users.find({id:req.params.id}).exec(function(err, docs){
+    PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
         try{
             docs[0].entrance = req.body.entrance;
@@ -332,7 +333,7 @@ app.get('/playList/:name', function(req, res, next) {
 ----------------------------------------------------------------------------------*/
 app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
-    Users.find({id:req.params.id}).exec(function(err, docs){
+    PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
         //console.log(docs);
         res.status(200).json({err: false, items: [].concat(docs)});
@@ -352,7 +353,7 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
 app.get('/selection/:id/:playlist', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
     //console.log(req.params.id+" "+req.params.playlist);
-    Users.find({id:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
+    PublicUsers.find({id:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
         if(err) return next(err);
     });
 });
@@ -371,18 +372,20 @@ app.get('/selection/:id/:playlist', function(req, res, next) {
 ----------------------------------------------------------------------------------*/
 app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req.body) return res.sendStatus(400);
-    Users.find({id:req.params.id}).exec(function(err, docs){
+    PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
         var userData =docs[0];
+        console.log("userData: ", userData);
+        console.log("songs req: ", req.body.songs);
         try{
-            userData.songs=JSON.parse(req.body.songs);
+            userData.songs.push(JSON.parse(req.body.songs));
         }catch(e){
             return next(e);
         }
-
-        var bulk = Users.collection.initializeOrderedBulkOp();
+        console.log("userData: ", userData);
+        var bulk = PublicUsers.collection.initializeOrderedBulkOp();
         bulk.find({
-            id: userData.id                 //update the id , if have - update else its build new document
+            tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
         }).upsert().updateOne(userData);
         bulk.execute(function(err, BulkWriteResult){
             if(err) return next(err);
@@ -394,22 +397,27 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
             PlayList.findOne(lookup).exec(function(err, q){
 
                 var pos = q.records.findIndex(e=>e.mbid == data.mbid);
+
                 q.records[pos].votes = q.records[pos].votes || [];
-                var posUser = q.records[pos].votes.findIndex(e=>e.userId == data.id);
+                var posUser = q.records[pos].votes.findIndex(e=>e.userId == data.tamaringaId);
+                console.log("posUser: ", posUser);
 
                 if(posUser >= 0){
                     q.records[pos].votes[posUser].vote = data.vote
                 }else{
-                    q.records[pos].votes.push({userId: data.id, vote: data.vote})
+                    console.log("here: ");
+                    q.records[pos].votes.push({userId: data.tamaringaId, vote: data.vote})
+                    console.log("q.records[pos].votes1: ", q.records[pos].votes);
                 }
-
                 var user = [];
                 var users = [];
+                console.log("q.records[pos].votes: ", q.records[pos].votes);
+
                 q.records.forEach(rec=>{
 
-                    user.push(rec.votes.filter(x=>x.userId == data.id).map(x=>x.vote)[0] || 0);
+                    user.push(rec.votes.filter(x=>x.userId == data.tamaringaId).map(x=>x.vote)[0] || 0);
                     rec.votes.map(function(x){
-                        if(users.indexOf(x.userId) == -1 && x.userId != data.id) users.push(x.userId)
+                        if(users.indexOf(x.userId) == -1 && x.userId != data.tamaringaId) users.push(x.userId)
                     });
                 });
 
@@ -419,12 +427,12 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
                         votesByUser.push(rec.votes.filter(x=>x.userId == u).map(x=>x.vote)[0] || 0)
                     });
                     q.similarity = q.similarity || [];
-                   var pos =  q.similarity.findIndex(x=>x.user1 == u && x.user2 == data.id || x.user2 == u && x.user1 == data.id);
+                   var pos =  q.similarity.findIndex(x=>x.user1 == u && x.user2 == data.tamaringaId || x.user2 == u && x.user1 == data.tamaringaId);
                    //console.log(pos);
                    if(pos >= 0){
                     q.similarity[pos].similarity = similarity(user, votesByUser);
                    }else{
-                    q.similarity.push({user1: u, user2: data.id, similarity: similarity(user, votesByUser)})
+                    q.similarity.push({user1: u, user2: data.tamaringaId, similarity: similarity(user, votesByUser)})
                    }
                 });
                 q.markModified('similarity');
@@ -462,11 +470,11 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
 
     console.log(req.params.id+" "+req.params.playlist);
     var id = req.params.id.toString();
-    //console.log(id);
+    console.log("id:",id);
     PlayList.find({"records.votes.userId":{$in:[id]}}).exec(function(err, docs){
         if(err) return next(err);
         console.log('docs: ',docs);
-        if (!docs[0] || !docs )
+        if (!docs[0] || !docs  || docs == [])
         {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
         }

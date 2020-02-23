@@ -56,10 +56,10 @@
                 if (entrance === 0) //first time
                 {
                     entrance++;
-                    //console.log(entrance);
+                    // console.log(data.items[0]);
                     addentrance(id.val().toString(),entrance);
                     var year = data.items[0].year;
-                    var country = data.items[0].country;
+                    var country = data.items[0].countrySel1;
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
                     var playListName = data.items[0].group.toString();
                     $.get('/playList/' + playListName, function(data) {
@@ -114,7 +114,7 @@
                     entrance++;
                     addentrance(id.val().toString(),entrance);
                     var year = data.items[0].year;
-                    var country = data.items[0].country;
+                    var country = data.items[0].countrySel1;
                     //console.log(entrance);
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Loading</h3>');
                     var playListName = data.items[0].group.toString();
@@ -278,13 +278,12 @@ function f2(id,mbid,n) {
 
         if (n <=0 || !n || n>5)
             n = 0;
-        //console.log(data.items[0].group);
         if (!data.items ){
             return Error;
         }
 
         var obj =  {
-            id: id.toString(),
+            tamaringaId: id.toString(),
             group:data.items[0].group,
             songs: JSON.stringify({
                 id: id.toString(),
@@ -304,9 +303,9 @@ function f2(id,mbid,n) {
         });
     });
     $.get('/user/' + id.toString(), function(data) {
-        // console.log(data.items[0].entrance);
+        // console.log(data.items[0].enterens);
         if (data.items[0].entrance == 0){
-            addentrance(data.items[0].id,1);
+            addEnterens(data.items[0].id,1);
         }
 
     });
@@ -335,7 +334,7 @@ function addentrance(id,entrance) {
             return Error;
         }
         var obj =  {
-            id: id.toString(),
+            tamaringaId: id.toString(),
             entrance: enter
         };
         var $form = $( this );
