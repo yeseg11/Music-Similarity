@@ -376,8 +376,30 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
     PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
         if(err) return next(err);
         var userData =docs[0];
+        var flag = false;
+        // console.log("userData: ",userData);
+        var reqSongs = JSON.parse(req.body.songs);
+        console.log("reqSongs: ",reqSongs);
         try{
-            userData.songs=JSON.parse(req.body.songs);
+            // console.log("userData.songs.count: ",userData.songs.length);
+            if (userData.songs.length > 0) {
+                for (var i = 0; i < userData.songs.length ; i++){
+                    if (userData.songs[i].mbid === reqSongs.mbid) {
+                        userData.songs[i].vote = reqSongs.vote;
+                        flag = true;
+                    }
+                }
+                if (!flag){
+                    console.log("here3 ");
+                    userData.songs.push(JSON.parse(req.body.songs));
+                }
+
+            }
+            else{
+                console.log("here4 ");
+                userData.songs=JSON.parse(req.body.songs);
+            }
+
         }catch(e){
             return next(e);
         }

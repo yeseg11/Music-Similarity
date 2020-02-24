@@ -57,7 +57,7 @@
                 {
                     entrance++;
                     // console.log(data.items[0]);
-                    addentrance(id.val().toString(),entrance);
+                    addEnterens(id.val().toString(),entrance);
                     var year = data.items[0].year;
                     var country = data.items[0].countrySel1;
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
@@ -107,12 +107,12 @@
                         $('#title').html("Your Music: "+year + ',' + country);
                         window.scrollBy(0, 500);
                         musicWrapper.html(html);
-                        addentrance(id.val().toString(),1);
+                        addEnterens(id.val().toString(),1);
                     });
                 }
                 else {
                     entrance++;
-                    addentrance(id.val().toString(),entrance);
+                    addEnterens(id.val().toString(),entrance);
                     var year = data.items[0].year;
                     var country = data.items[0].countrySel1;
                     //console.log(entrance);
@@ -320,8 +320,8 @@ function f2(id,mbid,n) {
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {playList , userData}
  ---------------------------------------------------------------------------------- */
-function addentrance(id,entrance) {
-    $.get('/user/' + id.toString(), function(data) {
+function addEnterens(id,entrance) {
+    $.get('/user/' + id, function(data) {
         //console.log(data.items);
         var enter = entrance;
         // console.log('entrance: ',data.items[0].entrance);
