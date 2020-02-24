@@ -6,7 +6,7 @@ const debug = require('debug');
 const path = require('path');
 const db = require('./db');
 const bodyParser = require('body-parser');
-const PLAYLISTSIZE = 30;
+const PLAYLISTSIZE = 50;
 
 let Records = require('./models/records.js');
 // let Users = require('./models/users.js');
@@ -377,9 +377,7 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
         if(err) return next(err);
         var userData =docs[0];
         var flag = false;
-        // console.log("userData: ",userData);
         var reqSongs = JSON.parse(req.body.songs);
-        console.log("reqSongs: ",reqSongs);
         try{
             // console.log("userData.songs.count: ",userData.songs.length);
             if (userData.songs.length > 0) {
@@ -390,16 +388,12 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
                     }
                 }
                 if (!flag){
-                    console.log("here3 ");
                     userData.songs.push(JSON.parse(req.body.songs));
                 }
-
             }
             else{
-                console.log("here4 ");
                 userData.songs=JSON.parse(req.body.songs);
             }
-
         }catch(e){
             return next(e);
         }
@@ -483,12 +477,12 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
 app.get('/playlist/:playlist/:id', function(req, res, next) {
     if (!req.body) return res.sendStatus(400);
 
-    console.log(req.params.id+" "+req.params.playlist);
+    // console.log(req.params.id+" "+req.params.playlist);
     var id = req.params.id.toString();
-    console.log("id:",id);
+    // console.log("id:",id);
     PlayList.find({"records.votes.userId":{$in:[id]}}).exec(function(err, docs){
         if(err) return next(err);
-        console.log('docs: ',docs);
+        // console.log('docs: ',docs);
         if (!docs[0] || !docs  || docs == [])
         {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
