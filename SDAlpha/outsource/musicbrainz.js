@@ -7,7 +7,7 @@ function getDataFromMB(options){ //get the data from MusicBrinz
 
    //console.log("url: "+options.url);
     return new Promise((resolve, reject) => {
-    	if(!options || !options.url) return reject(new Error(`Missing url options for musicbrainz`))  //  send a http requst to get the data fromthe link
+    	if(!options || !options.url) return reject(new Error(`Missing url options for musicbrainz`)); //  send a http requst to get the data fromthe link
         request({
             'method': 'GET',
             'uri': options.url,
@@ -47,7 +47,7 @@ function query(options){    //make the link we need with all the modolar data (y
     return new Promise((resolve, reject)=>{
 		switch(options.query){
 			case 'ageYear':
-				return getDataFromMB({url: `https://musicbrainz.org/ws/2/${options.type}?query=date:${options.date}%20AND%20country:${options.country}%20AND%20lang:${options.language}&limit=${options.limit || 100}&offset=${options.offset || 0}&fmt=json`}).then(resolve).catch(reject)
+				return getDataFromMB({url: `https://musicbrainz.org/ws/2/${options.type}?query=reid:${options.reid}&limit=${options.limit || 100}&offset=${options.offset || 0}&fmt=json`}).then(resolve).catch(reject)
 			    //http://musicbrainz.org/ws/2/release/?query=date:2019%20AND%20country:IL%20AND%20lang:heb&limit=10
                 break;
 		}

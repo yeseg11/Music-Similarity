@@ -19,7 +19,7 @@ module.exports = function initDB () {
 
         // load schemas
 
-        return mongoose.connect(`mongodb://${process.env.mongohost || 'localhost'}/${process.env.mongodb || 'mb'}`, options)
+        return mongoose.connect(`mongodb://${process.env.mongohost || 'localhost'}/${process.env.mongodb || 'first'}`, options)
             .catch(err => debug('app:mongoose')(`ERR ::  mongoose.connect :: ${err.message}`))
     }
 

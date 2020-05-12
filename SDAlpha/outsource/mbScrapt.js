@@ -1,6 +1,6 @@
 var mb = require('./musicbrainz');
 var fs = require('fs-extra');
-var path = require('path');
+let path = require('path');
 var debug = require('debug');
 
 //call to musicbrainz file and make folders's with json file's with 100 songs in each file for every year.
@@ -11,11 +11,11 @@ var toYear = process.env.toYear || (new Date).getFullYear(); //if we want to cho
 var o = {                   //build object with the types of the data .
     query: 'ageYear',
     type: 'release/',
-    country: 'IL',
-    language: 'heb',
+    country: 'IT',
+    language: 'ita',
     date: process.env.year || (new Date).getFullYear(),
     limit: 100
-}
+};
 debug('app:mb')(`going to scrapt ${o.date} to ${(new Date).getFullYear()}`); //show has what the year's
 for (var year = o.date; year <= toYear; year++) {
     (function(y, oo) {
@@ -25,7 +25,7 @@ for (var year = o.date; year <= toYear; year++) {
             fs.ensureDir(dir).then(() => {
                 oo.date = y;
                 mb.query(oo).then(function(data) {
-                    console.log(data)
+                    // console.log(data);
                     debug('app:musicbrainzScrpat')(`total of ${data.items.releases.length}/${parseInt(data.items.count)}`);
                     fs.writeFile(`./new-mb-raw/${y}/mb-0.json`, JSON.stringify(data.items.releases), function(err) { //write to file all the data from musicBrinz
                         if (err) {
@@ -71,7 +71,7 @@ for (var year = o.date; year <= toYear; year++) {
                     })
                 })
             })
-        }, ((y - o.date) * 1000 + 3000) * 1);
+        }, ((y - o.date) * 1000 + 3000));
 
     })(year, o);
 }

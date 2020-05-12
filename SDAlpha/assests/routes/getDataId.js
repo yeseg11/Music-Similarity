@@ -1,6 +1,6 @@
 (function($) {
     $(document).ready(function() {
-
+        const SONGSDISPLAYED = 10;
         var musicWrapper = $('#musicWrapper');
         /**
          *  @NAME template,experienceShow: add the video and the vote buttons to screen (HTML)
@@ -71,7 +71,7 @@
                         var playarr =[];
                         var i,j = 0;
                         var flag1,flag2 = true;
-                        var s =  10;
+                        var s =  SONGSDISPLAYED;
                         for (i=0 ;i < s ; i++ ){
                             flag2 = true;
                             while (flag2){
@@ -150,7 +150,7 @@
                         else if (data.items[0].notEar.length < notEarSize )
                         {
                             notEarSize = data.items[0].notEar.length;
-                            UserSize += 10 -(UserSize + recSize + notEarSize);
+                            UserSize += SONGSDISPLAYED -(UserSize + recSize + notEarSize);
                         }
                        // console.log("a: ",UserSize,recSize,notEarSize);
 

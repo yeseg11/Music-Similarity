@@ -1,23 +1,22 @@
 // this file we build a schema for DB
 
 
-
 // grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // create a schema
 var recordsSchema = new Schema({
-  mbId: String,
+    mbId: String,
     title: String,
     year: Number,
-    artist: [{name: String, language: String}], // NEED TO BE JUST THE ARTIST NAME !!
+    artistName: String, // NEED TO BE JUST THE ARTIST NAME !!
     language: String,
     country: String,
-    releaseId:String,
-    // genre:String,
+    lyrics: String,
+    genre: String,
+    youtube: {},
     mbRaw: {},
-    youtube: {}
 });
 
 // the schema is useless so far

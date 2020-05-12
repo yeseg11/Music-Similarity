@@ -12,8 +12,10 @@ var playlistSchema = new Schema({
     similarity: [],
     year:Number,
     country:String,
+    language:String,
     records: [{
         mbid: String,
+        language:String,
         title: String,
         year: Number,
         artist: [],

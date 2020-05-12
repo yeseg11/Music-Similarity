@@ -2,8 +2,8 @@
     $(document).ready(function () {
         // console.log("here");
         $('#send').on("click", function (e) {
-            let newData = ['#name','#id','#department','#medicalProfile','#countrySel1','#countrySel2', '#age','#language1Select','#language2Select','#yearOfImmigration','#Genre1Select','#Genre2Select','#nursingHome'];
-            let inputsArr = ['#age', '#name', '#id', '#department', '#countrySel1','#countrySel2', '#language1Select', '#language2Select'];
+            let newData = ['#name','#id','#department','#medicalProfile','#countryAtTwenty','#countryOrigin', '#age','#languageOrigin','#languageAtTwenty','#yearOfImmigration','#Genre1Select','#Genre2Select','#nursingHome'];
+            let inputsArr = ['#birthYear', '#name', '#id', '#department', '#countryAtTwenty','#countryOrigin', '#languageOrigin', '#languageAtTwenty'];
             for (const element of inputsArr) {
                 // console.log(element,element.length);
                 if (!$(element).length) {
@@ -17,11 +17,11 @@
                 id = $('#id'),
                 department = $('#department'),
                 medicalProfile = $('#medicalProfile'),
-                age = $('#age'),
-                countrySel1 = $('#countrySel1'),
-                countrySel2 = $('#countrySel2'),
-                language1 = $('#language1Select'),
-                language2 = $('#language2Select'),
+                birthYear = $('#birthYear'),
+                countryAtTwenty = $('#countryAtTwenty'),
+                countryOrigin = $('#countryOrigin'),
+                language1 = $('#languageOrigin'),
+                language2 = $('#languageAtTwenty'),
                 yearOfImmigration = $('#yearOfImmigration'),
                 Genre1Select = $('#Genre1Select'),
                 Genre2Select = $('#Genre2Select'),
@@ -30,20 +30,20 @@
 
             //old user data
             // var age = $('#age'),
-            //     countrySel1 = $('#countrySel1'),
-            //     countrySel2 = $('#countrySel2'),
+            //     countryAtTwenty = $('#countryAtTwenty'),
+            //     countryOrigin = $('#countryOrigin'),
             //     name = $('#name'),
             //     id = $('#id'),
-            //     language1 = $('#language1Select'),
-            //     language2 = $('#language2Select');
+            //     language1 = $('#languageOrigin'),
+            //     language2 = $('#languageAtTwenty');
 
-
-            if (!age.val() || age.val() == null || parseInt(age.val()) < 30 || parseInt(age.val()) > 120) {
+            print(birthYear.val())
+            if (!birthYear.val() || birthYear.val() == null || parseInt(birthYear.val()) < 1920 || parseInt(birthYear.val()) > (new Date()).getFullYear()) {
                 //console.log('Error');
-                alert("insert age or age between 30 to 120");
-                return $('#error').text("insert age or age between 30 to 120");
+                alert("insert birth Year or birth Year between 1920 to this year");
+                return $('#error').text("insert birth Year or birth Year between 1920 to this year");
             }
-            if (countrySel1.val() === "Select Country" || countrySel2.val() === "Select Country") {
+            if (countryAtTwenty.val() === "Select Country" || countryOrigin.val() === "Select Country") {
                 //console.log('Error');
                 alert("please select a country");
                 return $('#error').text("please select a country");
@@ -68,8 +68,9 @@
                 alert("please insert ID");
                 return $('#error').text("please insert ID");
             }
-
-            var yearTwenty = (new Date()).getFullYear() - parseInt(age.val()) + 20;
+            //HERE
+            var yearTwenty = parseInt(birthYear.val()) + 20;
+            // var yearTwenty = (new Date()).getFullYear() - parseInt(age.val()) + 20;
             //console.log(yearTwenty);
             if (!yearTwenty) {
                 //console.log("error");
@@ -81,7 +82,7 @@
                 // do a thing, possibly async, then…
                 //alert(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
                 var i = 0;
-                $.get('/mb/track/recording/' + yearTwenty + '/' + countrySel1.val(), function (data) {
+                $.get('/mb/track/recording/' + yearTwenty + '/' + countryAtTwenty.val(), function (data) {
                     if (!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
                     var size = 50;
                     if (data.items.length < size) {
@@ -92,9 +93,9 @@
                         recList.push({
                             mbid: data.items[i].mbId,
                             title: data.items[i].title,
-                            year: parseInt(data.items[i].year),
+                            yearAtTwenty: parseInt(data.items[i].yearAtTwenty),
                             artist: data.items[i].artist,
-                            country: data.items[i].countrySel1,
+                            country: data.items[i].countryAtTwenty,
                             youtube: data.items[i].youtube,
                         });
 
@@ -123,17 +124,17 @@
                             tamaringaId:publicId.toString(),
                             department: department.val(),
                             medicalProfile : medicalProfile.val(),
-                            age : parseInt(age.val()),
-                            year: parseInt(yearTwenty),
-                            language1Select : language1.val(),
-                            language2Select : language2.val(),
-                            countrySel1: countrySel1.val(),
-                            countrySel2: countrySel2.val(),
+                            birthYear : parseInt(birthYear.val()),
+                            yearAtTwenty: parseInt(yearTwenty),
+                            languageOrigin : language1.val(),
+                            languageAtTwenty : language2.val(),
+                            countryAtTwenty: countryAtTwenty.val(),
+                            countryOrigin: countryOrigin.val(),
                             yearOfImmigration : parseInt(yearOfImmigration.val()),
                             Genre1Select : Genre1Select.val(),
                             Genre2Select : Genre2Select.val(),
                             nursingHome : nursingHome.val(),
-                            group: countrySel1.val() + yearTwenty.toString(),
+                            group: countryAtTwenty.val() + yearTwenty.toString(),
                             entrance: 0,
                             records: JSON.stringify(recList)
                         };
@@ -156,13 +157,13 @@
                     // var obj = {
                     //     id: id.val().toString(),
                     //     age: parseInt(age.val()),
-                    //     country: countrySel1.val(),
+                    //     country: countryAtTwenty.val(),
                     //     entrance: 0,
                     //     name: name.val(),
                     //     language1: language1.val(),
                     //     language2: language2.val(),
                     //     year: parseInt(yearTwenty),
-                    //     group: countrySel1.val() + yearTwenty.toString(),
+                    //     group: countryAtTwenty.val() + yearTwenty.toString(),
                     //     records: JSON.stringify(recList)
                     // };
                     // console.log(publicId);

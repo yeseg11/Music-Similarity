@@ -58,8 +58,8 @@ app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests
 app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, ()=>res.end())); // login form
 app.get('/researchers/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, ()=>res.end())); // login form
 app.get('/researchers/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests','/newSong.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
-app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
+app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearchGroup.html'), {}, ()=>res.end())); // login form
+app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearchGroup.html'), {}, ()=>res.end())); // login form
 app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researcherLoginPage.html'), {}, ()=>res.end())); // login form
 
 
@@ -81,16 +81,16 @@ app.post('/users/insertUsers',function(req, res, next) {
     // console.log("here44");
     // console.log(req.body.entrance);
 
-    if (req.body.id && req.body.age && req.body.country && req.body.name) {
+    if (req.body.id && req.body.birthYear && req.body.country && req.body.name) {
         var userData = {
             id: req.body.id.toString(),
             name: req.body.name,
             country: req.body.country,
-            age: parseInt(req.body.age),
+            birthYear: parseInt(req.body.birthYear),
             language1:req.body.language1,
             language2:req.body.language2,
             entrance: req.body.entrance,
-            year: parseInt(req.body.year),
+            yearAtTwenty: parseInt(req.body.yearAtTwenty),
             group:req.body.group,
             songs:[]
         };
@@ -101,8 +101,8 @@ app.post('/users/insertUsers',function(req, res, next) {
         //     medicalProfile : req.body.medicalProfile,
         //     age : parseInt(req.body.age),
         //     year: parseInt(req.body.year),
-        //     language1Select : req.body.language1Select,
-        //     language2Select : req.body.language2Select,
+        //     languageOrigin : req.body.languageOrigin,
+        //     languageAtTwenty : req.body.languageAtTwenty,
         //     yearOfImmigration : req.body.yearOfImmigration,
         //     Genre1Select : req.body.Genre1Select,
         //     Genre2Select : req.body.Genre2Select,
@@ -117,7 +117,7 @@ app.post('/users/insertUsers',function(req, res, next) {
 
         var playlistData = {
             name:req.body.group,
-            year:parseInt(req.body.year),
+            year:parseInt(req.body.yearAtTwenty),
             country:req.body.country,
             records: JSON.parse(req.body.records)
         };
@@ -166,18 +166,18 @@ app.post('/insertPublicUsers',function(req, res, next) {
      // console.log("here44");
      // console.log(req.body);
 
-    if (req.body.tamaringaId && req.body.age && req.body.countrySel1 && req.body.name) {
+    if (req.body.tamaringaId && req.body.birthYear && req.body.countryAtTwenty && req.body.name) {
         var userData = {
             name: req.body.name,
             tamaringaId:req.body.tamaringaId.toString(),
             department: req.body.department,
             medicalProfile : req.body.medicalProfile,
-            age : parseInt(req.body.age),
-            year: parseInt(req.body.year),
-            countrySel1: req.body.countrySel1,
-            countrySel2: req.body.countrySel2,
-            language1Select : req.body.language1Select,
-            language2Select : req.body.language2Select,
+            birthYear : parseInt(req.body.birthYear),
+            yearAtTwenty: parseInt(req.body.yearAtTwenty),
+            countryAtTwenty: req.body.countryAtTwenty,
+            countryOrigin: req.body.countryOrigin,
+            languageOrigin : req.body.languageOrigin,
+            languageAtTwenty : req.body.languageAtTwenty,
             yearOfImmigration : req.body.yearOfImmigration,
             Genre1Select : req.body.Genre1Select,
             Genre2Select : req.body.Genre2Select,
@@ -194,8 +194,8 @@ app.post('/insertPublicUsers',function(req, res, next) {
 
         var playlistData = {
             name:req.body.group,
-            year:parseInt(req.body.year),
-            country:req.body.countrySel1,
+            year:parseInt(req.body.yearAtTwenty),
+            country:req.body.countryAtTwenty,
             records: JSON.parse(req.body.records)
         };
 
@@ -230,7 +230,6 @@ app.post('/insertPublicUsers',function(req, res, next) {
  * @PARAM {String*} id: Given user id
  * @PARAM {String} name: Given user name
  * @PARAM {String} country: Given user name
- * @PARAM {Number} age: The user age
  * @PARAM {Number} entrance:The user entrance
  *
  * @RESPONSE {json}
@@ -295,14 +294,33 @@ app.post('/users/:id', function(req, res, next) {
 * @RESPONSE {json}
 * @RESPONSE-SAMPLE {docs: []}
 ----------------------------------------------------------------------------------*/
-app.get('/mb/track/recording/:year/:country', function(req, res, next) {
+app.get('/mb/track/recording/:yearAtTwenty/:country', function(req, res, next) {
     db().then(()=>{
-        Records.find({year: { $gt: parseInt(req.params.year)-3, $lt: parseInt(req.params.year)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(PLAYLISTSIZE).exec(function(err, docs){
+        Records.find({yearAtTwenty: { $gt: parseInt(req.params.yearAtTwenty)-3, $lt: parseInt(req.params.yearAtTwenty)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(PLAYLISTSIZE).exec(function(err, docs){
         if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
             // console.log(docs);
             res.status(200).json({err: false, items: [].concat(docs)});
     })
 }).catch(next);
+});
+
+
+/** ----------------------------------------------------------------------------------
+ * Return the record if exisset
+ *
+ * @PARAM {String} record data.............................:
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {docs: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/mb/track/record/:mbid', function(req, res, next) {
+    db().then(()=>{
+        Records.find({mbid: req.mbid}).limit(1).exec(function(err, docs){
+            if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
+            console.log(docs);
+            res.status(200).json({err: false, items: [].concat(docs)});
+        })
+    }).catch(next);
 });
 
 
@@ -494,27 +512,27 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
             var index = index ;
             var o =currentValue.votes.filter(x=>x.userId == id);
             var ex = currentValue.votes.findIndex(x=>x.userId == id);
-            // console.log('rec: ',rec);
+            console.log('rec: ',rec);
             if (ex != -1 )
             {
-                //console.log(rec[index]);
+                console.log(rec[index]);
                 //console.log(index);
                 //console.log(currentValue.votes.filter(x=>x.userId == id));
                 //console.log(currentValue.votes.findIndex(x=>x.userId == id));
                 topUser.push({index:index ,
                     vote:o[0].vote,
                     mbid:rec[index].mbid ,
-                    artist:rec[index].artist[0].name,
+                    artist:rec[index].artist,
                     title:rec[index].title,
                     videoId:rec[index].youtube.videoId
                 });
             }
             else{
-                // console.log(rec[index]);
+                console.log(rec[index]);
                 notEar.push({index:index ,
                     vote:0,
                     mbid:rec[index].mbid ,
-                    artist:rec[index].artist[0].name,
+                    artist:rec[index].artist,
                     title:rec[index].title,
                     videoId:rec[index].youtube.videoId
                 });
@@ -566,7 +584,7 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
                     recSongs.push({index:index ,
                         vote:o[0].vote,
                         mbid:rec[index].mbid ,
-                        artist:rec[index].artist[0].name,
+                        artist:rec[index].artist,
                         title:rec[index].title,
                         videoId:rec[index].youtube.videoId
                     });

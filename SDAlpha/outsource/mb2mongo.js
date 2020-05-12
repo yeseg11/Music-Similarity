@@ -7,7 +7,7 @@ var glob = require("glob");
 var path = require('path');
 var async = require('async');
 
-
+var index = 0;
 // fsGlob.readdir('./mb-raw/**/*.json', function(err, files) {
 //   console.log(err || files);
 // });
@@ -34,16 +34,35 @@ glob(path.join(__dirname, "/new-mb-raw/**/*.json"), {}, function(err, files) {
             ([].concat(data)).forEach(function(el) {
                 // console.log(el['text-representation'].language);
                 // var year =parseInt(el['releases'][0]['date'])
+                var year = 0;
+                var stingYear = '';
+                for (var i = 0 ; i < 4 ; i++ ){
+                    stingYear +=  el.date[i]
+                }
+                console.log('stingYear: ',stingYear);
+                year = parseInt(stingYear);
+                console.log('year: ',year);
+                var language = "";
+
+                try {
+                    language = el['text-representation'].language;
+                } catch (error) {
+                    language = "eng"
+                }
+                console.log('language: ',language);
                 var prepare = {         //add the details to every document
                     mbId: el.id,
                     title: el.title,
-                    year: el.date,
+                    year: year,
                     artist: el['artist-credit'][0].name,
                     country: el.country,
-                    language: el['text-representation'].language,
+                    language: language,
+                    lyrics: "",
+                    genre: "",
+                    youtube: {},
                     mbRaw: el,
-                    youtube: {}
-                }
+                };
+
                 bulk.find({
                     mbId: el.id                 //update the mbid , if have - update else its build new document
                 }).upsert().updateOne(prepare);

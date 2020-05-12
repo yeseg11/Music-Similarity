@@ -3,19 +3,18 @@
 var y = require('youtube-node'); //use the youtube-node libery
 var youTube = new y();
 
-youTube.setKey('AIzaSyB1OOSpTREs85WUMvIgJvLTZKye4BVsoFU'); //Required a google developer key to use youtube api
+youTube.setKey('AIzaSyA0GBmqiXkEouLaSiGMu7ZIXLgoWD82LCE'); //Required a google developer key to use youtube api
 
 exports.scrapt = function(options) {
     return new Promise(function(resolve, reject) {
+        console.log("options.name: ", options.name);
+        // console.log(youTube);
         youTube.search(options.name, 2, function(error, result) {
-            if (error) return reject(error || new Error(result));
-
-            if(!result || !result.items || !result.items[0] || !result.items[0].id || !result.items[0].id.videoId) return resolve({})
-            
-            var videoId = result.items[0].id.videoId;   //get the videoId
-
+            console.log("result: ", result);
+            if(!result || !result.items || !result.items[0] || !result.items[0].id || !result.items[0].id.videoId) return resolve({});
+            var videoId = result.items[0].id.videoId.toString();   //get the videoId
             youTube.getById(videoId, function(error, result) {
-                if (error || !result.items || !result.items[0]) return reject(error || new Error(result));
+                if (error || !result.items || !result.items[0] || !result.items[0].statistics) return reject(error || new Error(result));
                 var viewCount = parseInt(result.items[0].statistics.viewCount); //get the viewCount
                 if (!viewCount)
                     viewCount = 1 ;
@@ -45,4 +44,7 @@ exports.scrapt = function(options) {
 
         })
     });
-}
+};
+//AIzaSyA0GBmqiXkEouLaSiGMu7ZIXLgoWD82LCE
+//AIzaSyA_LdnTSbjIB_A2Vib_4LVh80L7ygTkRuI
+//AIzaSyCtqguJTYklaaJx5u6WYp4RqUQ5RxHghsc

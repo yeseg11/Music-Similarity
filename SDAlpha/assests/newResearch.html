@@ -25,59 +25,70 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
     <script src="/lib/jquery/jquery.min.js"></script> <!-- 2.1.3-->
-    <!--<script src="routes/body.js" ></script>-->
-    <script src="routes/getUserData.js" ></script>
+    <script src="routes/setResrarchData.js" ></script>
     <script src="app.js"></script>
-    <!--<script src="models/findByYaer.js"></script>-->
 </head>
 <body>
 <div class="container-contact100">
     <div class="wrap-contact100">
         <form class="contact100-form validate-form">
 				<span class="contact100-form-title">
-					Add New Research Group
+					Add New Research
 				</span>
-        <div class="wrap-input100 validate-input" data-validate="Name is required">
-            <span class="label-input100">Name of Research Group</span>
-            <input id ='nameofResearchGroup' class="input100" type="text" name='nameofResearchGroup' placeholder="Enter Name of Research Group">
-            <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input" data-validate="Name is required">
-            <span class="label-input100">Reasercher Name</span>
-            <input id ='reasercherName' class="input100" type="text" name="reasercherName" placeholder="Enter Reasercher Name">
-            <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input" data-validate="ID is required">
-            <span class="label-input100">Reasercher ID</span>
-            <input id ='reasercherID' class="input100" type="text" name="reasercherID" placeholder="Enter Reasercher ID">
-            <span class="focus-input100"></span>
-        </div>
+            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <span class="label-input100">Name of Research Group</span>
+                <input id ='nameofResearchGroup' class="input100" type="text" name='nameofResearchGroup' placeholder="Enter Name of Research Group">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <span class="label-input100">Reasercher Name</span>
+                <input id ='reasercherName' class="input100" type="text" name="reasercherName" placeholder="Enter Reasercher Name">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="ID is required">
+                <span class="label-input100">Reasercher ID</span>
+                <input id ='reasercherID' class="input100" type="text" name="reasercherID" placeholder="Enter Reasercher ID">
+                <span class="focus-input100"></span>
+            </div>
             <div class="wrap-input100 validate-input" data-validate="Nursing Home is required">
                 <span class="label-input100">Nursing Home</span>
                 <input id ='nursingHome' class="input100" type="text" name='nursingHome' placeholder="Enter Nursing Home">
                 <span class="focus-input100"></span>
             </div><!--==============change to drop down===========================-->
-        <div class="wrap-input100 validate-input" data-validate="Department is required">
-            <span class="label-input100">Department</span>
-            <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">
-            <span class="focus-input100"></span>
-        </div><!--==============change to drop down===========================-->
+            <div class="wrap-input100 validate-input" data-validate="Department is required">
+                <span class="label-input100">Department</span>
+                <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">
+                <span class="focus-input100"></span>
+            </div><!--==============change to drop down===========================-->
             <!--==============add users, connect to DB===========================-->
-        <div class="wrap-input100 validate-input" data-validate="Length of study is required">
-            <span class="label-input100">Length of study in weeks</span>
-            <input id ='weeks' class="input100" type="number" name="weeks" placeholder="Enter Length of study">
-            <span class="focus-input100"></span>
-        </div>
+            <div class="wrap-input100 validate-input" data-validate="Length of study is required">
+                <span class="label-input100">Length of study in weeks</span>
+                <input id ='weeks' class="input100" type="number" name="weeks" placeholder="Enter Length of study">
+                <span class="focus-input100"></span>
+            </div>
 
-        <div class="wrap-input100 validate-input" data-validate="Number of sessions is required">
-            <span class="label-input100">Number of sessions per week</span>
-            <input id ='session' class="input100" type="number" name="session" placeholder="Enter Number of sessions">
-            <span class="focus-input100"></span>
-        </div>
+            <div class="wrap-input100 validate-input" data-validate="Number of sessions is required">
+                <span class="label-input100">Number of sessions per week</span>
+                <input id ='session' class="input100" type="number" name="session" placeholder="Enter Number of sessions">
+                <span class="focus-input100"></span>
+            </div>
 
             <div class="wrap-input100 validate-input" data-validate="Length of session is required">
                 <span class="label-input100">Length of session in minutes</span>
                 <input id ='min' class="input100" type="number" name="min" placeholder="Enter Length of session">
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 input100-select">
+                <span class="label-input100">Algorithm</span>
+                <div>
+
+                    <select id="algorithm" class="selection-2" name="algorithm">
+                        <option>Select Algorithm</option>
+                        <option value="alg1">Algorithm 1</option>
+                        <option value="alg2">Algorithm 2</option>
+                    </select>
+                </div>
                 <span class="focus-input100"></span>
             </div>
 
@@ -87,7 +98,7 @@
                     <div class="contact100-form-bgbtn"></div>
                     <button type="button" id ='send' class="contact100-form-btn" >
 							<span>
-								send
+								Create
 								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
 							</span>
                     </button>
@@ -97,28 +108,28 @@
             <div class="container-contact100-form-btn">
                 <div class="wrap-contact100-form-btn">
                     <div class="contact100-form-bgbtn"></div>
-                    <button type="button" id ='return' class="contact100-form-btn" onclick="location.href='/'">
+                    <button type="button" id ='return' class="contact100-form-btn" onclick="location.href='/researchers'">
               <span>
-                return to Music Similarity
+                Back
                 <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
               </span>
                     </button>
 
                 </div>
             </div>
-<!--
-            <div class="container-contact100-form-btn">
-                <div class="wrap-contact100-form-btn">
-                    <div class="contact100-form-bgbtn"></div>
-                    <button id='btn_tracks' type='button' class="contact100-form-btn">
-							<span>
-								By Track
-								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-							</span>
-                    </button>
-                </div>
-            </div>
--->
+            <!--
+                        <div class="container-contact100-form-btn">
+                            <div class="wrap-contact100-form-btn">
+                                <div class="contact100-form-bgbtn"></div>
+                                <button id='btn_tracks' type='button' class="contact100-form-btn">
+                                        <span>
+                                            By Track
+                                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                                        </span>
+                                </button>
+                            </div>
+                        </div>
+            -->
         </form>
     </div>
 </div>
