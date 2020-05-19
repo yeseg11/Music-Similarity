@@ -58,8 +58,8 @@ app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests
 app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, ()=>res.end())); // login form
 app.get('/researchers/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, ()=>res.end())); // login form
 app.get('/researchers/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests','/newSong.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearchGroup.html'), {}, ()=>res.end())); // login form
-app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearchGroup.html'), {}, ()=>res.end())); // login form
+app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
+app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
 app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researcherLoginPage.html'), {}, ()=>res.end())); // login form
 
 
