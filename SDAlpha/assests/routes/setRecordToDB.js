@@ -1,7 +1,7 @@
 (function ($) {
     $(document).ready(function () {
         /*
-        *   mbId: String,
+        mbId: String,
             title: String,
             year: Number,
             artistName: String, // NEED TO BE JUST THE ARTIST NAME !!
@@ -17,7 +17,7 @@
         $('#send').on("click", function (e) {
             console.log("here")
             var arr = ["#mbId","#title","#year","#artistName","#language","#country","#lyrics","#genre"];
-            var mustInput = ["#artistName","#title","#year","#country","#language","#mbId","#youTubeId","#youTubeViews"];
+            var mustInput = ["#title","#artistName","#year","#country","#language","#mbId","#youtubeId","#youtubeViews"];
 
             for (const element of mustInput){
 
@@ -34,8 +34,8 @@
                 country = $('#country'),
                 language = $('#language'),
                 mbId = $('#mbId'),
-                youTubeId = $('#youTubeId'),
-                youTubeViews = $('#youTubeViews');
+                youtubeId = $('#youtubeId'),
+                youtubeViews = $('#youtubeViews');
 
 
             var genre = "";
@@ -52,11 +52,12 @@
             var recList = [];
             var prom = new Promise(function (resolve, reject) {
                 // do a thing, possibly async, then…
-                //alert(age.val()+" "+country.val()+" "+name.val()+" "+id.val());
+                console.log('hhhhhhhh');
+                alert(artistName.val()+" "+title.val()+" "+year.val()+" "+country.val()+" "+language.val()+" "+mbId.val()+" "+youtubeId.val()+" "+youtubeViews.val());
                 var i = 0;
-                $.get('/mb/track/record/' + mbid, function (data) {
-                    if (!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
-                    console.log(data)
+                // $.get('/mb/track/record/' + mbid, function (data) {
+                //     if (!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
+                //     console.log(data)
                 //     var size = 25;
                 //     if (data.items.length < size) {
                 //         size = data.items.length;
@@ -100,7 +101,7 @@
                 //         console.log("data:" + data);
                 //     });
                 //     alert("user add");
-                });
+                // });
             });
         })
     });

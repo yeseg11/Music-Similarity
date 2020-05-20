@@ -358,6 +358,38 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
     })
 });
 
+/** ----------------------------------------------------------------------------------
+ * Return all the users Data from DB
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {docs: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/allusers', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+    if (!req) return res.sendStatus(400);
+    PublicUsers.find({}).exec(function(err, docs){
+        if(err) return next(err);
+        // console.log(docs);
+        res.status(200).json({err: false, items: [].concat(docs)});
+    })
+});
+
+/** ----------------------------------------------------------------------------------
+ * Return all the researchers Data from DB
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {docs: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/allresearchers', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+    if (!req) return res.sendStatus(400);
+    Researchers.find({}).exec(function(err, docs){
+        if(err) return next(err);
+        // console.log(docs);
+        res.status(200).json({err: false, items: [].concat(docs)});
+    })
+});
+
+
+
 
 /** ----------------------------------------------------------------------------------
 * Return the user with the playlist name from the DB
