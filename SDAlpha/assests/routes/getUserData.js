@@ -134,7 +134,7 @@
                             Genre1Select : Genre1Select.val(),
                             Genre2Select : Genre2Select.val(),
                             nursingHome : nursingHome.val(),
-                            group: countryAtTwenty.val() + yearTwenty.toString(),
+                            group: countryAtTwenty.val() + language2.val() +yearTwenty.toString(),
                             entrance: 0,
                             records: JSON.stringify(recList)
                         };

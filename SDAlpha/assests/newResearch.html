@@ -36,12 +36,12 @@
 					Add New Research
 				</span>
             <div class="wrap-input100 validate-input" data-validate="Name is required">
-                <span class="label-input100">Reaserch Name</span>
+                <span class="label-input100">Research Name</span>
                 <input id ='researchName' class="input100" type="text" name="researchName" placeholder="Enter Reasercher Name">
                 <span class="focus-input100"></span>
             </div>
             <div class="wrap-input100 validate-input" data-validate="ID is required">
-                <span class="label-input100">Reasercher ID</span>
+                <span class="label-input100">Research ID</span>
                 <input id ='researchId' class="input100" type="text" name="researchId" placeholder="Enter Reasercher ID">
                 <span class="focus-input100"></span>
             </div>
@@ -49,7 +49,7 @@
             <!--==============change to drop down===========================-->
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <span class="label-input100">Select the researchers name</span>
-                <select input id ='researchersName' class="input100" type="text" name='researchersName' placeholder="Select the researchers name" multiple>
+                <select input id ='researchersIds' class="input100" type="text" name='researchersIds' placeholder="Select the researchers name" multiple>
                     <option value="" disabled selected>Select the researchers</option>
                 </select>
                 <!--                <input id ='researchers' class="input100" type="text" name='researchers' placeholder="Select the researchers name">-->
@@ -58,10 +58,11 @@
 
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <span class="label-input100">Choose the patients</span>
-                <select input id ='patientsName' class="input100" type="text" name='patientsName' placeholder="Select the patients Name" multiple>
+                <select input id ='patientsIds' class="input100" type="text" name='patientsIds' placeholder="Select the patients Name" multiple>
                     <option value="" disabled selected>Select the patients</option>
+
                 </select>
-                <!--                <input id ='patientsName' class="input100" type="text" name="patientsName" placeholder="Enter patients Name">-->
+                <!--                <input id ='patientsIds' class="input100" type="text" name="patientsIds" placeholder="Enter patients Name">-->
                 <span class="focus-input100"></span>
             </div>
             <!-- ======== -->
@@ -102,7 +103,7 @@
                 <span class="label-input100">Algorithm</span>
                 <div>
                     <select id="alguritem" class="selection-2" name="alguritem">
-                        <option>Select Algorithm</option>
+                        <option disabled selected>Select Algorithm</option>
                         <option value="alg1">Algorithm 1</option>
                         <option value="alg2">Algorithm 2</option>
                     </select>

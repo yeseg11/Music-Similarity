@@ -14,8 +14,10 @@ let Researchers = require('./models/researchers.js');
 let PlayList = require('./models/playlist.js');
 let PublicUsers = require('./models/publicUsers.js');
 let PrivateUsers = require('./models/privateUsers.js');
+let Research = require('./models/research.js');
 
-let similarity = require( 'compute-cosine-similarity' );
+
+let similarity = require('compute-cosine-similarity');
 
 app.use("/", express.static(path.join(__dirname, "assests")));
 
@@ -30,7 +32,7 @@ app.use("/lib/font-awesome/fonts", express.static(path.join(__dirname, "node_mod
 
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // parse application/json
 app.use(bodyParser.json());
@@ -42,112 +44,139 @@ app.use(bodyParser.json());
 /**
  * Main Page
  */
-app.get('/', (req, res) =>  res.sendFile(path.join(__dirname, 'assests', 'mainPage.html'), {}, ()=>res.end())); // Static front page
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'mainPage.html'), {}, () => res.end())); // Static front page
 /**
  * Users pages
  */
-app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userMain.html'), {}, ()=>res.end())); // a new user form
-app.get('/users/insertUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertUsers.html'), {}, ()=>res.end())); // a new user form
+app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userMain.html'), {}, () => res.end())); // a new user form
+app.get('/users/insertUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertUsers.html'), {}, () => res.end())); // a new user form
 // app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userIndex.html'), {}, ()=>res.end())); // login form
-app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'), {}, ()=>res.end())); // login form
+app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'), {}, () => res.end())); // login form
 
 /**
  * researchers pages
  */
-app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/researcherMain.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests','/newSong.html'), {}, ()=>res.end())); // login form
-app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
-app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, ()=>res.end())); // login form
-app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researcherLoginPage.html'), {}, ()=>res.end())); // login form
+app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/researcherMain.html'), {}, () => res.end())); // login form
+app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, () => res.end())); // login form
+app.get('/researchers/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, () => res.end())); // login form
+app.get('/researchers/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newSong.html'), {}, () => res.end())); // login form
+app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, () => res.end())); // login form
+app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, () => res.end())); // login form
+app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researcherLoginPage.html'), {}, () => res.end())); // login form
+
+
+// /** ----------------------------------------------------------------------------------
+//  * Return the given users playlist , and add user to Data base
+//  *
+//  * @PARAM {String*} id: Given user id
+//  * @PARAM {String} name: Given user name
+//  * @PARAM {String} country: Given user name
+//  * @PARAM {Number} age: The user age
+//  * @PARAM {Number} entrance:The user entrance
+//  *
+//  * @RESPONSE {json}
+//  * @RESPONSE-SAMPLE {playList , userData}
+//  ----------------------------------------------------------------------------------*/
+//
+// app.post('/users/insertUsers',function(req, res, next) {
+//     if (!req.body) return res.sendStatus(400,"Error to add user");
+//     // console.log("here44");
+//     // console.log(req.body.entrance);
+//
+//     if (req.body.id && req.body.birthYear && req.body.country && req.body.name) {
+//         var userData = {
+//             id: req.body.id.toString(),
+//             name: req.body.name,
+//             country: req.body.country,
+//             birthYear: parseInt(req.body.birthYear),
+//             language1: req.body.language1,
+//             language2: req.body.language2,
+//             entrance: req.body.entrance,
+//             yearAtTwenty: parseInt(req.body.yearAtTwenty),
+//             group: req.body.group,
+//             songs: []
+//         };
+//
+//
+//         var bulk = Users.collection.initializeOrderedBulkOp();
+//         bulk.find({
+//             id: userData.id                 //update the id , if have - update else its build new document
+//         }).upsert().updateOne(userData);
+//         bulk.execute();
+//
+//         var playlistData = {
+//             name: req.body.group,
+//             year: parseInt(req.body.yearAtTwenty),
+//             country: req.body.country,
+//             records: JSON.parse(req.body.records)
+//         };
+//
+//         var query = {name: playlistData.name},
+//             update = playlistData,
+//             options = {upsert: true, new: true, setDefaultsOnInsert: true};
+//
+// // Find the document
+//         var exiset = true;
+//         //PlayList.createIndex({name:1});
+//         PlayList.findOne({name: playlistData.name}, function (error, result) {
+//             if (error) return;
+//             //console.log("r1",result);
+//             if (!result || result == null)
+//                 exiset = false;
+//             // do something with the document
+//             //console.log(exiset);
+//             if (!exiset) {
+//                 PlayList.findOneAndUpdate(query, update, options, function (error, result) {
+//                     if (error) return;
+//                 });
+//             }
+//         });
+//
+//     }
+// });
 
 
 /** ----------------------------------------------------------------------------------
- * Return the given users playlist , and add user to Data base
+ * Add the playlist to Data base
  *
- * @PARAM {String*} id: Given user id
- * @PARAM {String} name: Given user name
- * @PARAM {String} country: Given user name
- * @PARAM {Number} age: The user age
- * @PARAM {Number} entrance:The user entrance
+ * @PARAM {[String]} record list
  *
  * @RESPONSE {json}
- * @RESPONSE-SAMPLE {playList , userData}
+ * @RESPONSE-SAMPLE {playList}
  ----------------------------------------------------------------------------------*/
 
-app.post('/users/insertUsers',function(req, res, next) {
-    if (!req.body) return res.sendStatus(400,"Error to add user");
-    // console.log("here44");
-    // console.log(req.body.entrance);
+app.post('/playList/createPlaylist', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
+    var playlistData = {
+        name: req.body.name,
+        year:req.body.year,
+        country:req.body.country,
+        language:req.body.language,
+        records: JSON.parse(req.body.records)
+    };
+    // console.log(playlistData);
+    var query = {name: playlistData.name},
+        update = playlistData,
+        options = {upsert: true, new: true, setDefaultsOnInsert: true};
 
-    if (req.body.id && req.body.birthYear && req.body.country && req.body.name) {
-        var userData = {
-            id: req.body.id.toString(),
-            name: req.body.name,
-            country: req.body.country,
-            birthYear: parseInt(req.body.birthYear),
-            language1:req.body.language1,
-            language2:req.body.language2,
-            entrance: req.body.entrance,
-            yearAtTwenty: parseInt(req.body.yearAtTwenty),
-            group:req.body.group,
-            songs:[]
-        };
-        // var userData = {
-        //     name: req.body.name,
-        //     publicId:req.body.publicId.toString(),
-        //     department: req.body.department,
-        //     medicalProfile : req.body.medicalProfile,
-        //     age : parseInt(req.body.age),
-        //     year: parseInt(req.body.year),
-        //     languageOrigin : req.body.languageOrigin,
-        //     languageAtTwenty : req.body.languageAtTwenty,
-        //     yearOfImmigration : req.body.yearOfImmigration,
-        //     Genre1Select : req.body.Genre1Select,
-        //     Genre2Select : req.body.Genre2Select,
-        //     nursingHome : req.body.nursingHome
-        // };
-
-        var bulk = Users.collection.initializeOrderedBulkOp();
-        bulk.find({
-            id: userData.id                 //update the id , if have - update else its build new document
-        }).upsert().updateOne(userData);
-        bulk.execute();
-
-        var playlistData = {
-            name:req.body.group,
-            year:parseInt(req.body.yearAtTwenty),
-            country:req.body.country,
-            records: JSON.parse(req.body.records)
-        };
-
-        var query = {name: playlistData.name},
-            update = playlistData,
-            options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-// Find the document
-        var exiset = true;
-        //PlayList.createIndex({name:1});
-        PlayList.findOne({name: playlistData.name}, function(error, result) {
-            if (error) return;
-            //console.log("r1",result);
-            if (!result || result == null)
-                exiset = false;
-            // do something with the document
-            //console.log(exiset);
-            if (!exiset){
-                PlayList.findOneAndUpdate(query, update, options, function(error, result) {
-                    if (error) return;
-                });
-            }
-        });
-
-    }
+    var exiset = true;
+    //PlayList.createIndex({name:1});
+    PlayList.findOne({name: playlistData.name}, function (error, result) {
+        if (error) return;
+        //console.log("r1",result);
+        if (!result || result == null)
+            exiset = false;
+        // do something with the document
+        //console.log(exiset);
+        if (!exiset) {
+            PlayList.findOneAndUpdate(query, update, options, function (error, result) {
+                if (error) return;
+            });
+        }
+    });
 });
 
 
-
 /** ----------------------------------------------------------------------------------
  * Return the given users playlist , and add user to Data base
  *
@@ -161,65 +190,36 @@ app.post('/users/insertUsers',function(req, res, next) {
  * @RESPONSE-SAMPLE {playList , userData}
  ----------------------------------------------------------------------------------*/
 
-app.post('/insertPublicUsers',function(req, res, next) {
-    if (!req.body) return res.sendStatus(400,"Error to add user");
-     // console.log("here44");
-     // console.log(req.body);
+app.post('/insertPublicUsers', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
+    // console.log("here44");
+    // console.log(req.body);
 
     if (req.body.tamaringaId && req.body.birthYear && req.body.countryAtTwenty && req.body.name) {
         var userData = {
             name: req.body.name,
-            tamaringaId:req.body.tamaringaId.toString(),
+            tamaringaId: req.body.tamaringaId.toString(),
             department: req.body.department,
-            medicalProfile : req.body.medicalProfile,
-            birthYear : parseInt(req.body.birthYear),
+            medicalProfile: req.body.medicalProfile,
+            birthYear: parseInt(req.body.birthYear),
             yearAtTwenty: parseInt(req.body.yearAtTwenty),
             countryAtTwenty: req.body.countryAtTwenty,
             countryOrigin: req.body.countryOrigin,
-            languageOrigin : req.body.languageOrigin,
-            languageAtTwenty : req.body.languageAtTwenty,
-            yearOfImmigration : req.body.yearOfImmigration,
-            Genre1Select : req.body.Genre1Select,
-            Genre2Select : req.body.Genre2Select,
+            languageOrigin: req.body.languageOrigin,
+            languageAtTwenty: req.body.languageAtTwenty,
+            yearOfImmigration: req.body.yearOfImmigration,
+            Genre1Select: req.body.Genre1Select,
+            Genre2Select: req.body.Genre2Select,
             entrance: req.body.entrance,
-            nursingHome : req.body.nursingHome,
+            nursingHome: req.body.nursingHome,
             group: req.body.group,
-            songs:[]
+            songs: []
         };
         var bulk = PublicUsers.collection.initializeOrderedBulkOp();
         bulk.find({
             tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
         }).upsert().updateOne(userData);
         bulk.execute();
-
-        var playlistData = {
-            name:req.body.group,
-            year:parseInt(req.body.yearAtTwenty),
-            country:req.body.countryAtTwenty,
-            records: JSON.parse(req.body.records)
-        };
-
-        var query = {name: playlistData.name},
-            update = playlistData,
-            options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-// Find the document
-        var exiset = true;
-        //PlayList.createIndex({name:1});
-        PlayList.findOne({name: playlistData.name}, function(error, result) {
-            if (error) return;
-            //console.log("r1",result);
-            if (!result || result == null)
-                exiset = false;
-            // do something with the document
-            //console.log(exiset);
-            if (!exiset){
-                PlayList.findOneAndUpdate(query, update, options, function(error, result) {
-                    if (error) return;
-                });
-            }
-        });
-
     }
 });
 
@@ -236,14 +236,14 @@ app.post('/insertPublicUsers',function(req, res, next) {
  * @RESPONSE-SAMPLE {playList , userData}
  ----------------------------------------------------------------------------------*/
 
-app.post('/insertPrivateUsers',function(req, res, next) {
-    if (!req.body) return res.sendStatus(400,"Error to add user");
+app.post('/insertPrivateUsers', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
     if (req.body.tamaringaId && req.body.name && req.body.privateId && req.body.nursingHome) {
         var userData = {
             name: req.body.name,
             tamaringaId: req.body.tamaringaId.toString(),
-            privateId:req.body.privateId,
-            nursingHome:req.body.nursingHome
+            privateId: req.body.privateId,
+            nursingHome: req.body.nursingHome
         };
         var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
         bulk.find({
@@ -255,24 +255,24 @@ app.post('/insertPrivateUsers',function(req, res, next) {
 
 
 /** ----------------------------------------------------------------------------------
-* Return and update the entrance time of the user  to Data base
-*
-* @PARAM {String*} id: Given user id
-* @PARAM {Number} entrance: The user entrance
-*
-* @RESPONSE {json}
-* @RESPONSE-SAMPLE {user data: []}
-----------------------------------------------------------------------------------*/
+ * Return and update the entrance time of the user  to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {Number} entrance: The user entrance
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {user data: []}
+ ----------------------------------------------------------------------------------*/
 
-app.post('/users/:id', function(req, res, next) {
+app.post('/users/:id', function (req, res, next) {
     if (!req.body) return res.sendStatus(400);
     // console.log(req.body.entrance);
     // console.log(req.params.entrance);
-    PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
-        if(err) return next(err);
-        try{
+    PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
+        if (err) return next(err);
+        try {
             docs[0].entrance = req.body.entrance;
-        }catch(e){
+        } catch (e) {
             return next(e);
         }
         docs[0].save(function (err, updatedUser) {
@@ -283,25 +283,27 @@ app.post('/users/:id', function(req, res, next) {
 });
 
 
-
-
 /** ----------------------------------------------------------------------------------
-* Return the top records of the given year between 2 year before and 2 years after
-*
-* @PARAM {String} year: The user 20's year
-* @PARAM {String} country: The user country
-*
-* @RESPONSE {json}
-* @RESPONSE-SAMPLE {docs: []}
-----------------------------------------------------------------------------------*/
-app.get('/mb/track/recording/:yearAtTwenty/:country', function(req, res, next) {
-    db().then(()=>{
-        Records.find({yearAtTwenty: { $gt: parseInt(req.params.yearAtTwenty)-3, $lt: parseInt(req.params.yearAtTwenty)+3}, country: req.params.country}).sort({'youtube.views':-1}).limit(PLAYLISTSIZE).exec(function(err, docs){
-        if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
+ * Return the top records of the given year between 2 year before and 2 years after
+ *
+ * @PARAM {String} year: The user 20's year
+ * @PARAM {String} country: The user country
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {docs: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/mb/track/recording/:yearAtTwenty/:country/:language', function (req, res, next) {
+    db().then(() => {
+        Records.find({
+            year: {$gt: parseInt(req.params.yearAtTwenty) - 3, $lt: parseInt(req.params.yearAtTwenty) + 3},
+            country: req.params.country,
+            language: req.params.language
+        }).sort({'youtube.views': -1}).limit(PLAYLISTSIZE).exec(function (err, docs) {
+            if (err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
             // console.log(docs);
             res.status(200).json({err: false, items: [].concat(docs)});
-    })
-}).catch(next);
+        })
+    }).catch(next);
 });
 
 
@@ -313,11 +315,11 @@ app.get('/mb/track/recording/:yearAtTwenty/:country', function(req, res, next) {
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
-app.get('/mb/track/record/:mbid', function(req, res, next) {
-    db().then(()=>{
-        Records.find({mbid: req.mbid}).limit(1).exec(function(err, docs){
-            if(err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
-            console.log(docs);
+app.get('/mb/track/record/:mbid', function (req, res, next) {
+    db().then(() => {
+        Records.find({mbid: req.mbid}).limit(1).exec(function (err, docs) {
+            if (err) return next(err);       //the data we get sorted from the bigest views number to the smalll ones and limit to 10 top .
+            // console.log(docs);
             res.status(200).json({err: false, items: [].concat(docs)});
         })
     }).catch(next);
@@ -325,35 +327,34 @@ app.get('/mb/track/record/:mbid', function(req, res, next) {
 
 
 /** ----------------------------------------------------------------------------------
-* Return playlist by the playlist name.
-*
-* @PARAM {String*} name: the playlist name
-*
-* @RESPONSE {json}
-* @RESPONSE-SAMPLE {docs: []}
-----------------------------------------------------------------------------------*/
-app.get('/playList/:name', function(req, res, next) {
+ * Return playlist by the playlist name.
+ *
+ * @PARAM {String*} name: the playlist name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {docs: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/playList/:name', function (req, res, next) {
     //console.log(req.params.id);
-    PlayList.find({name:req.params.name}).exec(function(err, docs){
-        if(err) return next(err);
+    PlayList.find({name: req.params.name}).exec(function (err, docs) {
+        if (err) return next(err);
         //console.log(docs);
         res.status(200).json({err: false, items: [].concat(docs)});
     })
 });
 
 /** ----------------------------------------------------------------------------------
-* Return the user Data from DB
-*
-* @PARAM {String*} id: Given user id
-*
-* @RESPONSE {json}
-* @RESPONSE-SAMPLE {docs: []}
-----------------------------------------------------------------------------------*/
-app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+ * Return the user Data from DB
+ *
+ * @PARAM {String*} id: Given user id
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {docs: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/user/:id', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
-    PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
-        if(err) return next(err);
-        //console.log(docs);
+    PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
+        if (err) return next(err);
         res.status(200).json({err: false, items: [].concat(docs)});
     })
 });
@@ -364,10 +365,10 @@ app.get('/user/:id', function(req, res, next) {    //call to getDataId.js , and 
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
-app.get('/allusers', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+app.get('/allusers', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
-    PublicUsers.find({}).exec(function(err, docs){
-        if(err) return next(err);
+    PublicUsers.find({}).exec(function (err, docs) {
+        if (err) return next(err);
         // console.log(docs);
         res.status(200).json({err: false, items: [].concat(docs)});
     })
@@ -379,32 +380,30 @@ app.get('/allusers', function(req, res, next) {    //call to getDataId.js , and 
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
-app.get('/allresearchers', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+app.get('/allresearchers', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
-    Researchers.find({}).exec(function(err, docs){
-        if(err) return next(err);
+    Researchers.find({}).exec(function (err, docs) {
+        if (err) return next(err);
         // console.log(docs);
         res.status(200).json({err: false, items: [].concat(docs)});
     })
 });
 
 
-
-
 /** ----------------------------------------------------------------------------------
-* Return the user with the playlist name from the DB
-*
-* @PARAM {String*} id: Given user id
-* @PARAM {Array} playlist: The playlist name
-*
-* @RESPONSE {json}
-* @RESPONSE-SAMPLE {user data: []}
-----------------------------------------------------------------------------------*/
-app.get('/selection/:id/:playlist', function(req, res, next) {
+ * Return the user with the playlist name from the DB
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {Array} playlist: The playlist name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {user data: []}
+ ----------------------------------------------------------------------------------*/
+app.get('/selection/:id/:playlist', function (req, res, next) {
     if (!req.body) return res.sendStatus(400);
     //console.log(req.params.id+" "+req.params.playlist);
-    PublicUsers.find({tamaringaId:{$ne:req.params.id},group:req.params.playlist}).exec(function(err, docs){
-        if(err) return next(err);
+    PublicUsers.find({tamaringaId: {$ne: req.params.id}, group: req.params.playlist}).exec(function (err, docs) {
+        if (err) return next(err);
     });
 });
 
@@ -419,32 +418,31 @@ app.get('/selection/:id/:playlist', function(req, res, next) {
  *
  *
  * @RESPONSE-SAMPLE {{}}
-----------------------------------------------------------------------------------*/
-app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+ ----------------------------------------------------------------------------------*/
+app.post('/selection/:id', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
     if (!req.body) return res.sendStatus(400);
 
-    PublicUsers.find({tamaringaId:req.params.id}).exec(function(err, docs){
-        if(err) return next(err);
-        var userData =docs[0];
+    PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
+        if (err) return next(err);
+        var userData = docs[0];
         var flag = false;
         var reqSongs = JSON.parse(req.body.songs);
-        try{
+        try {
             // console.log("userData.songs.count: ",userData.songs.length);
             if (userData.songs.length > 0) {
-                for (var i = 0; i < userData.songs.length ; i++){
+                for (var i = 0; i < userData.songs.length; i++) {
                     if (userData.songs[i].mbid === reqSongs.mbid) {
                         userData.songs[i].vote = reqSongs.vote;
                         flag = true;
                     }
                 }
-                if (!flag){
+                if (!flag) {
                     userData.songs.push(JSON.parse(req.body.songs));
                 }
+            } else {
+                userData.songs = JSON.parse(req.body.songs);
             }
-            else{
-                userData.songs=JSON.parse(req.body.songs);
-            }
-        }catch(e){
+        } catch (e) {
             return next(e);
         }
 
@@ -452,52 +450,52 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
         bulk.find({
             tamaringaId: userData.tamaringaId                 //update the id , if have - update else its build new document
         }).upsert().updateOne(userData);
-        bulk.execute(function(err, BulkWriteResult){
-            if(err) return next(err);
+        bulk.execute(function (err, BulkWriteResult) {
+            if (err) return next(err);
             // do cosine similirity calc in 2 minutes
             // loop all songs
             var data = userData.songs[0];
             var group = userData.group;
-            var lookup = {'name':group,'records.mbid': data.mbid};
-            PlayList.findOne(lookup).exec(function(err, q){
+            var lookup = {'name': group, 'records.mbid': data.mbid};
+            PlayList.findOne(lookup).exec(function (err, q) {
 
-                var pos = q.records.findIndex(e=>e.mbid == data.mbid);
+                var pos = q.records.findIndex(e => e.mbid == data.mbid);
                 q.records[pos].votes = q.records[pos].votes || [];
-                var posUser = q.records[pos].votes.findIndex(e=>e.userId == data.id);
+                var posUser = q.records[pos].votes.findIndex(e => e.userId == data.id);
 
-                if(posUser >= 0){
+                if (posUser >= 0) {
                     q.records[pos].votes[posUser].vote = data.vote
-                }else{
+                } else {
                     q.records[pos].votes.push({userId: data.id, vote: data.vote})
                 }
 
                 var user = [];
                 var users = [];
-                q.records.forEach(rec=>{
+                q.records.forEach(rec => {
 
-                    user.push(rec.votes.filter(x=>x.userId == data.id).map(x=>x.vote)[0] || 0);
-                    rec.votes.map(function(x){
-                        if(users.indexOf(x.userId) == -1 && x.userId != data.id) users.push(x.userId)
+                    user.push(rec.votes.filter(x => x.userId == data.id).map(x => x.vote)[0] || 0);
+                    rec.votes.map(function (x) {
+                        if (users.indexOf(x.userId) == -1 && x.userId != data.id) users.push(x.userId)
                     });
                 });
 
-                users.forEach(u=>{
+                users.forEach(u => {
                     var votesByUser = [];
-                    q.records.forEach(rec=>{
-                        votesByUser.push(rec.votes.filter(x=>x.userId == u).map(x=>x.vote)[0] || 0)
+                    q.records.forEach(rec => {
+                        votesByUser.push(rec.votes.filter(x => x.userId == u).map(x => x.vote)[0] || 0)
                     });
                     q.similarity = q.similarity || [];
-                    var pos =  q.similarity.findIndex(x=>x.user1 == u && x.user2 == data.id || x.user2 == u && x.user1 == data.id);
+                    var pos = q.similarity.findIndex(x => x.user1 == u && x.user2 == data.id || x.user2 == u && x.user1 == data.id);
                     //console.log(pos);
-                    if(pos >= 0){
+                    if (pos >= 0) {
                         q.similarity[pos].similarity = similarity(user, votesByUser);
-                    }else{
+                    } else {
                         q.similarity.push({user1: u, user2: data.id, similarity: similarity(user, votesByUser)})
                     }
                 });
                 q.markModified('similarity');
-                q.save(function(err){
-                    if(err) return next(err);
+                q.save(function (err) {
+                    if (err) return next(err);
                     res.json({message: 'cool man'});
 
                 })
@@ -523,70 +521,69 @@ app.post('/selection/:id', function(req, res, next) {    //call to getDataId.js 
  * @RESPONSE notEar - not ear song of the user.
  *
  * @RESPONSE-SAMPLE {{obj}}
-----------------------------------------------------------------------------------*/
-app.get('/playlist/:playlist/:id', function(req, res, next) {
+ ----------------------------------------------------------------------------------*/
+app.get('/playlist/:playlist/:id', function (req, res, next) {
     if (!req.body) return res.sendStatus(400);
 
     // console.log(req.params.id+" "+req.params.playlist);
     var id = req.params.id.toString();
     // console.log("id:",id);
-    PlayList.find({"records.votes.userId":{$in:[id]}}).exec(function(err, docs){
-        if(err) return next(err);
+    PlayList.find({"records.votes.userId": {$in: [id]}}).exec(function (err, docs) {
+        if (err) return next(err);
         // console.log('docs: ',docs);
-        if (!docs[0] || !docs  || docs == [])
-        {
+        if (!docs[0] || !docs || docs == []) {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
         }
         var topUser = [];
         var notEar = [];
         // console.log("docs[0]: ",docs[0]);
         docs[0].records.forEach(function callback(currentValue, index, rec) {
-            var index = index ;
-            var o =currentValue.votes.filter(x=>x.userId == id);
-            var ex = currentValue.votes.findIndex(x=>x.userId == id);
-            console.log('rec: ',rec);
-            if (ex != -1 )
-            {
+            var index = index;
+            var o = currentValue.votes.filter(x => x.userId == id);
+            var ex = currentValue.votes.findIndex(x => x.userId == id);
+            console.log('rec: ', rec);
+            if (ex != -1) {
                 console.log(rec[index]);
                 //console.log(index);
                 //console.log(currentValue.votes.filter(x=>x.userId == id));
                 //console.log(currentValue.votes.findIndex(x=>x.userId == id));
-                topUser.push({index:index ,
-                    vote:o[0].vote,
-                    mbid:rec[index].mbid ,
-                    artist:rec[index].artist,
-                    title:rec[index].title,
-                    videoId:rec[index].youtube.videoId
+                topUser.push({
+                    index: index,
+                    vote: o[0].vote,
+                    mbid: rec[index].mbid,
+                    artist: rec[index].artist,
+                    title: rec[index].title,
+                    videoId: rec[index].youtube.videoId
                 });
-            }
-            else{
+            } else {
                 console.log(rec[index]);
-                notEar.push({index:index ,
-                    vote:0,
-                    mbid:rec[index].mbid ,
-                    artist:rec[index].artist,
-                    title:rec[index].title,
-                    videoId:rec[index].youtube.videoId
+                notEar.push({
+                    index: index,
+                    vote: 0,
+                    mbid: rec[index].mbid,
+                    artist: rec[index].artist,
+                    title: rec[index].title,
+                    videoId: rec[index].youtube.videoId
                 });
             }
         });
-        topUser.sort(function (a,b) {
+        topUser.sort(function (a, b) {
             return b.vote - a.vote;
         });
 
         var topUsers = [];
-        if (docs[0].similarity.length != 0)
-        {
+        if (docs[0].similarity.length != 0) {
             docs[0].similarity.forEach(function callback(currentValue, index, rec) {
-                if (currentValue.user1 == id || currentValue.user2 == id ){
+                if (currentValue.user1 == id || currentValue.user2 == id) {
                     //console.log(currentValue);
-                    topUsers.push({user1:currentValue.user1 ,
-                        user2:currentValue.user2,
-                        similarity:currentValue.similarity
+                    topUsers.push({
+                        user1: currentValue.user1,
+                        user2: currentValue.user2,
+                        similarity: currentValue.similarity
                     });
                 }
             });
-            topUsers.sort(function (a,b) {
+            topUsers.sort(function (a, b) {
                 return b.similarity - a.similarity;
             });
 
@@ -594,42 +591,40 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
             //console.log(topUsers);
             //topUsers = topUsers[0];
             //console.log(topUsers);
-            var recUser ;
-            if (id == topUsers[0].user1)
-            {
+            var recUser;
+            if (id == topUsers[0].user1) {
                 recUser = topUsers[0].user2;
-            }
-            else {
+            } else {
                 recUser = topUsers[0].user1;
             }
             //console.log(recUser);
             var recSongs = [];
             docs[0].records.forEach(function callback(currentValue, index, rec) {
-                var ind = index ;
-                var o =currentValue.votes.filter(x=>x.userId == recUser);
-                var ex = currentValue.votes.findIndex(x=>x.userId == recUser);
-                if (ex != -1 )
-                {
+                var ind = index;
+                var o = currentValue.votes.filter(x => x.userId == recUser);
+                var ex = currentValue.votes.findIndex(x => x.userId == recUser);
+                if (ex != -1) {
                     //console.log(rec[index]);
                     //console.log(o);
                     //console.log(ex);
-                    recSongs.push({index:index ,
-                        vote:o[0].vote,
-                        mbid:rec[index].mbid ,
-                        artist:rec[index].artist,
-                        title:rec[index].title,
-                        videoId:rec[index].youtube.videoId
+                    recSongs.push({
+                        index: index,
+                        vote: o[0].vote,
+                        mbid: rec[index].mbid,
+                        artist: rec[index].artist,
+                        title: rec[index].title,
+                        videoId: rec[index].youtube.videoId
                     });
                 }
             });
             //console.log(recSongs);
-            recSongs.sort(function (a,b) {
+            recSongs.sort(function (a, b) {
                 return b.vote - a.vote;
             });
         }
 
         //console.log(recSongs);
-        var obj =[{topUser,recSongs,notEar}];
+        var obj = [{topUser, recSongs, notEar}];
         res.status(200).json({err: false, items: [].concat(obj)});
     });
 });
@@ -645,8 +640,8 @@ app.get('/playlist/:playlist/:id', function(req, res, next) {
  * @RESPONSE-SAMPLE {researcherData}
  ----------------------------------------------------------------------------------*/
 
-app.post('/insertResearcher',function(req, res, next) {
-    if (!req.body) return res.sendStatus(400,"Error to add user");
+app.post('/insertResearcher', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
     // console.log("Try to post the researcher");
     // console.log(req.body.entrance);
     if (req.body.id && req.body.name) {
@@ -662,6 +657,41 @@ app.post('/insertResearcher',function(req, res, next) {
     }
 });
 
+/** ----------------------------------------------------------------------------------
+ *  Post and add a new research to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {researcherData}
+ ----------------------------------------------------------------------------------*/
+
+app.post('/insertResearch', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
+    // console.log("Try to post the research");
+    var researchData = {
+        researchName: req.body.researchName,
+        researchId: req.body.researchId,
+        researchersIds: req.body['researchersIds[]'],
+        patientsIds: req.body['patientsIds[]'],
+        nursingHome: req.body.nursingHome,
+        department: req.body.department,
+        numberOfWeeks: req.body.numberOfWeeks,
+        meetingPerWeek: req.body.meetingPerWeek,
+        lengthOfSession: req.body.lengthOfSession,
+        alguritem: req.body.alguritem
+    };
+    var bulk = Research.collection.initializeOrderedBulkOp();
+    bulk.find({
+        researchId: researchData.researchId                 //update the id , if have - update else its build new document
+    }).upsert().updateOne(researchData);
+    bulk.execute();
+});
+
+
+
+
 
 /** ----------------------------------------------------------------------------------
  *  Get and add a new researcher to Data base
@@ -673,16 +703,15 @@ app.post('/insertResearcher',function(req, res, next) {
  * @RESPONSE-SAMPLE {researcherData}
  ----------------------------------------------------------------------------------*/
 
-app.get('/insertResearcher/:id', function(req, res, next) {
+app.get('/insertResearcher/:id', function (req, res, next) {
     if (!req.body) return res.sendStatus(400);
     console.log(req.params.id);
-    Researchers.find({id:req.params.id}).exec(function(err, docs){
-        if(err) return next(err);
+    Researchers.find({id: req.params.id}).exec(function (err, docs) {
+        if (err) return next(err);
         console.log(docs[0].name);
         res.status(200).json({err: false, items: [].concat(docs)});
     });
 });
-
 
 
 /** ----------------------------------------------------------------------------------
@@ -695,7 +724,7 @@ app.get('/insertResearcher/:id', function(req, res, next) {
  * @RESPONSE-SAMPLE {researcherData}
  ----------------------------------------------------------------------------------*/
 
-app.get('/publicId', function(req, res, next) {
+app.get('/publicId', function (req, res, next) {
     if (!req) return res.sendStatus(400);
     // var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
     // bulk.find({
@@ -703,34 +732,32 @@ app.get('/publicId', function(req, res, next) {
     // }).upsert().updateOne(userData);
     var ex = PrivateUsers.find({privateId: req.body.privateId}).count();
     if (ex == 0) {
-        PrivateUsers.find({}).count().exec(function(err, docs){
-            if(err) return next(err);
+        PrivateUsers.find({}).count().exec(function (err, docs) {
+            if (err) return next(err);
             res.status(200).json({err: false, items: [].concat(docs)});
         })
-    }
-    else {
-        PrivateUsers.find({privateId: req.body.privateId}).exec(function(err, docs){
-            if(err) return next(err);
+    } else {
+        PrivateUsers.find({privateId: req.body.privateId}).exec(function (err, docs) {
+            if (err) return next(err);
             res.status(200).json({err: false, items: [].concat(docs.tamaringaId)});
         })
     }
 });
 
 
-
 /** ----------------------------------------------------------------------------------
  * Return error page if have a problem
  * Statics page
-----------------------------------------------------------------------------------*/
+ ----------------------------------------------------------------------------------*/
 
 // 404 not found
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.sendFile(path.join(__dirname, 'assests', '404.html'));
 });
 
 /** ----------------------------------------------------------------------------------
-* open the connction with the DB.
-----------------------------------------------------------------------------------*/
+ * open the connction with the DB.
+ ----------------------------------------------------------------------------------*/
 db().then(() => {
     const server1 = app.listen(process.env.port || 3000, () => debug('app:server')(`Server has started in port ${server1.address().port}`))
     // const server2 = app.listen(process.env.port || 3200, () => debug('app:server')(`Server has started in port ${server2.address().port}`))

@@ -14,13 +14,14 @@ var playlistSchema = new Schema({
     country:String,
     language:String,
     records: [{
-        mbid: String,
-        language:String,
+        mbId: String,
         title: String,
         year: Number,
-        artist: [],
+        artistName: String,
+        language: String,
         country: String,
-        youtube: {},
+        lyrics: String,
+        genre: String,
         votes: [{userId: String, vote: Number}]
     }]
 });
