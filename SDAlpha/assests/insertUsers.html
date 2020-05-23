@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/routes/getUserData.js"></script>
+    <script src="/routes/setUserData.js"></script>
 </head>
 <body>
 <div class="container-contact100">
@@ -42,6 +42,12 @@
             <div class="wrap-input100 validate-input" data-validate="ID is required">
                 <span class="label-input100">ID</span>
                 <input id='id' class="input100" type="text" name="id" placeholder="Enter ID">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Nursing Home is required">
+                <span class="label-input100">Nursing Home</span>
+                <input id='nursingHome' class="input100" type="text" name='nursingHome'
+                       placeholder="Enter Nursing Home">
                 <span class="focus-input100"></span>
             </div>
             <div class="wrap-input100 validate-input" data-validate="Department is required">
@@ -119,7 +125,7 @@
                         <option value="1971">1971</option>
                         <option value="1970">1970</option>
                         <option value="1969">1969</option>
-                        <option value="1968">1968</option>
+                        <option value="1968" selected="selected">1968</option>
                         <option value="1967">1967</option>
                         <option value="1966">1966</option>
                         <option value="1965">1965</option>
@@ -365,7 +371,7 @@
                         <option>Select Language</option>
                         <option value="heb">Hebrow</option>
                         <option value="fra">France</option>
-                        <option value="eng">English</option>
+                        <option value="eng" selected="selected">English</option>
                         <option value="spa">Spanish</option>
                     </select>
                 </div>
@@ -380,7 +386,7 @@
                         <option>Select Language</option>
                         <option value="heb">Hebrow</option>
                         <option value="fra">France</option>
-                        <option value="eng">English</option>
+                        <option value="eng" selected="selected">English</option>
                         <option value="spa">Spanish</option>
                     </select>
                 </div>
@@ -516,7 +522,6 @@
             <div class="wrap-input100 input100-select">
                 <span class="label-input100">Genre 2</span>
                 <div>
--
                     <select id="Genre2Select" class="selection-2" name="Genre2">
                         <option>None</option>
                         <option value="cla">Classical/Traditional</option>
@@ -529,12 +534,7 @@
                 <span class="focus-input100"></span>
             </div>
 
-            <div class="wrap-input100 validate-input" data-validate="Nursing Home is required">
-                <span class="label-input100">Nursing Home</span>
-                <input id='nursingHome' class="input100" type="text" name='nursingHome'
-                       placeholder="Enter Nursing Home">
-                <span class="focus-input100"></span>
-            </div>
+
             <!--==============change to drop down===========================-->
             <!--            <div class="wrap-input100 validate-input" data-validate="Department is required">-->
             <!--                <span class="label-input100">Department</span>-->

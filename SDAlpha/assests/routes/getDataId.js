@@ -322,10 +322,9 @@ function f2(id,mbid,n) {
  ---------------------------------------------------------------------------------- */
 function addEnterens(id,entrance) {
     $.get('/user/' + id, function(data) {
-        //console.log(data.items);
+
         var enter = entrance;
-        // console.log('entrance: ',data.items[0].entrance);
-        // console.log('length: ',data.items[0].songs.length);
+
         if (data.items[0].songs.length === 0 )
         {
             enter = 0;

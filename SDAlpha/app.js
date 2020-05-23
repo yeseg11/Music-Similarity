@@ -192,8 +192,7 @@ app.post('/playList/createPlaylist', function (req, res, next) {
 
 app.post('/insertPublicUsers', function (req, res, next) {
     if (!req.body) return res.sendStatus(400, "Error to add user");
-    // console.log("here44");
-    // console.log(req.body);
+    console.log("req.body.tamaringaId: ",req.body.tamaringaId);
 
     if (req.body.tamaringaId && req.body.birthYear && req.body.countryAtTwenty && req.body.name) {
         var userData = {
@@ -238,13 +237,15 @@ app.post('/insertPublicUsers', function (req, res, next) {
 
 app.post('/insertPrivateUsers', function (req, res, next) {
     if (!req.body) return res.sendStatus(400, "Error to add user");
+
     if (req.body.tamaringaId && req.body.name && req.body.privateId && req.body.nursingHome) {
         var userData = {
             name: req.body.name,
-            tamaringaId: req.body.tamaringaId.toString(),
+            tamaringaId: req.body.tamaringaId,
             privateId: req.body.privateId,
             nursingHome: req.body.nursingHome
         };
+
         var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
         bulk.find({
             privateId: userData.privateId                 //update the id , if have - update else its build new document
@@ -724,24 +725,29 @@ app.get('/insertResearcher/:id', function (req, res, next) {
  * @RESPONSE-SAMPLE {researcherData}
  ----------------------------------------------------------------------------------*/
 
-app.get('/publicId', function (req, res, next) {
+app.get('/publicId/:id', function (req, res, next) {
     if (!req) return res.sendStatus(400);
-    // var bulk = PrivateUsers.collection.initializeOrderedBulkOp();
-    // bulk.find({
-    //     privateId: req.body.privateId                 //update the id , if have - update else its build new document
-    // }).upsert().updateOne(userData);
-    var ex = PrivateUsers.find({privateId: req.body.privateId}).count();
-    if (ex == 0) {
-        PrivateUsers.find({}).count().exec(function (err, docs) {
-            if (err) return next(err);
-            res.status(200).json({err: false, items: [].concat(docs)});
-        })
-    } else {
-        PrivateUsers.find({privateId: req.body.privateId}).exec(function (err, docs) {
-            if (err) return next(err);
-            res.status(200).json({err: false, items: [].concat(docs.tamaringaId)});
-        })
-    }
+    var size = 0;
+    PrivateUsers.find({privateId: req.params.id}).count(function (err, res) {
+        if (err)
+            throw err;
+        size = res;
+    }).then(function (response) {
+        if (size === 0) {
+            PrivateUsers.find({}).count().exec(function (err, docs) {
+                if (err) return next(err);
+                // console.log("docs1: ",docs);
+                res.status(200).json({err: false, items: [].concat(docs + 1)});
+            })
+        } else {
+            PrivateUsers.findOne({privateId: req.params.id}).exec(function (err, docs) {
+                if (err) return next(err);
+                let docsString = JSON.stringify(docs);
+                let parse = JSON.parse(docsString);
+                res.status(200).json({err: false, items: [].concat(parse.tamaringaId)});
+            })
+        }
+    });
 });
 
 
