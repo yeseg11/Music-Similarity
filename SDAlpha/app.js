@@ -50,8 +50,8 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'mainPag
  */
 app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userMain.html'), {}, () => res.end())); // a new user form
 app.get('/users/insertUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertUsers.html'), {}, () => res.end())); // a new user form
-// app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userIndex.html'), {}, ()=>res.end())); // login form
-app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userIndex.html'), {}, () => res.end())); // login form
+// app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/logInUser.html'), {}, ()=>res.end())); // login form
+app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'logInUser.html'), {}, () => res.end())); // login form
 
 /**
  * researchers pages
@@ -154,26 +154,32 @@ app.post('/playList/createPlaylist', function (req, res, next) {
         language:req.body.language,
         records: JSON.parse(req.body.records)
     };
-    // console.log(playlistData);
+    console.log(playlistData);
     var query = {name: playlistData.name},
         update = playlistData,
         options = {upsert: true, new: true, setDefaultsOnInsert: true};
 
     var exiset = true;
     //PlayList.createIndex({name:1});
-    PlayList.findOne({name: playlistData.name}, function (error, result) {
+    PlayList.findOneAndUpdate(query, update, options, function (error, result) {
         if (error) return;
-        //console.log("r1",result);
-        if (!result || result == null)
-            exiset = false;
-        // do something with the document
-        //console.log(exiset);
-        if (!exiset) {
-            PlayList.findOneAndUpdate(query, update, options, function (error, result) {
-                if (error) return;
-            });
-        }
     });
+
+
+    // PlayList.findOne({name: playlistData.name}, function (error, result) {
+    //     if (error) return;
+    //     console.log("r1",result);
+    //     if (!result || result == null)
+    //         exiset = false;
+    //     // do something with the document
+    //     console.log(exiset);
+    //     if (!exiset) {
+    //         // console.log(exiset);
+    //         PlayList.findOneAndUpdate(query, update, options, function (error, result) {
+    //             if (error) return;
+    //         });
+    //     }
+    // });
 });
 
 
@@ -296,7 +302,7 @@ app.post('/users/:id', function (req, res, next) {
 app.get('/mb/track/recording/:yearAtTwenty/:country/:language', function (req, res, next) {
     db().then(() => {
         Records.find({
-            year: {$gt: parseInt(req.params.yearAtTwenty) - 3, $lt: parseInt(req.params.yearAtTwenty) + 3},
+            year: {$gt: parseInt(req.params.yearAtTwenty) - 1, $lt: parseInt(req.params.yearAtTwenty) + 1},
             country: req.params.country,
             language: req.params.language
         }).sort({'youtube.views': -1}).limit(PLAYLISTSIZE).exec(function (err, docs) {
@@ -352,7 +358,7 @@ app.get('/playList/:name', function (req, res, next) {
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
-app.get('/user/:id', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+app.get('/user/:id', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
     PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
         if (err) return next(err);
@@ -366,7 +372,7 @@ app.get('/user/:id', function (req, res, next) {    //call to getDataId.js , and
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
-app.get('/allusers', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+app.get('/allusers', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
     PublicUsers.find({}).exec(function (err, docs) {
         if (err) return next(err);
@@ -381,7 +387,7 @@ app.get('/allusers', function (req, res, next) {    //call to getDataId.js , and
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
-app.get('/allresearchers', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+app.get('/allresearchers', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
     Researchers.find({}).exec(function (err, docs) {
         if (err) return next(err);
@@ -420,7 +426,7 @@ app.get('/selection/:id/:playlist', function (req, res, next) {
  *
  * @RESPONSE-SAMPLE {{}}
  ----------------------------------------------------------------------------------*/
-app.post('/selection/:id', function (req, res, next) {    //call to getDataId.js , and request all the relevant data from DB
+app.post('/selection/:id', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req.body) return res.sendStatus(400);
 
     PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
@@ -459,7 +465,6 @@ app.post('/selection/:id', function (req, res, next) {    //call to getDataId.js
             var group = userData.group;
             var lookup = {'name': group, 'records.mbid': data.mbid};
             PlayList.findOne(lookup).exec(function (err, q) {
-
                 var pos = q.records.findIndex(e => e.mbid == data.mbid);
                 q.records[pos].votes = q.records[pos].votes || [];
                 var posUser = q.records[pos].votes.findIndex(e => e.userId == data.id);
@@ -749,6 +754,48 @@ app.get('/publicId/:id', function (req, res, next) {
         }
     });
 });
+
+/** ----------------------------------------------------------------------------------
+ *  Add a new record to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} name: Given user name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {researcherData}
+ ----------------------------------------------------------------------------------*/
+
+app.post('/insertRecord', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
+    // console.log("Try to post the researcher");
+    console.log(req);
+    if (req.body.mbId && req.body.title) {
+        var recordData = {
+            mbId: req.body.mbId,
+            title: req.body.title,
+            year: req.body.year,
+            artistName: req.body.artistName,
+            language: req.body.language,
+            country: req.body.country,
+            lyrics: req.body.lyrics,
+            genre: req.body.genre,
+            youtube: JSON.parse(req.body.youtube)
+            //     {
+            //     videoId: youtubeId.val(),
+            //     views: youtubeViews.val()
+            // }
+        };
+        console.log("recordData",recordData);
+        var bulk = Records.collection.initializeOrderedBulkOp();
+        bulk.find({
+            id: recordData.mbId                 //update the id , if have - update else its build new document
+        }).upsert().updateOne(recordData);
+        bulk.execute();
+    }
+});
+
+
+
 
 
 /** ----------------------------------------------------------------------------------

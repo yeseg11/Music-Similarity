@@ -1,18 +1,5 @@
 (function ($) {
     $(document).ready(function () {
-        /*
-        mbId: String,
-            title: String,
-            year: Number,
-            artistName: String, // NEED TO BE JUST THE ARTIST NAME !!
-            language: String,
-            country: String,
-            lyrics: String,
-            genre: String,
-            youtube: {},
-            mbRaw: {},
-        *
-        * */
 
         $('#send').on("click", function (e) {
             console.log("here")
@@ -39,8 +26,8 @@
 
 
             var genre = "";
-            if ($('#genre').length){
-                genre = $('#genre');
+            if ($('#Genre1Select').length){
+                genre = $('#Genre1Select');
             }
 
             var lyrics = "";
@@ -52,56 +39,30 @@
             var recList = [];
             var prom = new Promise(function (resolve, reject) {
                 // do a thing, possibly async, then…
-                console.log('hhhhhhhh');
+                console.log('genre: ',genre.val());
                 alert(artistName.val()+" "+title.val()+" "+year.val()+" "+country.val()+" "+language.val()+" "+mbId.val()+" "+youtubeId.val()+" "+youtubeViews.val());
-                var i = 0;
-                // $.get('/mb/track/record/' + mbid, function (data) {
-                //     if (!data || !data.items || !data.items.length) return reject(Error("ERROR IN FIND LIST"));
-                //     console.log(data)
-                //     var size = 25;
-                //     if (data.items.length < size) {
-                //         size = data.items.length;
-                //     }
-                //     for (i = 0; i < size; i++) {
-                //         recList.push({
-                //             mbid: data.items[i].mbId,
-                //             title: data.items[i].title,
-                //             year: parseInt(data.items[i].year),
-                //             artist: data.items[i].artist,
-                //             country: data.items[i].country,
-                //             youtube: data.items[i].youtube,
-                //         });
-                //         // var rec = data.items[i];
-                //     }
-                //     //  console.log(recList);
-                // }).then(function (response) {
-                //     console.log("Success!", response);
-                //     //console.log("recList!", recList);
-                //     var obj = {
-                //         id: id.val().toString(),
-                //         age: parseInt(age.val()),
-                //         country: country.val(),
-                //         entrance: 0,
-                //         name: name.val(),
-                //         language1: language1.val(),
-                //         language2: language2.val(),
-                //         year: parseInt(yearTwenty),
-                //         group: country.val() + yearTwenty.toString(),
-                //         records: JSON.stringify(recList)
-                //     };
-                //
-                //     //console.log("obj:",obj);
-                //     //console.log("Success2!", response);
-                //     var $form = $(this);
-                //     console.log($form);
-                //     var url = $form.attr("action");
-                //     console.log(url);
-                //     var posting = $.post(url, obj);
-                //     posting.done(function (data) {
-                //         console.log("data:" + data);
-                //     });
-                //     alert("user add");
-                // });
+                var recordData = {
+                    mbId: mbId.val(),
+                    title: title.val(),
+                    year: year.val(),
+                    artistName: artistName.val(), // NEED TO BE JUST THE ARTIST NAME !!
+                    language: language.val(),
+                    country: country.val(),
+                    lyrics: lyrics.val(),
+                    genre: genre.val(),
+                    youtube: JSON.stringify({
+                        videoId: youtubeId.val(),
+                        views: youtubeViews.val()
+                    })
+                };
+
+                //private users
+                var setRecordUrl = '/insertRecord';
+                var postingPrivate = $.post(setRecordUrl, recordData).then(function (data) {
+                });
+                postingPrivate.done(function (data) {
+                });
+
             });
         })
     });

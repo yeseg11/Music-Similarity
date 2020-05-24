@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/routes/setResrarchData.js" ></script>
+    <script src="/routes/setResearchData.js" ></script>
 </head>
 <body>
 <div class="container-contact100">
@@ -37,12 +37,12 @@
 				</span>
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <span class="label-input100">Research Name</span>
-                <input id ='researchName' class="input100" type="text" name="researchName" placeholder="Enter Reasercher Name">
+                <input id ='researchName' class="input100" type="text" name="researchName" placeholder="Enter Research Name">
                 <span class="focus-input100"></span>
             </div>
             <div class="wrap-input100 validate-input" data-validate="ID is required">
                 <span class="label-input100">Research ID</span>
-                <input id ='researchId' class="input100" type="text" name="researchId" placeholder="Enter Reasercher ID">
+                <input id ='researchId' class="input100" type="text" name="researchId" placeholder="Enter Research ID">
                 <span class="focus-input100"></span>
             </div>
 
@@ -53,6 +53,21 @@
                     <option value="" disabled selected>Select the researchers</option>
                 </select>
                 <!--                <input id ='researchers' class="input100" type="text" name='researchers' placeholder="Select the researchers name">-->
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Nursing Home is required">
+                <span class="label-input100">Nursing Home</span>
+<!--                <select input id ='nursingHome' class="input100" type="text" name='nursingHome' placeholder="Enter Nursing Home" multiple>-->
+<!--                    <option value="" disabled selected>Select the researchers</option>-->
+<!--                </select>-->
+                <input id ='nursingHome' class="input100" type="text" name='nursingHome' placeholder="Enter Nursing Home">
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Department is required">
+                <span class="label-input100">Department</span>
+                <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">
                 <span class="focus-input100"></span>
             </div>
 
@@ -68,17 +83,9 @@
             <!-- ======== -->
 
             <!--==============change to drop down===========================-->
-            <div class="wrap-input100 validate-input" data-validate="Nursing Home is required">
-                <span class="label-input100">Nursing Home</span>
-                <input id ='nursingHome' class="input100" type="text" name='nursingHome' placeholder="Enter Nursing Home">
-                <span class="focus-input100"></span>
-            </div>
 
-            <div class="wrap-input100 validate-input" data-validate="Department is required">
-                <span class="label-input100">Department</span>
-                <input id ='department' class="input100" type="text" name='department' placeholder="Enter Department">
-                <span class="focus-input100"></span>
-            </div>
+
+
             <!--==============change to drop down===========================-->
             <!--==============add users, connect to DB===========================-->
             <div class="wrap-input100 validate-input" data-validate="Length of study is required">
