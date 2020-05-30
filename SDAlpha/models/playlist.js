@@ -13,18 +13,19 @@ var playlistSchema = new Schema({
     year:Number,
     country:String,
     language:String,
-    records: []
-    //     {
-    //     mbId: String,
-    //     title: String,
-    //     year: Number,
-    //     artistName: String,
-    //     language: String,
-    //     country: String,
-    //     lyrics: String,
-    //     genre: String,
-    //     votes: [{userId: String, vote: Number}]
-    // }]
+    records: [
+        {
+        mbId: String,
+        title: String,
+        year: Number,
+        artistName: String,
+        language: String,
+        country: String,
+        lyrics: String,
+        genre: String,
+        youtube: {},
+        votes: [{userId: String, vote: Number}]
+    }]
 });
 
 /*

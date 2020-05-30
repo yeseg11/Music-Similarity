@@ -56,7 +56,6 @@
                 if (entrance === 0) //first time
                 {
                     entrance++;
-                    // console.log(data.items[0]);
                     addEnterens(id.val().toString(),entrance);
                     var year = data.items[0].year;
                     var country = data.items[0].countrySel1;
@@ -97,12 +96,11 @@
                         for (i = 0; i < playarr.length; i++) {  //show the playlist songs .
                             var place = playarr[i];
                             var item = rec[place];
-                            console.log("item:",item);
-                            var mbid = (item && item.mbid) ? item.mbid : '';
+                            // console.log("item:",item);
+                            var mbid = (item && item.mbId) ? item.mbId : '';
                             var videoId = (item && item.youtube && item.youtube.videoId) ? item.youtube.videoId : '';
-                            //console.log(videoId);
                             var title = (item && item.title)? item.title: '';
-                            var artist = (item && item.artistName && item.artistName[0] && item.artistName[0].name)? item.artistName[0].name : '';
+                            var artist = (item && item.artistName )? item.artistName : '';
                             html += template.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId).replace('::userid::',id.val().toString()).replace('::data::',mbid);
                             html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
                         }
@@ -306,8 +304,8 @@ function f2(id,mbid,n) {
     });
     $.get('/user/' + id.toString(), function(data) {
         // console.log(data.items[0].enterens);
-        if (data.items[0].entrance == 0){
-            addEnterens(data.items[0].id,1);
+        if (data.items[0].entrance === 0){
+            addEnterens(data.items[0].tamaringaId,1);
         }
 
     });
@@ -323,6 +321,8 @@ function f2(id,mbid,n) {
  * @RESPONSE-SAMPLE {playList , userData}
  ---------------------------------------------------------------------------------- */
 function addEnterens(id,entrance) {
+    console.log("entrance: ",entrance);
+    console.log("id: ",id);
     $.get('/user/' + id, function(data) {
 
         var enter = entrance;

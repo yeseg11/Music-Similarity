@@ -154,16 +154,23 @@ app.post('/playList/createPlaylist', function (req, res, next) {
         language:req.body.language,
         records: JSON.parse(req.body.records)
     };
-    console.log(playlistData);
+    // console.log(playlistData);
     var query = {name: playlistData.name},
         update = playlistData,
         options = {upsert: true, new: true, setDefaultsOnInsert: true};
 
     var exiset = true;
     //PlayList.createIndex({name:1});
-    PlayList.findOneAndUpdate(query, update, options, function (error, result) {
-        if (error) return;
-    });
+    // PlayList.findOneAndUpdate(query, update, options, function (error, result) {
+    //     if (error) return;
+    // });
+
+    var bulk = PlayList.collection.initializeOrderedBulkOp();
+    bulk.find({
+        name: playlistData.name                 //update the id , if have - update else its build new document
+    }).upsert().updateOne(playlistData);
+    bulk.execute();
+
 
 
     // PlayList.findOne({name: playlistData.name}, function (error, result) {
@@ -360,6 +367,7 @@ app.get('/playList/:name', function (req, res, next) {
  ----------------------------------------------------------------------------------*/
 app.get('/user/:id', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
+    console.log("req.params.id: ",req.params.id);
     PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
         if (err) return next(err);
         res.status(200).json({err: false, items: [].concat(docs)});
@@ -463,11 +471,14 @@ app.post('/selection/:id', function (req, res, next) {    //call to getUserData.
             // loop all songs
             var data = userData.songs[0];
             var group = userData.group;
-            var lookup = {'name': group, 'records.mbid': data.mbid};
+            var lookup = {'name': group, 'records.mbId': data.mbid};
+            var mbId = data.mbid
             PlayList.findOne(lookup).exec(function (err, q) {
-                var pos = q.records.findIndex(e => e.mbid == data.mbid);
+                // console.log("q: ",q);
+                var pos = q.records.findIndex(e => e.mbId === mbId);
+
                 q.records[pos].votes = q.records[pos].votes || [];
-                var posUser = q.records[pos].votes.findIndex(e => e.userId == data.id);
+                var posUser = q.records[pos].votes.findIndex(e => e.userId === data.id);
 
                 if (posUser >= 0) {
                     q.records[pos].votes[posUser].vote = data.vote
@@ -478,10 +489,9 @@ app.post('/selection/:id', function (req, res, next) {    //call to getUserData.
                 var user = [];
                 var users = [];
                 q.records.forEach(rec => {
-
-                    user.push(rec.votes.filter(x => x.userId == data.id).map(x => x.vote)[0] || 0);
+                    user.push(rec.votes.filter(x => x.userId === data.id).map(x => x.vote)[0] || 0);
                     rec.votes.map(function (x) {
-                        if (users.indexOf(x.userId) == -1 && x.userId != data.id) users.push(x.userId)
+                        if (users.indexOf(x.userId) === -1 && x.userId !== data.id) users.push(x.userId)
                     });
                 });
 
@@ -533,16 +543,16 @@ app.get('/playlist/:playlist/:id', function (req, res, next) {
 
     // console.log(req.params.id+" "+req.params.playlist);
     var id = req.params.id.toString();
-    // console.log("id:",id);
+    console.log("id:",id);
     PlayList.find({"records.votes.userId": {$in: [id]}}).exec(function (err, docs) {
         if (err) return next(err);
-        // console.log('docs: ',docs);
+        console.log('docs: ',docs);
         if (!docs[0] || !docs || docs == []) {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
         }
         var topUser = [];
         var notEar = [];
-        // console.log("docs[0]: ",docs[0]);
+        console.log("docs[0]: ",docs[0]);
         docs[0].records.forEach(function callback(currentValue, index, rec) {
             var index = index;
             var o = currentValue.votes.filter(x => x.userId == id);
