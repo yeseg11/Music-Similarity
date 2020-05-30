@@ -205,7 +205,7 @@ app.post('/playList/createPlaylist', function (req, res, next) {
 
 app.post('/insertPublicUsers', function (req, res, next) {
     if (!req.body) return res.sendStatus(400, "Error to add user");
-    console.log("req.body.tamaringaId: ",req.body.tamaringaId);
+    // console.log("req.body.tamaringaId: ",req.body.tamaringaId);
 
     if (req.body.tamaringaId && req.body.birthYear && req.body.countryAtTwenty && req.body.name) {
         var userData = {
@@ -367,7 +367,7 @@ app.get('/playList/:name', function (req, res, next) {
  ----------------------------------------------------------------------------------*/
 app.get('/user/:id', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
-    console.log("req.params.id: ",req.params.id);
+    // console.log("req.params.id: ",req.params.id);
     PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
         if (err) return next(err);
         res.status(200).json({err: false, items: [].concat(docs)});
@@ -543,23 +543,23 @@ app.get('/playlist/:playlist/:id', function (req, res, next) {
 
     // console.log(req.params.id+" "+req.params.playlist);
     var id = req.params.id.toString();
-    console.log("id:",id);
+    // console.log("id:",id);
     PlayList.find({"records.votes.userId": {$in: [id]}}).exec(function (err, docs) {
         if (err) return next(err);
-        console.log('docs: ',docs);
+        // console.log('docs: ',docs);
         if (!docs[0] || !docs || docs == []) {
             res.sendFile(path.join(__dirname, 'assests', '404.html'));
         }
         var topUser = [];
         var notEar = [];
-        console.log("docs[0]: ",docs[0]);
+        // console.log("docs[0]: ",docs[0]);
         docs[0].records.forEach(function callback(currentValue, index, rec) {
             var index = index;
             var o = currentValue.votes.filter(x => x.userId == id);
             var ex = currentValue.votes.findIndex(x => x.userId == id);
-            console.log('rec: ', rec);
+            // console.log('rec: ', rec);
             if (ex != -1) {
-                console.log(rec[index]);
+                // console.log(rec[index]);
                 //console.log(index);
                 //console.log(currentValue.votes.filter(x=>x.userId == id));
                 //console.log(currentValue.votes.findIndex(x=>x.userId == id));
@@ -572,7 +572,7 @@ app.get('/playlist/:playlist/:id', function (req, res, next) {
                     videoId: rec[index].youtube.videoId
                 });
             } else {
-                console.log(rec[index]);
+                // console.log(rec[index]);
                 notEar.push({
                     index: index,
                     vote: 0,
@@ -778,7 +778,7 @@ app.get('/publicId/:id', function (req, res, next) {
 app.post('/insertRecord', function (req, res, next) {
     if (!req.body) return res.sendStatus(400, "Error to add user");
     // console.log("Try to post the researcher");
-    console.log(req);
+    // console.log(req);
     if (req.body.mbId && req.body.title) {
         var recordData = {
             mbId: req.body.mbId,
@@ -795,7 +795,7 @@ app.post('/insertRecord', function (req, res, next) {
             //     views: youtubeViews.val()
             // }
         };
-        console.log("recordData",recordData);
+        // console.log("recordData",recordData);
         var bulk = Records.collection.initializeOrderedBulkOp();
         bulk.find({
             id: recordData.mbId                 //update the id , if have - update else its build new document

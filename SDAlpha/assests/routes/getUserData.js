@@ -57,8 +57,8 @@
                 {
                     entrance++;
                     addEnterens(id.val().toString(),entrance);
-                    var year = data.items[0].year;
-                    var country = data.items[0].countrySel1;
+                    var year = data.items[0].yearAtTwenty;
+                    var country = data.items[0].countryAtTwenty;
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i> Loading</h3>');
                     var playListName = data.items[0].group.toString();
 
@@ -104,7 +104,7 @@
                             html += template.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId).replace('::userid::',id.val().toString()).replace('::data::',mbid);
                             html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid);
                         }
-                        $('#title').html("Your Music: "+year + ',' + country);
+                        $('#title').html("Your Music: "+ year + ',' + country);
                         window.scrollBy(0, 500);
                         musicWrapper.html(html);
                         addEnterens(id.val().toString(),1);
@@ -113,8 +113,9 @@
                 else {
                     entrance++;
                     addEnterens(id.val().toString(),entrance);
-                    var year = data.items[0].year;
-                    var country = data.items[0].countrySel1;
+                    console.log("data.items[0]",data.items[0]);
+                    var year2 = data.items[0].yearAtTwenty;
+                    var country2 = data.items[0].countryAtTwenty;
                     //console.log(entrance);
                     musicWrapper.html('<h3><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Loading</h3>');
                     var playListName = data.items[0].group.toString();
@@ -242,8 +243,7 @@
                             var artist = (item && item.artist && item.artist)? item.artist : '';
                             html += experienceShow.replace('::videoId::', videoId).replace('::name::', title + ' - ' + artist).replace('::link::',videoId).replace('::userid::',id.val().toString()).replace('::data::',mbid);
                             html = html.replace(new RegExp ('::userid::','g'),id.val().toString()).replace(new RegExp('::data::','g'),mbid).replace('::ent::',entrance.toString());
-                            $('#title').html("Your Music: "+year + ',' + country);
-
+                            $('#title').html("Your Music: "+year2 + ',' + country2);
                         }
 
                         window.scrollBy(0, 500);
@@ -321,8 +321,7 @@ function f2(id,mbid,n) {
  * @RESPONSE-SAMPLE {playList , userData}
  ---------------------------------------------------------------------------------- */
 function addEnterens(id,entrance) {
-    console.log("entrance: ",entrance);
-    console.log("id: ",id);
+
     $.get('/user/' + id, function(data) {
 
         var enter = entrance;
