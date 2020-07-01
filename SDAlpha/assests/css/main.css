@@ -186,6 +186,29 @@ iframe {
   padding: 42px 55px 45px 55px;
 }
 
+.container-section-space {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 13px;
+}
+
+.container-section {
+  width: 100%;
+  background: #fff;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #d6d6c2;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px 10px 10px 10px;
+  padding-top: 13px;
+}
+
 
 /*------------------------------------------------------------------
 [ Form ]*/
@@ -296,11 +319,35 @@ textarea.input100 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-top: 13px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.container-contact100-return-btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  padding-top: 25px;
+  padding-bottom: 0px;
+
 }
 
 .wrap-contact100-form-btn {
   width: 100%;
+  display: block;
+  position: relative;
+  z-index: 1;
+  border-radius: 25px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.wrap-contact100-return-btn {
+  width: 15%;
   display: block;
   position: relative;
   z-index: 1;
@@ -345,6 +392,7 @@ textarea.input100 {
   color: #fff;
   line-height: 1.2;
 }
+
 
 .wrap-contact100-form-btn:hover .contact100-form-bgbtn {
   left: 0;
