@@ -42,27 +42,33 @@ app.use(bodyParser.json());
  */
 
 /**
- * Main Page
+ * Main Page and there link
  */
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'mainPage.html'), {}, () => res.end())); // Static front page
+/*admin*/
+app.get('/adminLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/adminLoginPage.html'), {}, () => res.end()));
+app.get('/adminMainPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/adminMainPage.html'), {}, () => res.end()));/*6 buttons*/
+/*user*/
+app.get('/userLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userLoginPage.html'), {}, () => res.end()));
+app.get('/userScreen', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'userScreen.html'), {}, () => res.end())); // song list with youTube
+/*research group*/
+app.get('/researchGroupLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/researchGroupLoginPage.html'), {}, () => res.end()));
+app.get('/researchGroupMainPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researchGroupMainPage.html'), {}, () => res.end()));/*2*/
 /**
- * Users pages
+ * *Admin Page
  */
-app.get('/users', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/userMain.html'), {}, () => res.end())); // a new user form
-app.get('/users/insertUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertUsers.html'), {}, () => res.end())); // a new user form
-// app.get('/users/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/logInUser.html'), {}, ()=>res.end())); // login form
-app.get('/in', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'logInUser.html'), {}, () => res.end())); // login form
+app.get('/createUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/createUsers.html'), {}, () => res.end()));
+app.get('/editUsers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/editUsers.html'), {}, () => res.end()));
+app.get('/createResearchGroup', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/createResearchGroup.html'), {}, () => res.end()));
+app.get('/createResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/createResearcher.html'), {}, () => res.end()));
+app.get('/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, () => res.end()));
+app.get('/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newSong.html'), {}, () => res.end()));
 
 /**
  * researchers pages
  */
-app.get('/researchers', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/researcherMain.html'), {}, () => res.end())); // login form
-app.get('/researchers/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, () => res.end())); // login form
-app.get('/researchers/newPlaylist', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newPlaylist.html'), {}, () => res.end())); // login form
-app.get('/researchers/newSong', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newSong.html'), {}, () => res.end())); // login form
-app.get('/researchers/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, () => res.end())); // login form
-app.get('/insertResearcher', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/insertResearcher.html'), {}, () => res.end())); // login form
-app.get('/researcherLoginPage', (req, res) => res.sendFile(path.join(__dirname, 'assests', 'researcherLoginPage.html'), {}, () => res.end())); // login form
+app.get('/newResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/newResearch.html'), {}, () => res.end())); // login form
+app.get('/editResearch', (req, res) => res.sendFile(path.join(__dirname, 'assests', '/editResearch.html'), {}, () => res.end()));
 
 
 // /** ----------------------------------------------------------------------------------

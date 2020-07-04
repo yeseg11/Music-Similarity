@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Admin Login</title>
+    <title>Research Group Main Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -31,30 +31,28 @@
 <div class="container-contact100">
     <div class="wrap-contact100">
         <form class="contact100-form validate-form" >
-				<span class="contact100-form-title">
-					Admin Login
-				</span>
-
-            <div class="wrap-input100 validate-input" data-validate="Name is required">
-                <span class="label-input100">Name</span>
-                <input id='name' class="input100" type="text" name='name' placeholder="Enter Name">
-                <span class="focus-input100"></span>
-            </div>
-
-            <div class="wrap-input100 validate-input" data-validate="Password is required">
-                <span class="label-input100">Password</span>
-                <input id='password' class="input100" type="text" name="password" placeholder="Enter Password">
-                <span class="focus-input100"></span>
-            </div>
+            <span class="contact100-form-title">
+                Research Group: ...<!-- need to add the name of the group -->
+            </span>
 
             <div class="container-contact100-form-btn">
                 <div class="wrap-contact100-form-btn">
                     <div class="contact100-form-bgbtn"></div>
-                    <button id='login' type='button' class="contact100-form-btn" onclick="location.href='/adminMainPage'">
+                    <button type="button" id ='createUser' class="contact100-form-btn" onclick="location.href='/newResearch'">
                         <span>
-                            Login
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                            Create research
                         </span>
+                    </button>
+                </div>
+            </div>
+            <div class="container-contact100-form-btn">
+                <div class="wrap-contact100-form-btn">
+                    <div class="contact100-form-bgbtn"></div>
+                    <button id='editUser' type='button' class="contact100-form-btn" onclick="location.href='editResearch'">
+                        <i class="fa fa-list-ol fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+                            <span>
+                                get list of research
+                            </span>
                     </button>
                 </div>
             </div>

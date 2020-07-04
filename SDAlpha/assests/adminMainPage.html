@@ -40,10 +40,10 @@
                     <div class="container-contact100-form-btn">
                         <div class="wrap-contact100-form-btn">
                             <div class="contact100-form-bgbtn"></div>
-                            <button type="button" id ='createUser' class="contact100-form-btn" onclick="location.href='users/insertUsers'">
+                            <button type="button" id ='createUser' class="contact100-form-btn" onclick="location.href='/createUsers'">
+                                <i class="fa fa-blind fa-2x" aria-hidden="true"></i>&nbsp;
                                 <span>
                                     Create User
-                                    <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
                                 </span>
                             </button>
                         </div>
@@ -51,11 +51,11 @@
                     <div class="container-contact100-form-btn">
                         <div class="wrap-contact100-form-btn">
                             <div class="contact100-form-bgbtn"></div>
-                            <button id='editUser' type='button' class="contact100-form-btn" onclick="location.href='in'">
-                            <span>
-                                Edit User
-                                <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                            </span>
+                            <button id='editUser' type='button' class="contact100-form-btn" onclick="location.href='/editUsers'">
+                                <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                        Edit User
+                                    </span>
                             </button>
                         </div>
                     </div>
@@ -69,14 +69,27 @@
                     <div class="container-contact100-form-btn">
                         <div class="wrap-contact100-form-btn">
                             <div class="contact100-form-bgbtn"></div>
-                            <button id='createResearchGroup' type='button' class="contact100-form-btn" onclick="location.href='in'">
+                            <button id='createResearchGroup' type='button' class="contact100-form-btn" onclick="location.href='/createResearchGroup'">
                                 <span>
+                                    <i class="fa fa-users fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;
                                     Create Research Group
-                                    <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
                                 </span>
                             </button>
                         </div>
                     </div>
+
+                    <div class="container-contact100-form-btn">
+                        <div class="wrap-contact100-form-btn">
+                            <div class="contact100-form-bgbtn"></div>
+                            <button id='createResearcher' type='button' class="contact100-form-btn" onclick="location.href='/createResearcher'">
+                                <span>
+                                    <i class="fa fa-users fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;
+                                    Create New Research
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -87,10 +100,10 @@
                     <div class="container-contact100-form-btn">
                         <div class="wrap-contact100-form-btn">
                             <div class="contact100-form-bgbtn"></div>
-                            <button type="button" id ='createPlaylist' class="contact100-form-btn" onclick="location.href='users/insertUsers'">
+                            <button type="button" id ='createPlaylist' class="contact100-form-btn" onclick="location.href='/newPlaylist'">
                                     <span>
+                                        <i class="fa fa-list-ol fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;
                                         Create Playlist
-                                        <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
                                     </span>
                             </button>
                         </div>
@@ -98,10 +111,10 @@
                     <div class="container-contact100-form-btn">
                         <div class="wrap-contact100-form-btn">
                             <div class="contact100-form-bgbtn"></div>
-                            <button type="button" id ='addMedia' class="contact100-form-btn" onclick="location.href='users/insertUsers'">
+                            <button type="button" id ='addMedia' class="contact100-form-btn" onclick="location.href='/newSong'">
                                     <span>
+                                        <i class="fa fa-music fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;
                                         Add Media
-                                        <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
                                     </span>
                             </button>
                         </div>
@@ -109,6 +122,14 @@
                 </div>
             </div>
 
+            <div class="container-contact100-back-btn">
+                <div class="wrap-contact100-back-btn">
+                    <div class="contact100-back-bgbtn"></div>
+                    <button id='main' type='button' class="contact100-back-btn" onclick="location.href='/'">
+                        <i class="fa fa-arrow-left m-l-7" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

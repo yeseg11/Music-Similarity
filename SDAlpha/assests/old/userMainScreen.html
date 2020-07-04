@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Admin Login</title>
+    <title>Main Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -32,28 +32,24 @@
     <div class="wrap-contact100">
         <form class="contact100-form validate-form" >
 				<span class="contact100-form-title">
-					Admin Login
+					User Main Page
 				</span>
-
-            <div class="wrap-input100 validate-input" data-validate="Name is required">
-                <span class="label-input100">Name</span>
-                <input id='name' class="input100" type="text" name='name' placeholder="Enter Name">
-                <span class="focus-input100"></span>
-            </div>
-
-            <div class="wrap-input100 validate-input" data-validate="Password is required">
-                <span class="label-input100">Password</span>
-                <input id='password' class="input100" type="text" name="password" placeholder="Enter Password">
-                <span class="focus-input100"></span>
-            </div>
-
             <div class="container-contact100-form-btn">
                 <div class="wrap-contact100-form-btn">
                     <div class="contact100-form-bgbtn"></div>
-                    <button id='login' type='button' class="contact100-form-btn" onclick="location.href='/adminMainPage'">
+                    <button type="button" id ='user' class="contact100-form-btn" onclick="location.href='users/insertUsers'">
+							<span>
+								Create User
+							</span>
+                    </button>
+                </div>
+            </div>
+            <div class="container-contact100-form-btn">
+                <div class="wrap-contact100-form-btn">
+                    <div class="contact100-form-bgbtn"></div>
+                    <button id='playlist' type='button' class="contact100-form-btn" onclick="location.href='in'">
                         <span>
-                            Login
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                            Login User
                         </span>
                     </button>
                 </div>
@@ -62,11 +58,13 @@
             <div class="container-contact100-back-btn">
                 <div class="wrap-contact100-back-btn">
                     <div class="contact100-back-bgbtn"></div>
-                    <button id='main' type='button' class="contact100-back-btn" onclick="location.href='/'">
-                        <i class="fa fa-arrow-left m-l-7" aria-hidden="true"></i>
-                    </button>
+                        <button id='main' type='button' class="contact100-back-btn" onclick="location.href='/'">
+                                <i class="fa fa-arrow-left m-l-7" aria-hidden="true"></i>
+                        </button>
                 </div>
             </div>
+
+
         </form>
     </div>
 </div>
