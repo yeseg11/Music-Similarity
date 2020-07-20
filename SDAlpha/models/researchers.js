@@ -6,8 +6,10 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var researchersSchema = new Schema({
-    name: String,
-    id: String
+    researcherName: String,
+    researcherId: String,
+    researcherPassword: String,
+    isAdmin: Boolean
 });
 
 // the schema is useless so far

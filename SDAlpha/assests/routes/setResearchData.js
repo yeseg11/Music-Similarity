@@ -8,7 +8,7 @@
             getResearchers().then(function (result1) {
                 var selectElem1 = $('#researchersIds');
                 for (var i = 0; i < result1.length; i++) {
-                    selectElem1.append("<option value='" + result1[i].id + "'>" + result1[i].name + "</option>");
+                    selectElem1.append("<option value='" + result1[i].researcherId + "'>" + result1[i].researcherName + "</option>");
                 }
             }).catch(function (err) {
                 console.log(err);
@@ -84,7 +84,7 @@
             var prom = new Promise(function (resolve, reject) {
                 for (i = 0; i < patientsIds.length; i++) {
                     $.get('/user/' + patientsIds[i].value, function (data) {
-                        console.log(data.items[0]);
+                        console.log(data.items);
                         let items = data.items[0];
                         yearAtTwenty = items.yearAtTwenty;
                         countryAtTwenty = items.countryAtTwenty;

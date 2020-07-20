@@ -15,6 +15,9 @@ let PlayList = require('./models/playlist.js');
 let PublicUsers = require('./models/publicUsers.js');
 let PrivateUsers = require('./models/privateUsers.js');
 let Research = require('./models/research.js');
+let ResearchGroup = require('./models/researchGroup.js');
+var AES = require("crypto-js/aes");
+
 
 
 let similarity = require('compute-cosine-similarity');
@@ -211,12 +214,13 @@ app.post('/playList/createPlaylist', function (req, res, next) {
 
 app.post('/insertPublicUsers', function (req, res, next) {
     if (!req.body) return res.sendStatus(400, "Error to add user");
-    // console.log("req.body.tamaringaId: ",req.body.tamaringaId);
+    // console.log("req.body.tamaringaId: ",req.body);
 
     if (req.body.tamaringaId && req.body.birthYear && req.body.countryAtTwenty && req.body.name) {
         var userData = {
             name: req.body.name,
             tamaringaId: req.body.tamaringaId.toString(),
+            password: req.body.password,
             department: req.body.department,
             medicalProfile: req.body.medicalProfile,
             birthYear: parseInt(req.body.birthYear),
@@ -371,14 +375,40 @@ app.get('/playList/:name', function (req, res, next) {
  * @RESPONSE {json}
  * @RESPONSE-SAMPLE {docs: []}
  ----------------------------------------------------------------------------------*/
+app.get('/user/:id/:encryptedPass', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
+    if (!req) return res.sendStatus(400);
+    var CryptoJS = require("crypto-js");
+    var bytes  = CryptoJS.AES.decrypt(req.params.encryptedPass, 'Password');
+    var decrypted1 = bytes.toString(CryptoJS.enc.Utf8)
+    // console.log(req.params.id);
+    PublicUsers.find({tamaringaId: req.params.id.toString()}).exec(function (err, docs) {
+        if (err) return next(err);
+        // console.log(docs);
+        // res.status(200).json({err: false, items: [].concat(docs)});
+        var bytes2  = CryptoJS.AES.decrypt(docs[0].password, 'Password');
+        var decrypted2 = bytes2.toString(CryptoJS.enc.Utf8);
+        // console.log("docs: ",decrypted2);
+        if (decrypted2 === decrypted1){
+            res.status(200).json({err: false, items: [].concat(docs)});
+        }
+        else{
+            return next(err)
+        }
+    });
+});
+
 app.get('/user/:id', function (req, res, next) {    //call to getUserData.js , and request all the relevant data from DB
     if (!req) return res.sendStatus(400);
-    // console.log("req.params.id: ",req.params.id);
-    PublicUsers.find({tamaringaId: req.params.id}).exec(function (err, docs) {
+    console.log(req.params.id);
+    PublicUsers.find({tamaringaId: req.params.id.toString()}).exec(function (err, docs) {
         if (err) return next(err);
+        console.log(docs);
         res.status(200).json({err: false, items: [].concat(docs)});
-    })
+    });
 });
+
+
+
 
 /** ----------------------------------------------------------------------------------
  * Return all the users Data from DB
@@ -665,16 +695,18 @@ app.get('/playlist/:playlist/:id', function (req, res, next) {
 app.post('/insertResearcher', function (req, res, next) {
     if (!req.body) return res.sendStatus(400, "Error to add user");
     // console.log("Try to post the researcher");
-    // console.log(req.body.entrance);
-    if (req.body.id && req.body.name) {
-        var userData = {
-            id: req.body.id.toString(),
-            name: req.body.name
+
+    if (req.body.researcherId && req.body.researcherName && req.body.researcherPassword) {
+        var researcherData = {
+            researcherName: req.body.researcherName,
+            researcherId: req.body.researcherId,
+            researcherPassword: req.body.researcherPassword,
+            isAdmin: Boolean(req.body.isAdmin)
         };
         var bulk = Researchers.collection.initializeOrderedBulkOp();
         bulk.find({
-            id: userData.id                 //update the id , if have - update else its build new document
-        }).upsert().updateOne(userData);
+            id: researcherData.id                 //update the id , if have - update else its build new document
+        }).upsert().updateOne(researcherData);
         bulk.execute();
     }
 });
@@ -712,6 +744,31 @@ app.post('/insertResearch', function (req, res, next) {
 });
 
 
+/** ----------------------------------------------------------------------------------
+ *  Post and add a new research Group to Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} password: Given user name
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {researcherData}
+ ----------------------------------------------------------------------------------*/
+
+app.post('/insertResearchGroup', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400, "Error to add user");
+    var researchGroup = {
+        researchGroupName: req.body.researchGroupName,
+        researchGroupId: req.body.researchGroupId,
+        researchGroupPassword: req.body.researchGroupPassword,
+        researchersIds: req.body['researchersIds[]']
+    };
+    // console.log("researchGroup: ",researchGroup);
+    var bulk = ResearchGroup.collection.initializeOrderedBulkOp();
+    bulk.find({
+        researchGroupId: researchGroup.researchGroupId                 //update the id , if have - update else its build new document
+    }).upsert().updateOne(researchGroup);
+    bulk.execute();
+});
 
 
 
@@ -725,15 +782,63 @@ app.post('/insertResearch', function (req, res, next) {
  * @RESPONSE-SAMPLE {researcherData}
  ----------------------------------------------------------------------------------*/
 
-app.get('/insertResearcher/:id', function (req, res, next) {
+app.get('/insertResearcher/:id/:encryptedPass', function (req, res, next) {
     if (!req.body) return res.sendStatus(400);
-    console.log(req.params.id);
-    Researchers.find({id: req.params.id}).exec(function (err, docs) {
+    var CryptoJS = require("crypto-js");
+    var bytes  = CryptoJS.AES.decrypt(req.params.encryptedPass, 'Password');
+    var decrypted1 = bytes.toString(CryptoJS.enc.Utf8);
+    var id = req.params.id.toString()
+
+    Researchers.find({researcherId:id}).exec(function (err, docs) {
         if (err) return next(err);
-        console.log(docs[0].name);
-        res.status(200).json({err: false, items: [].concat(docs)});
+        console.log("docs: ",docs);
+        var bytes2  = CryptoJS.AES.decrypt(docs[0].researcherPassword, 'Password');
+        var decrypted2 = bytes2.toString(CryptoJS.enc.Utf8);
+        if (decrypted2 === decrypted1 && docs[0].isAdmin){
+            res.status(200).json({err: false, items: [].concat(docs)});
+        }
+        else{
+            return next(err)
+        }
     });
 });
+
+/** ----------------------------------------------------------------------------------
+ *  Get  research Data from Data base
+ *
+ * @PARAM {String*} id: Given user id
+ * @PARAM {String} password: Given user password
+ *
+ * @RESPONSE {json}
+ * @RESPONSE-SAMPLE {researcherData}
+ ----------------------------------------------------------------------------------*/
+
+app.get('/insertResearchGroup/:id/:encryptedPass', function (req, res, next) {
+    if (!req.body) return res.sendStatus(400);
+    var CryptoJS = require("crypto-js");
+    var bytes  = CryptoJS.AES.decrypt(req.params.encryptedPass, 'Password');
+    var decrypted1 = bytes.toString(CryptoJS.enc.Utf8);
+    var id = req.params.id.toString()
+    console.log("Log-IN")
+    ResearchGroup.find({researchGroupId:id}).exec(function (err, docs) {
+        console.log("Log-IN",docs)
+        if (err) return next(err);
+        var bytes2  = CryptoJS.AES.decrypt(docs[0].researchGroupPassword, 'Password');
+        var decrypted2 = bytes2.toString(CryptoJS.enc.Utf8);
+        if (decrypted2 === decrypted1){
+            res.status(200).json({err: false, items: [].concat(docs)});
+        }
+        else{
+            return next(err)
+        }
+    });
+});
+
+
+
+
+
+
 
 
 /** ----------------------------------------------------------------------------------

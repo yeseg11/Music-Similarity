@@ -2,34 +2,40 @@
     $(document).ready(function () {
         // console.log("here");
         $('#send').on("click", function (e) {
-            let newData = ['#name','#id','#department','#medicalProfile','#countryAtTwenty','#countryOrigin', '#age','#languageOrigin','#languageAtTwenty','#yearOfImmigration','#Genre1Select','#Genre2Select','#nursingHome'];
-            let inputsArr = ['#birthYear', '#name', '#id', '#department', '#countryAtTwenty','#countryOrigin', '#languageOrigin', '#languageAtTwenty'];
+            let newData = ['#name','#password','#id','#department','#medicalProfile','#countryAtTwenty','#countryOrigin', '#age','#languageOrigin','#languageAtTwenty','#yearOfImmigration','#Genre1Select','#Genre2Select','#nursingHome'];
+            let inputsArr = ['#birthYear', '#name', '#id', '#nursingHome', '#countryAtTwenty','#countryOrigin', '#languageOrigin', '#languageAtTwenty'];
 
             for (const element of inputsArr) {
-                if (!$(element).length) {
+                // console.log("element", element)
+                // console.log("element length", $(element).val().length)
+                if ($(element).val().length <= 1) {
+                    var element2 = element.substr(1);
+                    alert("Please fill the missing details in " + element2);
                     return $('#error').text("insert all the details");
                 }
             }
 
+
             //the new user data
             var name = $('#name'),
                 id = $('#id'),
+                password = $('#password'),
+                nursingHome = $('#nursingHome'),
                 department = $('#department'),
                 medicalProfile = $('#medicalProfile'),
                 birthYear = $('#birthYear'),
-                countryAtTwenty = $('#countryAtTwenty'),
                 countryOrigin = $('#countryOrigin'),
-                language1 = $('#languageOrigin'),
-                language2 = $('#languageAtTwenty'),
+                countryAtTwenty = $('#countryAtTwenty'),
+                languageOrigin = $('#languageOrigin'),
+                languageAtTwenty = $('#languageAtTwenty'),
                 yearOfImmigration = $('#yearOfImmigration'),
                 Genre1Select = $('#Genre1Select'),
-                Genre2Select = $('#Genre2Select'),
-                nursingHome = $('#nursingHome');
+                Genre2Select = $('#Genre2Select');
 
             var yearTwenty = parseInt(birthYear.val()) + 20;
             // var yearTwenty = (new Date()).getFullYear() - parseInt(age.val()) + 20;
             if (!yearTwenty) {
-                $('#error').text("the year not calculate ");
+                $('#error').text("the year not calculate");
                 return;
             }
             var recList = [];
@@ -45,32 +51,28 @@
                         privateId: id.val().toString(),
                         nursingHome: nursingHome.val(),
                     };
-                    // let playlistName = countryAtTwenty.val() + language2.val() +yearTwenty.toString();
-                    // $.get('/playList/e'+playlistName,function (playlist){
-                    //     console.log("playlist:", playlist);
-                    // }).then(function (response) {
-                    //     console.log("response:", response);
-                    //     recList = response
-                    //     });
 
+
+                    var encryptedPass = CryptoJS.AES.encrypt(password.val(),'Password');
 
 
                     var publicUser = {
                         name: name.val(),
                         tamaringaId:publicId.toString(),
+                        password : encryptedPass.toString(),
                         department: department.val(),
                         medicalProfile : medicalProfile.val(),
                         birthYear : parseInt(birthYear.val()),
                         yearAtTwenty: parseInt(yearTwenty),
-                        languageOrigin : language1.val(),
-                        languageAtTwenty : language2.val(),
+                        languageOrigin : languageOrigin.val(),
+                        languageAtTwenty : languageAtTwenty.val(),
                         countryAtTwenty: countryAtTwenty.val(),
                         countryOrigin: countryOrigin.val(),
                         yearOfImmigration : parseInt(yearOfImmigration.val()),
                         Genre1Select : Genre1Select.val(),
                         Genre2Select : Genre2Select.val(),
                         nursingHome : nursingHome.val(),
-                        group: countryAtTwenty.val() + language2.val() +yearTwenty.toString(),
+                        group: countryAtTwenty.val() + languageAtTwenty.val() +yearTwenty.toString(),
                         entrance: 0,
                         songs: JSON.stringify(recList)
                     };
@@ -78,6 +80,7 @@
                     //private users
                     var privateUrl = '/insertPrivateUsers';
                     var postingPrivate = $.post(privateUrl, privateUser).then(function (data) {
+                        // console.log("private user data:",data);
                     });
                     postingPrivate.done(function (data) {
                     });
@@ -85,9 +88,10 @@
                     var publicUrl = '/insertPublicUsers';
                     var postingPublic = $.post(publicUrl, publicUser);
                     postingPublic.done(function (data) {
-                        // console.log("data:" + data);
+                        // console.log("public User data:",data);
                     });
-                });
+                })
+
                 alert("User Created");
             });
         })

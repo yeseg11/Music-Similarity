@@ -41,16 +41,19 @@
 
 
         // onclick="location.href='researches'
-        $('#send').on("click", function(e) {
-            if( $('#id').length)         // use this if you are using id to check
+        $('#login').on("click", function(e) {
+            if( $('#id').val().length === 0 || $('#password').val().length === 0)         // use this if you are using id to check
             {
-                var id = $('#id');
-                //console.log(id.val().toString());
+                alert("Insert id and password!");
+                return $('#error').text("insert id and password!");
             }
             else{
-                return $('#error').text("insert id!");
+                var id = $('#id');
+                var password = $('#password');
+                var encryptedPass = CryptoJS.AES.encrypt(password.val(),'Password');
             }
-            $.get('/user/' + id.val().toString(), function(data) {
+            $.get('/user/' + id.val().toString()+'/'+encryptedPass, function(data) {
+                console.log("LOG - IN ");
                 if(!data || !data.items || !data.items.length) return musicWrapper.html('<h3>Please rephrase search</h3>');
                 var entrance = data.items[0].entrance;
                 if (entrance === 0) //first time
@@ -81,7 +84,7 @@
                                 //console.log(k);
                                 for (j = 0 ; j < i;j++)
                                 {
-                                    if(playarr[j] == k){
+                                    if(playarr[j] === k){
                                         flag1 = false;
                                     }
                                 }
@@ -326,7 +329,7 @@ function addEnterens(id,entrance) {
 
         var enter = entrance;
 
-        if (data.items[0].songs.length === 0 )
+        if (data.items[0].songs.length == 0 )
         {
             enter = 0;
         }
