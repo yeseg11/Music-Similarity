@@ -42,6 +42,7 @@
 
         // onclick="location.href='researches'
         $('#login').on("click", function(e) {
+            console.log("LOG - IN Pressed");
             if( $('#id').val().length === 0 || $('#password').val().length === 0)         // use this if you are using id to check
             {
                 alert("Insert id and password!");
