@@ -18,7 +18,7 @@
     "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
     "google-auth-library": "^1.1.0",
-    "googleapis": "^25.0.0",
+    "googleapis": "^39.1.0",
     "install": "^0.10.4",
     "jquery": "^3.3.1",
     "mongoose": "^5.0.1",
