@@ -10,7 +10,7 @@
     "nodemon": "^1.14.11"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^3.2.2",
     "bootstrap": "3",
     "debug": "^3.1.0",
     "express": "^4.16.2",
