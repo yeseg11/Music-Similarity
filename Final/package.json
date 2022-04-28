@@ -10,7 +10,7 @@
     "nodemon": "^1.14.11"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^2.6.4",
     "body-parser": "^1.18.2",
     "bootstrap": "3",
     "compute-cosine-similarity": "^1.0.0",
